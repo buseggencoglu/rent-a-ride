@@ -304,3 +304,17 @@ def msg_delete(request, id=None):
     query = get_object_or_404(PrivateMsg, id=id)
     query.delete()
     return HttpResponseRedirect("/message/")
+
+
+#fonksiyon kontrol demom sonra üzerinde oynayacağım -buse
+def dashboard_car_list(request):
+    cars = Car.view_car_list()
+    car_detail = Car.view_car_detail(3)
+
+    context = {
+        "car_details": car_detail,
+        "cars": cars
+    }
+
+    return render(request, 'car_detail.html', context)
+
