@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import Car, Reservation, PrivateMsg
+from .models import Car, Reservation, PrivateMsg, User, Admin, Branch
+
 
 # Register your models here.
 
 
 class CarAdmin(admin.ModelAdmin):
-    list_display = ("carName", "image", "userID")
+    list_display = ("carName", "model")
 
 
 class ReservationAdmin(admin.ModelAdmin):
@@ -19,3 +20,6 @@ class PrivateMsgAdmin(admin.ModelAdmin):
 admin.site.register(Car, CarAdmin)
 admin.site.register(Reservation, ReservationAdmin)
 admin.site.register(PrivateMsg, PrivateMsgAdmin)
+admin.site.register(User)
+admin.site.register(Admin)
+admin.site.register(Branch)
