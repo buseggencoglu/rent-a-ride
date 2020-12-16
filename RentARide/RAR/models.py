@@ -36,6 +36,7 @@ class Car(models.Model):
         (3, '3'),
         (4, '4'),
     ]
+
     numOfSeats = models.IntegerField(
         choices=NUM_OF_SEATS_CHOICE,
     )
@@ -68,6 +69,9 @@ class Car(models.Model):
         default=1,
     )
 
+    class Meta:
+        db_table = 'car'
+
     def __str__(self):
         return f'{self.carName}-{self.model}'
 
@@ -87,6 +91,7 @@ class Car(models.Model):
         return cls.objects.filter(branchId=branch_id).exclude(busy_cars)
 
 
+
 class PrivateMsg(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
@@ -96,11 +101,10 @@ class PrivateMsg(models.Model):
 
 class User(models.Model):
     username = models.CharField(max_length = 100, default ='', unique = True)
-    name = models.CharField(max_length = 100, default ='')
+    firstname = models.CharField(max_length = 100, default ='')
     lastname = models.CharField(max_length = 100, default ='')
     password = models.CharField(max_length = 32) #login formda pswrd input gir.
     email = models.EmailField()
-
 
     def __str__(self):
         return self.name
@@ -133,6 +137,7 @@ class Reservation(models.Model):
     def get_absolute_url(self):
         return "/car/detail/%s/" % (self.pk)
 
+# carID__model yerine carID olması gerekmiyor mu
     @classmethod
     def view_users_history(cls, customerID):
         return cls.objects.filter(customerID=customerID).values('carID__model', 'pickUpDate', 'returnDate',
@@ -141,3 +146,10 @@ class Reservation(models.Model):
     @classmethod
     def used_cars(cls, pickup_date, return_date):
         return cls.objects.filter(pickUpDate__gte=pickup_date, returnDate__lte=return_date).values('carID__id')
+
+
+
+# -----------------CarDealer Section-----------------
+
+class CarDealer(User):
+    pass

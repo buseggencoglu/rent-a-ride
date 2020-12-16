@@ -19,7 +19,7 @@ def login_view(request):
         user = authenticate(username=username, password=password)
         if not request.user.is_staff:
             login(request, user)
-            return redirect("/car/newcar/")
+            return redirect("/car/newcar/") #değişecek
     return render(request, "form.html", {"form": form1, "title": "Login"})
 
 

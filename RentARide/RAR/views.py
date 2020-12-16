@@ -2,8 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
-from .models import Car, Reservation, PrivateMsg
+
+from .models import Car, Reservation, PrivateMsg, CarDealer
 from .forms import CarForm, ReservationForm, MessageForm
 
 
@@ -55,6 +58,7 @@ def car_detail(request, id=None):
     return render(request, 'car_detail.html', context)
 
 
+@login_required
 def car_created(request):
     form = CarForm(request.POST or None, request.FILES or None)
 
@@ -69,6 +73,7 @@ def car_created(request):
     return render(request, 'car_create.html', context)
 
 
+@login_required()
 def car_update(request, id=None):
     detail = get_object_or_404(Car, id=id)
     form = CarForm(request.POST or None, instance=detail)
@@ -83,6 +88,7 @@ def car_update(request, id=None):
     return render(request, 'car_create.html', context)
 
 
+@login_required()
 def car_delete(request, id=None):
     query = get_object_or_404(Car, id=id)
     query.delete()
@@ -166,7 +172,20 @@ def reservation_delete(request, id=None):
     query.delete()
     return HttpResponseRedirect("/listReservation/")
 
+def view_my_reservation(request):
+    username = request.user
+    user = User.objects.get(username=username)
+    car_dealer = CarDealer.objects.get(car_dealer = user)
+    reservations = Reservation.objects.filter(car_dealer = car_dealer)
+    reservation_list = []
+    for r in reservations:
+        if r.is_complete == False:
+            reservation_list.append(r)
+    return render(request,'car_dealer/reservation_list.html', {'reservation_list':reservation_list})
 
+
+
+@login_required()
 def newCar(request):
     new = Car.objects.order_by('-id')
     # search
