@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from django import forms
 
+
 # Create your models here.
 
 
@@ -23,7 +24,7 @@ class Car(models.Model):
                               height_field="height_field")
     height_field = models.IntegerField(default=0)
     width_field = models.IntegerField(default=0)
-    carName = models.CharField(max_length=100,default="")
+    carName = models.CharField(max_length=100, default="")
     model = models.CharField(max_length=100)
     airconditioner = models.BooleanField()
     price = models.IntegerField()
@@ -80,7 +81,7 @@ class Car(models.Model):
 
     @classmethod
     def view_car_list(cls):
-        return cls.objects.values('id','model','carStatus')
+        return cls.objects.values('id', 'model', 'carStatus')
 
     @classmethod
     def view_car_detail(cls, car_id):
@@ -91,28 +92,28 @@ class Car(models.Model):
         return cls.objects.filter(branchId=branch_id).exclude(busy_cars)
 
 
-
 class PrivateMsg(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
     message = models.TextField()
 
+
 # natika was here .d
 
 class User(models.Model):
-    username = models.CharField(max_length = 100, default ='', unique = True)
-    firstname = models.CharField(max_length = 100, default ='')
-    lastname = models.CharField(max_length = 100, default ='')
-    password = models.CharField(max_length = 32) #login formda pswrd input gir.
+    username = models.CharField(max_length=100, default='', unique=True)
+    firstname = models.CharField(max_length=100, default='')
+    lastname = models.CharField(max_length=100, default='')
+    password = models.CharField(max_length=32)  # login formda pswrd input gir.
     email = models.EmailField()
 
     def __str__(self):
         return self.name
 
     @classmethod
-
     def view_users(cls):
         return cls.objects.values('id', 'name', 'lastname')
+
 
 class Admin(User):
     pass
@@ -137,19 +138,24 @@ class Reservation(models.Model):
     def get_absolute_url(self):
         return "/car/detail/%s/" % (self.pk)
 
-# carID__model yerine carID olması gerekmiyor mu
+    # carID__model yerine carID olması gerekmiyor mu
     @classmethod
     def view_users_history(cls, customerID):
         return cls.objects.filter(customerID=customerID).values('carID__model', 'pickUpDate', 'returnDate',
                                                                 'pickUpLocation', 'returnLocation',
                                                                 'customerID__name', 'customerID__lastname')
+
     @classmethod
     def used_cars(cls, pickup_date, return_date):
         return cls.objects.filter(pickUpDate__gte=pickup_date, returnDate__lte=return_date).values('carID__id')
 
 
+# -----------------CarDealer Section-----------------#
 
-# -----------------CarDealer Section-----------------
 
 class CarDealer(User):
-    pass
+    branchId = models.ForeignKey(Branch, null=True, on_delete=models.CASCADE)
+    rate = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.name
