@@ -58,6 +58,8 @@ class Admin(models.Model):
         return self.user.username
 
 
+
+
 # -----------------CarDealer Section-----------------#
 
 class CarDealer(models.Model):
@@ -163,9 +165,9 @@ class PrivateMsg(models.Model):
 # natika was here .d
 
 class Reservation(models.Model):
-    carID = models.ForeignKey(Car, on_delete=models.CASCADE)
-    customerID = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    carDealerID = models.ForeignKey(CarDealer, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    carDealer = models.ForeignKey(CarDealer, on_delete=models.CASCADE)
     pickUpLocation = models.TextField()
     returnLocation = models.TextField()
     pickUpDate = models.DateTimeField()

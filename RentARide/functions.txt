@@ -1,6 +1,6 @@
 Admin
--Login
--Logout
+-Login (Ayşe:Done)
+-Logout (Ayşe:Done -check)
 -SearchForCar
 -RentCar
 -ViewCarList
@@ -13,7 +13,7 @@ Admin
 -UpdateCar
 -MakeReservation
 -ViewMyReservations
--ViewAllReservations
+-ViewAllReservations  (Ayşe:bitti sadece permission kaldı.)
 -UpdateReservations
 -DeleteReservations
 
@@ -46,6 +46,7 @@ CarDealer
 -ViewReceiversFromBranch
 -ChangeCarStatus
 -MakeReservation
+-ViewAllReservations  (Ayşe:bitti sadece permission kaldı.)
 -ViewMyReservations
 -UpdateReservations
 -DeleteReservations

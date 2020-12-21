@@ -1,0 +1,2 @@
+- Permissions bakılacak
+- CarDealerın Adminden register olmak için request istemesi.

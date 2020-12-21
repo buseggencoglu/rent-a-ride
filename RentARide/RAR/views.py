@@ -10,6 +10,13 @@ from .models import Car, Reservation, PrivateMsg, CarDealer
 from .forms import CarForm, ReservationForm, MessageForm
 
 
+
+def base(request):
+    context = {
+        "title" : "RentACar"
+    }
+    return render (request, 'base.html', context)
+
 def home(request):
     context = {
         "title": "Car Rental"
@@ -100,9 +107,9 @@ def car_delete(request, id=None):
     return render(request, 'admin_index.html', context)
 
 
-# order
+# reservation
 
-def reservation_list(request):
+def reservation_list_old(request):
     reservation = Reservation.objects.all()
 
     query = request.GET.get('q')
@@ -129,6 +136,13 @@ def reservation_list(request):
         'reservation': reservation,
     }
     return render(request, 'reservation_list.html', context)
+
+
+def reservation_list(request):
+    context = {}
+    context["dataset"] = Reservation.objects.all()
+    return render(request, 'reservation_list.html', context)
+
 
 
 def reservation_detail(request, id=None):
@@ -172,17 +186,26 @@ def reservation_delete(request, id=None):
     query.delete()
     return HttpResponseRedirect("/listReservation/")
 
-def view_my_reservation(request):
+def view_my_reservation_cardealer(request):
     username = request.user
     user = User.objects.get(username=username)
-    car_dealer = CarDealer.objects.get(car_dealer = user)
-    reservations = Reservation.objects.filter(car_dealer = car_dealer)
+    carDealer = CarDealer.objects.get(user = user)
+    reservations = Reservation.objects.filter(carDealer = carDealer)
+    reservation_list = []
+    for r in reservations:
+        if r.paymentStatus == False:
+            reservation_list.append(r)
+    return render(request,'my_reservations.html', {'reservation_list':reservation_list})
+
+def view_my_reservation_customer(request):
+    username = request.user
+    user = User.objects.get(username=username)
+    reservations = Reservation.objects.filter(customer = user)
     reservation_list = []
     for r in reservations:
         if r.is_complete == False:
             reservation_list.append(r)
-    return render(request,'car_dealer/reservation_list.html', {'reservation_list':reservation_list})
-
+    return render(request,'my_reservations.html', {'reservation_list':reservation_list})
 
 
 @login_required()
@@ -328,7 +351,7 @@ def msg_delete(request, id=None):
 #fonksiyon kontrol demom sonra üzerinde oynayacağım -buse
 def dashboard_car_list(request):
     cars = Car.view_car_list()
-    car_detail = Car.view_car_detail(3)
+    car_detail = Car.view_car_detail(1)
 
     context = {
         "car_details": car_detail,

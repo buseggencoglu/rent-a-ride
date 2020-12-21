@@ -2,11 +2,13 @@
 {% load static %}
 
 {% block title %}
-<title>Reservations</title>
+<title>MyReservations</title>
 {% endblock %}
+
 {% block content %}
 <table style="width:80%; text-align:center">
     <tr>
+
         <th>CarID</th>
         <th>CustomerID</th>
         <th>carDealerID</th>
@@ -17,15 +19,15 @@
         <th>paymentStatus</th>
     </tr>
     <tr>
-        {% for data in dataset %}
-        <td>data.carID</td>
-        <td>data.CustomerID</td>
-        <td>data.carDealerID</td>
-        <td>data.pickUpLocation</td>
-        <td>data.returnLocation</td>
-        <td>data.pickUpDate</td>
-        <td>data.returnDate</td>
-        <td>data.paymentStatus</td>
+        {% for reservation in reservation_list %}
+        <td>reservation.carID</td>
+        <td>reservation.CustomerID</td>
+        <td>reservation.carDealerID</td>
+        <td>reservation.pickUpLocation</td>
+        <td>reservation.returnLocation</td>
+        <td>reservation.pickUpDate</td>
+        <td>reservation.returnDate</td>
+        <td>reservation.paymentStatus</td>
         {% endfor %}
     </tr>
 </table>

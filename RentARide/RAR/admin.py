@@ -10,7 +10,7 @@ class CarAdmin(admin.ModelAdmin):
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ("carID", "pickUpDate", "returnDate", "carDealerID")
+    list_display = ("car", "pickUpDate", "returnDate", "carDealer")
 
 
 class PrivateMsgAdmin(admin.ModelAdmin):

@@ -1,434 +1,548 @@
+<!doctype html>
 {% load static %}
 <html lang="en">
+
 <head>
     {% block title %}
+    <title>{{title}}</title>
     {% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-  <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <style>
-  body {
-      font: 400 15px Lato, sans-serif;
-      line-height: 1.8;
-      color: #818181;
-  }
-  h2 {
-      font-size: 24px;
-      text-transform: uppercase;
-      color: #303030;
-      font-weight: 600;
-      margin-bottom: 30px;
-  }
-  h4 {
-      font-size: 19px;
-      line-height: 1.375em;
-      color: #303030;
-      font-weight: 400;
-      margin-bottom: 30px;
-  }
-  .jumbotron {
-      background-color: #f4511e;
-      color: #fff;
-      padding: 100px 25px;
-      font-family: Montserrat, sans-serif;
-  }
-  .container-fluid {
-      padding: 60px 50px;
-  }
-  .bg-grey {
-      background-color: #f6f6f6;
-  }
-  .logo-small {
-      color: #ff3333;
-      font-size: 50px;
-  }
-  .logo {
-      color: #ff3333;
-      font-size: 200px;
-  }
-  .thumbnail {
-      padding: 0 0 15px 0;
-      border: none;
-      border-radius: 0;
-  }
-  .thumbnail img {
-      width: 100%;
-      height: 100%;
-      margin-bottom: 10px;
-  }
-  .carousel-control.right, .carousel-control.left {
-      background-image: none;
-      color: #f4511e;
-  }
-  .carousel-indicators li {
-      border-color: #f4511e;
-  }
-  .carousel-indicators li.active {
-      background-color: #f4511e;
-  }
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,400,700&display=swap" rel="stylesheet">
 
-.item img{
-    width: 1200px;
-    height: 900px;
-}
-  .item h4 {
-      font-size: 19px;
-      line-height: 1.375em;
-      font-weight: 400;
-      font-style: italic;
-      margin: 70px 0;
-  }
-  .item span {
-      font-style: normal;
-  }
-  .panel {
-      border: 1px solid #f4511e;
-      border-radius:0 !important;
-      transition: box-shadow 0.5s;
-  }
-  .panel:hover {
-      box-shadow: 5px 0px 40px rgba(0,0,0, .2);
-  }
-  .panel-footer .btn:hover {
-      border: 1px solid #f4511e;
-      background-color: #fff !important;
-      color: #f4511e;
-  }
-  .panel-heading {
-      color: #fff !important;
-      background-color: #f4511e !important;
-      padding: 25px;
-      border-bottom: 1px solid transparent;
-      border-top-left-radius: 0px;
-      border-top-right-radius: 0px;
-      border-bottom-left-radius: 0px;
-      border-bottom-right-radius: 0px;
-  }
-  .panel-footer {
-      background-color: white !important;
-  }
-  .panel-footer h3 {
-      font-size: 32px;
-  }
-  .panel-footer h4 {
-      color: #aaa;
-      font-size: 14px;
-  }
-  .panel-footer .btn {
-      margin: 15px 0;
-      background-color: #f4511e;
-      color: #fff;
-  }
-  .navbar {
-      margin-bottom: 0;
-      background-color:#b30000;
-      z-index: 9999;
-      border: 0;
-      font-size: 12px !important;
-      line-height: 1.42857143 !important;
-      letter-spacing: 4px;
-      border-radius: 0;
-      font-family: Montserrat, sans-serif;
-  }
-  .navbar li a, .navbar .navbar-brand {
-      color: #fff !important;
-  }
-  .navbar-nav li a:hover, .navbar-nav li.active a {
-      color: #f4511e !important;
-      background-color: #fff !important;
-  }
-  .navbar-default .navbar-toggle {
-      border-color: transparent;
-      color: #fff !important;
-  }
-  footer .glyphicon {
-      font-size: 20px;
-      margin-bottom: 20px;
-      color: #f4511e;
-  }
-  .slideanim {visibility:hidden;}
-  .slide {
-      animation-name: slide;
-      -webkit-animation-name: slide;
-      animation-duration: 1s;
-      -webkit-animation-duration: 1s;
-      visibility: visible;
-  }
-  @keyframes slide {
-    0% {
-      opacity: 0;
-      -webkit-transform: translateY(70%);
-    }
-    100% {
-      opacity: 1;
-      -webkit-transform: translateY(0%);
-    }
-  }
-  @-webkit-keyframes slide {
-    0% {
-      opacity: 0;
-      -webkit-transform: translateY(70%);
-    }
-    100% {
-      opacity: 1;
-      -webkit-transform: translateY(0%);
-    }
-  }
-  @media screen and (max-width: 768px) {
-    .col-sm-4 {
-      text-align: center;
-      margin: 25px 0;
-    }
-    .btn-lg {
-        width: 100%;
-        margin-bottom: 35px;
-    }
-  }
-  @media screen and (max-width: 480px) {
-    .logo {
-        font-size: 150px;
-    }
-  }
-  </style>
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.fancybox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
 </head>
 
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
-
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="glyphicon glyphicon-align-justify"></span>
-
-      </button>
-      <a class="navbar-brand"><span class="glyphicon glyphicon-fire"></span> Car Rental</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-        <p>Welcome!   <a href="{% url 'profile' pk=user.id %}">{{ user.username }}</a></p>
-        {% endif %}
-        <li><a href="#about">ABOUT</a></li>
-        <li><a href="#services">SERVICES</a></li>
-        <li><a href="#contact">CONTACT</a></li>
-        <li><a href="{% url 'car_list' %}">CAR LIST</a></li>
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'logout' %}">LOGOUT</a></li>
-        <li><a href="{% url 'profile' pk=user.id  %}"><i class="fa fa-user-plus" aria-hidden="true"></i>Profile</a></li>
-        {% else %}
-        <li><a href="{% url 'login' %}">LOGIN</a></li>
-        {% endif %}
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
 
-      </ul>
-    </div>
-  </div>
-</nav>
-<!--slide-->
-{% block content %}
-<div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
+<div class="site-wrap" id="home-section">
 
-    <!-- Wrapper for slides -->
-    <div class="container">
-    <div class="carousel-inner" role="listbox">
-      <div class="item active">
-          <img src="{% static 'images/cover2.jpg' %}"/>
-      </div>
-      <div class="item">
-        <img src="{% static 'images/cover.jpg' %}"/>
-      </div>
-      <div class="item">
-        <img src="{% static 'images/honda-amaze.jpg' %}"/>
-      </div>
-    </div>
-    </div>
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-
-<!-- Container (About Section) -->
-<div class="container">
-<div id="about" class="container-fluid">
-  <div class="row">
-    <div class="col-sm-8">
-      <h2>About Company Page</h2><br>
-      <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h4><br>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <br><button class="btn btn-default btn-lg">Get in Touch</button>
-    </div>
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-signal logo"></span>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Container (Services Section) -->
-<div id="services" class="container-fluid text-center">
-  <h2>SERVICES</h2>
-  <h4>What we offer</h4>
-  <br>
-  <div class="row slideanim">
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-off logo-small"></span>
-      <h4>POWER</h4>
-      <p>Lorem ipsum dolor sit amet..</p>
-    </div>
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-heart logo-small"></span>
-      <h4>LOVE</h4>
-      <p>Lorem ipsum dolor sit amet..</p>
-    </div>
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-lock logo-small"></span>
-      <h4>JOB DONE</h4>
-      <p>Lorem ipsum dolor sit amet..</p>
-    </div>
-  </div>
-  <br><br>
-  <div class="row slideanim">
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-leaf logo-small"></span>
-      <h4>GREEN</h4>
-      <p>Lorem ipsum dolor sit amet..</p>
-    </div>
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-certificate logo-small"></span>
-      <h4>CERTIFIED</h4>
-      <p>Lorem ipsum dolor sit amet..</p>
-    </div>
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-wrench logo-small"></span>
-      <h4 style="color:#303030;">HARD WORK</h4>
-      <p>Lorem ipsum dolor sit amet..</p>
-    </div>
-  </div>
-</div>
-
-{% endblock %}
-<!-- Container (Portfolio Section) -->
-<div id="portfolio" class="container-fluid text-center bg-grey">
-
-  <h2>What our customers say</h2>
-  <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner" role="listbox">
-      <div class="item active">
-        <h4>"This company is the best. I am so happy with the result!"<br><span style="font-style:normal;">Michael Roe, Vice President, Comment Box</span></h4>
-      </div>
-      <div class="item">
-        <h4>"One word... WOW!!"<br><span style="font-style:normal;">John Doe, Salesman, Rep Inc</span></h4>
-      </div>
-      <div class="item">
-        <h4>"Could I... BE any more happy with this company?"<br><span style="font-style:normal;">Chandler Bing, Actor, FriendsAlot</span></h4>
-      </div>
-    </div>
-
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-</div>
-
-
-<!-- Container (Contact Section) -->
-<div id="contact" class="container-fluid bg-grey">
-  <h2 class="text-center">CONTACT</h2>
-  <div class="row">
-    <div class="col-sm-5">
-      <p>Contact us and we'll get back to you within 24 hours.</p>
-      <p><span class="glyphicon glyphicon-map-marker"></span> Chicago, US</p>
-      <p><span class="glyphicon glyphicon-phone"></span> +00 1515151515</p>
-      <p><span class="glyphicon glyphicon-envelope"></span> myemail@something.com</p>
-    </div>
-    <div class="col-sm-7 slideanim">
-      <div class="row">
-        <div class="col-sm-6 form-group">
-          <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
         </div>
-        <div class="col-sm-6 form-group">
-          <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
-        </div>
-      </div>
-      <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <button class="btn btn-default pull-right" type="submit">Send</button>
-        </div>
-      </div>
+        <div class="site-mobile-menu-body"></div>
     </div>
-  </div>
+
+
+    <header class="site-navbar site-navbar-target" role="banner">
+
+        <div class="container">
+            <div class="row align-items-center position-relative">
+
+                <div class="col-3 ">
+                    <div class="site-logo">
+                        <a href="{% url 'base' %}">RentACar</a>
+                    </div>
+                </div>
+
+                <div class="col-9  text-right">
+
+
+                    <span class="d-inline-block d-lg-none"><a href="#"
+                                                              class="text-white site-menu-toggle js-menu-toggle py-5 text-white"><span
+                            class="icon-menu h3 text-white"></span></a></span>
+
+
+                    <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
+                        <ul class="site-menu main-menu js-clone-nav ml-auto ">
+                            <li><a href="{% url 'base' %}" class="nav-link">Home</a></li>
+                            <li><a href="{% url 'car_list' %}" class="nav-link">CarList</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'my_reservations' %}" class="nav-link">Reservations</a></li>
+                            <li><a href="profile.html" class="nav-link">Profile</a></li>
+                            <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                            {% else %}
+                            <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                            {% endif %}
+
+                            <li><a href="services.html" class="nav-link">Services</a></li>
+                            <li><a href="cars.html" class="nav-link">Cars</a></li>
+                            <li><a href="about.html" class="nav-link">About</a></li>
+                            <li><a href="blog.html" class="nav-link">Blog</a></li>
+                            <li><a href="contact.html" class="nav-link">Contact</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+        </div>
+
+    </header>
+    {%block content%}
+    <div class="ftco-blocks-cover-1">
+        <div class="ftco-cover-1 overlay" style="background-image: url({% static 'images/hero_1.jpg' %})">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-5">
+                        <div class="feature-car-rent-box-1">
+                            <h3>Range Rover S7</h3>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <span>Doors</span>
+                                    <span class="spec">4</span>
+                                </li>
+                                <li>
+                                    <span>Seats</span>
+                                    <span class="spec">6</span>
+                                </li>
+                                <li>
+                                    <span>Lugage</span>
+                                    <span class="spec">2 Suitcase/2 Bags</span>
+                                </li>
+                                <li>
+                                    <span>Transmission</span>
+                                    <span class="spec">Automatic</span>
+                                </li>
+                                <li>
+                                    <span>Minium age</span>
+                                    <span class="spec">Automatic</span>
+                                </li>
+                            </ul>
+                            <div class="d-flex align-items-center bg-light p-3">
+                                <span>$150/day</span>
+                                <a href="{% url 'contact' %}" class="ml-auto btn btn-primary">Rent Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-section pt-0 pb-0 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <form class="trip-form">
+                        <div class="row align-items-center mb-4">
+                            <div class="col-md-6">
+                                <h3 class="m-0">Begin your trip here</h3>
+                            </div>
+                            <div class="col-md-6 text-md-right">
+                                <span class="text-primary">32</span> <span>cars available</span></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="cf-1">Where you from</label>
+                                <input type="text" id="cf-1" placeholder="Your pickup address" class="form-control">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="cf-2">Where you go</label>
+                                <input type="text" id="cf-2" placeholder="Your drop-off address" class="form-control">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="cf-3">Journey date</label>
+                                <input type="text" id="cf-3" placeholder="Your pickup address"
+                                       class="form-control datepicker px-3">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="cf-4">Return date</label>
+                                <input type="text" id="cf-4" placeholder="Your pickup address"
+                                       class="form-control datepicker px-3">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="submit" value="Submit" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="site-section bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <h3>Our Offer</h3>
+                    <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure nesciunt nemo vel
+                        earum maxime neque!</p>
+                    <p>
+                        <a href="#" class="btn btn-primary custom-prev">Previous</a>
+                        <span class="mx-2">/</span>
+                        <a href="#" class="btn btn-primary custom-next">Next</a>
+                    </p>
+                </div>
+                <div class="col-lg-9">
+
+
+                    <div class="nonloop-block-13 owl-carousel">
+                        <div class="item-1">
+                            <a href="#"><img src="{% static 'images/img_1.jpg' %}" alt="Image" class="img-fluid"></a>
+                            <div class="item-1-contents">
+                                <div class="text-center">
+                                    <h3><a href="#">Range Rover S64 Coupe</a></h3>
+                                    <div class="rating">
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                    </div>
+                                    <div class="rent-price"><span>$250/</span>day</div>
+                                </div>
+                                <ul class="specs">
+                                    <li>
+                                        <span>Doors</span>
+                                        <span class="spec">4</span>
+                                    </li>
+                                    <li>
+                                        <span>Seats</span>
+                                        <span class="spec">5</span>
+                                    </li>
+                                    <li>
+                                        <span>Transmission</span>
+                                        <span class="spec">Automatic</span>
+                                    </li>
+                                    <li>
+                                        <span>Minium age</span>
+                                        <span class="spec">18 years</span>
+                                    </li>
+                                </ul>
+                                <div class="d-flex action">
+                                    <a href="{% url 'contact' %}" class="btn btn-primary">Rent Now</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="item-1">
+                            <a href="#"><img src="{% static 'images/img_2.jpg' %}" alt="Image" class="img-fluid"></a>
+                            <div class="item-1-contents">
+                                <div class="text-center">
+                                    <h3><a href="#">Range Rover S64 Coupe</a></h3>
+                                    <div class="rating">
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                        <span class="icon-star text-warning"></span>
+                                    </div>
+                                    <div class="rent-price"><span>$250/</span>day</div>
+                                </div>
+                                <ul class="specs">
+                                    <li>
+                                        <span>Doors</span>
+                                        <span class="spec">4</span>
+                                    </li>
+                                    <li>
+                                        <span>Seats</span>
+                                        <span class="spec">5</span>
+                                    </li>
+                                    <li>
+                                        <span>Transmission</span>
+                                        <span class="spec">Automatic</span>
+                                    </li>
+                                    <li>
+                                        <span>Minium age</span>
+                                        <span class="spec">18 years</span>
+                                    </li>
+                                </ul>
+                                <div class="d-flex action">
+                                    <a href="contact.html" class="btn btn-primary">Rent Now</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-section section-3" style="background-image: url({% static 'images/hero_2.jpg' %});">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="text-white">Our services</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="service-1">
+              <span class="service-1-icon">
+                <span class="flaticon-car-1"></span>
+              </span>
+                        <div class="service-1-contents">
+                            <h3>Repair</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="service-1">
+              <span class="service-1-icon">
+                <span class="flaticon-traffic"></span>
+              </span>
+                        <div class="service-1-contents">
+                            <h3>Car Accessories</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="service-1">
+              <span class="service-1-icon">
+                <span class="flaticon-valet"></span>
+              </span>
+                        <div class="service-1-contents">
+                            <h3>Own a Car</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati, laboriosam.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container site-section mb-5">
+        <div class="row justify-content-center text-center">
+            <div class="col-7 text-center mb-5">
+                <h2>How it works</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo assumenda, dolorum necessitatibus eius
+                    earum voluptates sed!</p>
+            </div>
+        </div>
+        <div class="how-it-works d-flex">
+            <div class="step">
+                <span class="number"><span>01</span></span>
+                <span class="caption">Time &amp; Place</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>02</span></span>
+                <span class="caption">Car</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>03</span></span>
+                <span class="caption">Details</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>04</span></span>
+                <span class="caption">Checkout</span>
+            </div>
+            <div class="step">
+                <span class="number"><span>05</span></span>
+                <span class="caption">Done</span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="site-section bg-light">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-7 text-center mb-5">
+                    <h2>Customer Testimony</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo assumenda, dolorum necessitatibus
+                        eius earum voluptates sed!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="testimonial-2">
+                        <blockquote class="mb-4">
+                            <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, deserunt eveniet
+                                veniam. Ipsam, nam, voluptatum"</p>
+                        </blockquote>
+                        <div class="d-flex v-card align-items-center">
+                            <img src="{% static 'images/person_1.jpg' %}" alt="Image" class="img-fluid mr-3">
+                            <span>Mike Fisher</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="testimonial-2">
+                        <blockquote class="mb-4">
+                            <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, deserunt eveniet
+                                veniam. Ipsam, nam, voluptatum"</p>
+                        </blockquote>
+                        <div class="d-flex v-card align-items-center">
+                            <img src="{% static 'images/person_2.jpg' %}" alt="Image" class="img-fluid mr-3">
+                            <span>Jean Stanley</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="testimonial-2">
+                        <blockquote class="mb-4">
+                            <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, deserunt eveniet
+                                veniam. Ipsam, nam, voluptatum"</p>
+                        </blockquote>
+                        <div class="d-flex v-card align-items-center">
+                            <img src="{% static 'images/person_3.jpg' %}" alt="Image" class="img-fluid mr-3">
+                            <span>Katie Rose</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="site-section bg-white">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-7 text-center mb-5">
+                    <h2>Our Blog</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo assumenda, dolorum necessitatibus
+                        eius earum voluptates sed!</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="post-entry-1 h-100">
+                        <a href="single.html">
+                            <img src="{% static 'images/post_1.jpg' %}" alt="Image"
+                                 class="img-fluid">
+                        </a>
+                        <div class="post-entry-1-contents">
+
+                            <h2><a href="single.html">The best car rent in the entire planet</a></h2>
+                            <span class="meta d-inline-block mb-3">July 17, 2019 <span class="mx-2">by</span> <a
+                                    href="#">Admin</a></span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores eos soluta, dolore
+                                harum molestias consectetur.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="post-entry-1 h-100">
+                        <a href="single.html">
+                            <img src="{% static 'images/img_2.jpg' %}" alt="Image"
+                                 class="img-fluid">
+                        </a>
+                        <div class="post-entry-1-contents">
+
+                            <h2><a href="single.html">The best car rent in the entire planet</a></h2>
+                            <span class="meta d-inline-block mb-3">July 17, 2019 <span class="mx-2">by</span> <a
+                                    href="#">Admin</a></span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores eos soluta, dolore
+                                harum molestias consectetur.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="post-entry-1 h-100">
+                        <a href="single.html">
+                            <img src="{% static 'images/img_3.jpg' %}" alt="Image"
+                                 class="img-fluid">
+                        </a>
+                        <div class="post-entry-1-contents">
+
+                            <h2><a href="single.html">The best car rent in the entire planet</a></h2>
+                            <span class="meta d-inline-block mb-3">July 17, 2019 <span class="mx-2">by</span> <a
+                                    href="#">Admin</a></span>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores eos soluta, dolore
+                                harum molestias consectetur.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {%endblock%}
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <h2 class="footer-heading mb-4">About Us</h2>
+                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
+                        live the blind texts. </p>
+                </div>
+                <div class="col-lg-8 ml-auto">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h2 class="footer-heading mb-4">Quick Links</h2>
+                            <ul class="list-unstyled">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Testimonials</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                                <li><a href="#">Privacy</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3">
+                            <h2 class="footer-heading mb-4">Quick Links</h2>
+                            <ul class="list-unstyled">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Testimonials</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                                <li><a href="#">Privacy</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3">
+                            <h2 class="footer-heading mb-4">Quick Links</h2>
+                            <ul class="list-unstyled">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Testimonials</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                                <li><a href="#">Privacy</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3">
+                            <h2 class="footer-heading mb-4">Quick Links</h2>
+                            <ul class="list-unstyled">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Testimonials</a></li>
+                                <li><a href="#">Terms of Service</a></li>
+                                <li><a href="#">Privacy</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 </div>
 
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/jquery.sticky.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/jquery.animateNumber.min.js' %}"></script>
+<script src="{% static 'js/jquery.fancybox.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+<script src="{% static 'js/aos.js' %}"></script>
 
-<script>
-$(document).ready(function(){
-  // Add smooth scrolling to all links in navbar + footer link
-  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
-
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 900, function(){
-
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-
-  $(window).scroll(function() {
-    $(".slideanim").each(function(){
-      var pos = $(this).offset().top;
-
-      var winTop = $(window).scrollTop();
-        if (pos < winTop + 600) {
-          $(this).addClass("slide");
-        }
-    });
-  });
-})
-</script>
+<script src="{% static 'js/main.js' %}"></script>
 
 </body>
+
 </html>
 
