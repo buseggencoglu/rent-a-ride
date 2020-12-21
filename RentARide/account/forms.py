@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import (
     authenticate,
     get_user_model,
@@ -9,30 +10,18 @@ from django.contrib.auth import (
 User = get_user_model()
 
 
-class UserLoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
-
-    def clean(self, *args, **kwargs):
-        username = self.cleaned_data.get("username")
-        password = self.cleaned_data.get("password")
-        if username and password:
-            user = authenticate(username=username, password=password)
-            if not user:
-                raise forms.ValidationError("This User does not Exist or Incorrect Password.")
-            if not user.is_active:
-                raise forms.ValidationError("This user is no longer active.")
-        return super(UserLoginForm,self).clean(*args, **kwargs)
-
-
-class UserRegisterForm(forms.ModelForm):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+class RegisterForm(UserCreationForm):
+    first_name = forms.CharField(max_length=100, help_text='First Name')
+    last_name = forms.CharField(max_length=100, help_text='Last Name')
+    email = forms.EmailField(max_length=150, help_text='Email')
 
     class Meta:
         model = User
-        fields = [
-            "username",
-            "email",
-            "password",
-        ]
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
+
+
+
+class PasswordResetRequestForm(forms.Form):
+    email_or_username = forms.CharField(label=("Email Or Username"), max_length=254)
+
+

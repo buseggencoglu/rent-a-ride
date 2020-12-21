@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'RAR.apps.RarConfig',
-    #'crispy_forms',
+    'crispy_forms',
     'account.apps.AccountConfig',
 ]
 MIDDLEWARE = [
@@ -83,6 +83,7 @@ DATABASES = {
     }
 }
 
+#AUTH_USER_MODEL = 'RAR.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

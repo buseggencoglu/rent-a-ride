@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Users</title>
+{% endblock %}
+{% block content %}
+<div class="main">
+    {% for data in dataset %}
+    {{ data.username }}<br/>
+    {{ data.id }}<br/>
+    <hr/>
+    {% endfor %}
+</div>
+{% endblock %}
