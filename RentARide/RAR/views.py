@@ -337,3 +337,13 @@ def dashboard_car_list(request):
 
     return render(request, 'car_detail.html', context)
 
+def users(request):
+    context = {}
+    context["dataset"] =User.objects.all()
+
+    return render(request,'users.html', context)
+
+
+def profile(request, pk):
+    profile = Profile.objects.get(user_id=pk)
+    return render(request, 'profile.html', {'profile': profile})

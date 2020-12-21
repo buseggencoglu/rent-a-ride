@@ -2,13 +2,13 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django import forms
-
+from django.contrib.auth.models import User
+from django.contrib import auth
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
-
-def uploaded_location(instance, filename):
-    return ("%s/%s") % (instance.carName, filename)
 
 
 class Branch(models.Model):
@@ -17,6 +17,68 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.branch_name
+
+
+
+# -----------------CustomUser Section-----------------#
+
+# class User(models.Model):
+#     user = models.OneToOneField('auth.User',on_delete= models.CASCADE)
+#     #user_id = models.IntegerField()
+#     username = models.CharField(max_length=100, default='', unique=True)
+#     firstname = models.CharField(max_length=100, default='')
+#     lastname = models.CharField(max_length=100, default='')
+#     password = models.CharField(max_length=32)  # login formda pswrd input gir.
+#     email = models.EmailField()
+#
+#     REQUIRED_FIELDS = []
+#     USERNAME_FIELD = 'username'
+#     EMAIL_FIELD = 'email'
+#     is_anonymous = False
+#     is_authenticated = True
+#
+#
+#     def __str__(self):
+#         return self.user.username
+#
+#     @classmethod
+#     def view_users(cls):
+#         return cls.objects.values('id', 'username', 'lastname')
+
+
+
+
+# -----------------Admin Section-----------------#
+
+class Admin(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    pass
+
+    def __str__(self):
+        return self.user.username
+
+
+# -----------------CarDealer Section-----------------#
+
+class CarDealer(models.Model):
+    user = models.OneToOneField(User,on_delete= models.CASCADE)
+    branchId = models.ForeignKey(Branch, null=True, on_delete=models.CASCADE)
+    rate = models.IntegerField(null=True)
+
+    def __str__(self):
+        return self.user.username
+
+#-----------------Customer Section------------------#
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    age = models.IntegerField(null=True)
+    licenseId = models.CharField(max_length=20, null=True)
+
+
+
+def uploaded_location(instance, filename):
+    return ("%s/%s") % (instance.carName, filename)
 
 
 class Car(models.Model):
@@ -100,40 +162,15 @@ class PrivateMsg(models.Model):
 
 # natika was here .d
 
-class User(models.Model):
-    username = models.CharField(max_length=100, default='', unique=True)
-    firstname = models.CharField(max_length=100, default='')
-    lastname = models.CharField(max_length=100, default='')
-    password = models.CharField(max_length=32)  # login formda pswrd input gir.
-    email = models.EmailField()
-
-    def __str__(self):
-        return self.name
-
-    @classmethod
-    def view_users(cls):
-        return cls.objects.values('id', 'name', 'lastname')
-
-
-class Admin(User):
-    pass
-
-    def __str__(self):
-        return self.name
-
-
 class Reservation(models.Model):
     carID = models.ForeignKey(Car, on_delete=models.CASCADE)
-    customerID = models.ForeignKey(User, on_delete=models.CASCADE)
-    carDealerID = models.IntegerField()
+    customerID = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    carDealerID = models.ForeignKey(CarDealer, on_delete=models.CASCADE)
     pickUpLocation = models.TextField()
     returnLocation = models.TextField()
     pickUpDate = models.DateTimeField()
     returnDate = models.DateTimeField()
-    paymentStatus = models.BooleanField()
-
-    def __str__(self):
-        return self.pk
+    paymentStatus = models.BooleanField()  #default false konulmalı
 
     def get_absolute_url(self):
         return "/car/detail/%s/" % (self.pk)
@@ -150,20 +187,33 @@ class Reservation(models.Model):
         return cls.objects.filter(pickUpDate__gte=pickup_date, returnDate__lte=return_date).values('carID__id')
 
 
-# -----------------CarDealer Section-----------------#
-
-
-class CarDealer(User):
-    branchId = models.ForeignKey(Branch, null=True, on_delete=models.CASCADE)
-    rate = models.IntegerField(null=True)
-
-    def __str__(self):
-        return self.name
-
-#-----------------Customer Section------------------#
-class Customer(User):
-    age = models.IntegerField(null=True)
-    licenseId = models.CharField(max_length=20, null=True)
 
 class CarDealerCustomerSystem():
     pass
+
+
+
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     first_name = models.CharField(max_length=100, blank=True)
+#     last_name = models.CharField(max_length=100, blank=True)
+#     email = models.EmailField(max_length=150)
+#     signup_confirmation = models.BooleanField(default=False)
+#
+#     def __str__(self):
+#         return self.user.username
+#
+#     @receiver(post_save, sender=User)
+#     def update_profile_signal(sender, instance, created, **kwargs):
+#         if created:
+#             Profile.objects.create(user=instance)
+#             instance.profile.save()
+#
+#     @receiver(post_save, sender=User)
+#     def create_user_profile(sender, instance, created, **kwargs):
+#         if created:
+#             Profile.objects.create(user=instance)
+#
+#     @receiver(post_save, sender=User)
+#     def save_user_profile(sender, instance, **kwargs):
+#         instance.profile.save()
