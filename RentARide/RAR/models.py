@@ -172,7 +172,7 @@ class Reservation(models.Model):
     returnLocation = models.TextField()
     pickUpDate = models.DateTimeField()
     returnDate = models.DateTimeField()
-    paymentStatus = models.BooleanField()  #default false konulmalı
+    paymentStatus = models.BooleanField(default=False)  #default false konulmalı
 
     def get_absolute_url(self):
         return "/car/detail/%s/" % (self.pk)

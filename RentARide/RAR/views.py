@@ -10,21 +10,26 @@ from .models import Car, Reservation, PrivateMsg, CarDealer
 from .forms import CarForm, ReservationForm, MessageForm
 
 
+def index(request):
+    context = {
+        "title" : "RentACar"
+    }
+    return render (request, 'indexx.html', context)
 
 def base(request):
     context = {
         "title" : "RentACar"
     }
-    return render (request, 'base.html', context)
+    return render (request, 'home.html', context)
 
 def home(request):
     context = {
-        "title": "Car Rental"
+        "title": "RentACar"
     }
     return render(request, 'home.html', context)
 
 
-def car_list(request):
+def car_list_old(request):
     car = Car.objects.all()
 
     query = request.GET.get('q')
@@ -55,6 +60,13 @@ def car_list(request):
         'car': car,
     }
     return render(request, 'car_list.html', context)
+
+
+def car_list(request):
+    context = {}
+    context["dataset"] = Car.objects.all()
+    return render(request, 'car_list.html', context)
+
 
 
 def car_detail(request, id=None):

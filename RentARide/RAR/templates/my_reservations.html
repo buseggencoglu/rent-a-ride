@@ -1,35 +1,53 @@
-{% extends 'base.html' %}
+{% extends 'home.html' %}
 {% load static %}
 
 {% block title %}
 <title>MyReservations</title>
 {% endblock %}
 
-{% block content %}
-<table style="width:80%; text-align:center">
-    <tr>
 
-        <th>CarID</th>
-        <th>CustomerID</th>
-        <th>carDealerID</th>
+{% block style %}
+table, th, td {
+border: 1px solid black;
+border-collapse: collapse;
+text-align: center;
+margin-left: auto;
+margin-right: auto;
+margin-top:auto;
+width: 30%;
+padding: 10px;
+
+}
+{% endblock %}
+
+
+{% block content %}
+<table>
+    <caption>Reservations</caption>
+
+    <tr>
+        <th>Car</th>
+        <th>Customer</th>
+        <th>carDealer</th>
         <th>pickUpLocation</th>
         <th>returnLocation</th>
         <th>pickUpDate</th>
         <th>returnDate</th>
         <th>paymentStatus</th>
     </tr>
+    {% for r in reservation_list %}
     <tr>
-        {% for reservation in reservation_list %}
-        <td>reservation.carID</td>
-        <td>reservation.CustomerID</td>
-        <td>reservation.carDealerID</td>
-        <td>reservation.pickUpLocation</td>
-        <td>reservation.returnLocation</td>
-        <td>reservation.pickUpDate</td>
-        <td>reservation.returnDate</td>
-        <td>reservation.paymentStatus</td>
-        {% endfor %}
+        <td>{{ r.car.carName }}</td>
+        <td>{{r.customer.user.username }}</td>
+        <td>{{r.carDealer.user.username }}</td>
+        <td>{{r.pickUpLocation }}</td>
+        <td>{{ r.returnLocation }}</td>
+        <td>{{ r.pickUpDate }}</td>
+        <td>{{ r.returnDate }}</td>
+        <td>{{ r.paymentStatus }}</td>
     </tr>
+    {% endfor %}
+
 </table>
 
 {% endblock %}
