@@ -92,7 +92,7 @@ class Car(models.Model):
     model = models.CharField(max_length=100)
     airconditioner = models.BooleanField()
     price = models.IntegerField()
-    branchId = models.ForeignKey(Branch, null=True, on_delete=models.SET_NULL)
+    branch = models.ForeignKey(Branch, null=True, on_delete=models.SET_NULL)
     stock = models.IntegerField(default=0)
 
     NUM_OF_SEATS_CHOICE = [
@@ -154,6 +154,7 @@ class Car(models.Model):
     @classmethod
     def search_for_car(cls, busy_cars, branch_id):
         return cls.objects.filter(branchId=branch_id).exclude(busy_cars)
+
 
 
 class PrivateMsg(models.Model):
