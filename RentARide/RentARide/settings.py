@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'RAR.apps.RarConfig',
     'crispy_forms',
     'account.apps.AccountConfig',
+    'django_filters',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

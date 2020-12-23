@@ -4,23 +4,26 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.generic import ListView
 
-
+from .filters import CarFilter
 from .models import Car, Reservation, PrivateMsg, CarDealer
-from .forms import CarForm, ReservationForm, MessageForm
+from .forms import CarForm, ReservationForm, MessageForm, CarSearchForm
 
 
 def index(request):
     context = {
-        "title" : "RentACar"
+        "title": "RentACar"
     }
-    return render (request, 'indexx.html', context)
+    return render(request, 'indexx.html', context)
+
 
 def base(request):
     context = {
-        "title" : "RentACar"
+        "title": "RentACar"
     }
-    return render (request, 'home.html', context)
+    return render(request, 'home.html', context)
+
 
 def home(request):
     context = {
@@ -38,7 +41,7 @@ def car_list_old(request):
             Q(carName__icontains=query) |
             Q(model__icontains=query) |
             Q(numOfSeats__icontains=query) |
-            Q(numOfDoors__icontains=query)|
+            Q(numOfDoors__icontains=query) |
             Q(transmission=query) |
             Q(airconditioner__icontains=query) |
             Q(price__icontains=query) |
@@ -68,7 +71,6 @@ def car_list(request):
     return render(request, 'car_list.html', context)
 
 
-
 def car_detail(request, id=None):
     detail = get_object_or_404(Car, id=id)
     context = {
@@ -90,6 +92,63 @@ def car_created(request):
         "title": "Create Car"
     }
     return render(request, 'car_create.html', context)
+
+
+def search(request):
+    car_list = Car.objects.all()
+    car_filter = CarFilter(request.GET, queryset = car_list)
+    return render (request, 'search.html', {'filter': car_filter , 'car_list':car_list})
+
+
+def search_results(request):
+    car_list = Car.objects.all()
+    car_filter = CarFilter(request.GET, queryset = car_list)
+    return render (request, 'search_results.html', {'filter': car_filter, 'car_list':car_list})
+
+# def search_results_try2(request):
+#     cars = Car.objects.all()
+#     form = CarSearchForm(request.GET)
+#     if form.is_valid():
+#         if form.cleaned_data["q"]:
+#             cars = cars.filter(carName__icontains=form.cleaned_data["q"])
+#         elif form.cleaned_data["model"]:
+#             cars = cars.filter(model=form.cleaned_data["model"])
+#         elif form.cleaned_data["airconditioner"]:
+#             cars = cars.filter(airconditioner=form.cleaned_data["airconditioner"])
+#         elif form.cleaned_data["price"]:
+#             cars = cars.filter(price=form.cleaned_data["price"])
+#         elif form.cleaned_data["numOfSeats"]:
+#             cars = cars.filter(numOfSeats=form.cleaned_data["numOfSeats"])
+#         elif form.cleaned_data["numOfDoors"]:
+#             cars = cars.filter(numOfDoors=form.cleaned_data["numOfDoors"])
+#         elif form.cleaned_data["transmission"]:
+#             cars = cars.filter(transmission=form.cleaned_data["transmission"])
+#         elif form.cleaned_data["branch"]:
+#             cars = cars.filter(branch=form.cleaned_data["branch"])
+#
+#     return render(request, "search.html",
+#                   {"form": form, "car_list": cars})
+#
+#
+# @login_required
+# def search_results_try(request):
+#     car = Car.objects.all()
+#     template_name = 'search_results.html'
+#
+#     query = request.GET.get('q')
+#     if query:
+#         car = car.filter(
+#             Q(carName__icontains=query) |
+#             Q(model__icontains=query) |
+#             Q(airconditioner__icontains=query) |
+#             Q(price__icontains=query) |
+#             Q(branch__icontains=query) |
+#             Q(stok__icontains=True)
+#         )
+#     context = {
+#         'car': car,
+#     }
+#     return render(request, template_name, context)
 
 
 @login_required()
@@ -156,7 +215,6 @@ def reservation_list(request):
     return render(request, 'reservation_list.html', context)
 
 
-
 def reservation_detail(request, id=None):
     detail = get_object_or_404(Reservation, id=id)
     context = {
@@ -198,26 +256,28 @@ def reservation_delete(request, id=None):
     query.delete()
     return HttpResponseRedirect("/listReservation/")
 
+
 def view_my_reservation_cardealer(request):
     username = request.user
     user = User.objects.get(username=username)
-    carDealer = CarDealer.objects.get(user = user)
-    reservations = Reservation.objects.filter(carDealer = carDealer)
+    carDealer = CarDealer.objects.get(user=user)
+    reservations = Reservation.objects.filter(carDealer=carDealer)
     reservation_list = []
     for r in reservations:
         if r.paymentStatus == False:
             reservation_list.append(r)
-    return render(request,'my_reservations.html', {'reservation_list':reservation_list})
+    return render(request, 'my_reservations.html', {'reservation_list': reservation_list})
+
 
 def view_my_reservation_customer(request):
     username = request.user
     user = User.objects.get(username=username)
-    reservations = Reservation.objects.filter(customer = user)
+    reservations = Reservation.objects.filter(customer=user)
     reservation_list = []
     for r in reservations:
         if r.is_complete == False:
             reservation_list.append(r)
-    return render(request,'my_reservations.html', {'reservation_list':reservation_list})
+    return render(request, 'my_reservations.html', {'reservation_list': reservation_list})
 
 
 @login_required()
@@ -230,7 +290,7 @@ def newCar(request):
             Q(carName__icontains=query) |
             Q(model__icontains=query) |
             Q(numOfSeats__icontains=query) |
-            Q(numOfDoors__icontains=query)|
+            Q(numOfDoors__icontains=query) |
             Q(transmission=query) |
             Q(airconditioner__icontains=query) |
             Q(price__icontains=query) |
@@ -274,7 +334,7 @@ def popular_car(request):
             Q(carName__icontains=query) |
             Q(model__icontains=query) |
             Q(numOfSeats__icontains=query) |
-            Q(numOfDoors__icontains=query)|
+            Q(numOfDoors__icontains=query) |
             Q(transmission=query) |
             Q(airconditioner__icontains=query) |
             Q(price__icontains=query) |
@@ -322,7 +382,7 @@ def admin_car_list(request):
             Q(carName__icontains=query) |
             Q(model__icontains=query) |
             Q(numOfSeats__icontains=query) |
-            Q(numOfDoors__icontains=query)|
+            Q(numOfDoors__icontains=query) |
             Q(transmission=query) |
             Q(airconditioner__icontains=query) |
             Q(price__icontains=query) |
@@ -360,7 +420,7 @@ def msg_delete(request, id=None):
     return HttpResponseRedirect("/message/")
 
 
-#fonksiyon kontrol demom sonra üzerinde oynayacağım -buse
+# fonksiyon kontrol demom sonra üzerinde oynayacağım -buse
 def dashboard_car_list(request):
     cars = Car.view_car_list()
     car_detail = Car.view_car_detail(1)
@@ -372,11 +432,12 @@ def dashboard_car_list(request):
 
     return render(request, 'car_detail.html', context)
 
+
 def users(request):
     context = {}
-    context["dataset"] =User.objects.all()
+    context["dataset"] = User.objects.all()
 
-    return render(request,'users.html', context)
+    return render(request, 'users.html', context)
 
 
 def profile(request, pk):

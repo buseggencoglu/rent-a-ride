@@ -14,5 +14,7 @@ urlpatterns = [
     path('my_reservations/', views.view_my_reservation_cardealer, name='my_reservations'),
     path('my_reservations/', views.view_my_reservation_customer, name='my_reservations'),
     path('index/', views.index, name='index'),
+    path('search_results/', views.search_results, name='search_results'),
+    path('search/', views.search, name='search'),
 
 ]
