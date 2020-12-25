@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.generic import ListView
 
-from .filters import CarFilter
+from .filters import CarFilter, ReservationFilter
 from .models import Car, Reservation, PrivateMsg, CarDealer
 from .forms import CarForm, ReservationForm, MessageForm
 
@@ -80,30 +80,44 @@ def car_detail(request, id=None):
 
 
 @login_required
-def car_created(request):
+def create_car(request):
     form = CarForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return HttpResponseRedirect("/")
+        return redirect('/car_list')
     context = {
         "form": form,
         "title": "Create Car"
     }
-    return render(request, 'car_create.html', context)
+    return render(request, 'create_car.html', context)
 
 
 def search(request):
     car_list = Car.objects.all()
-    car_filter = CarFilter(request.GET, queryset = car_list)
-    return render (request, 'search.html', {'filter': car_filter , 'car_list':car_list})
+    car_filter = CarFilter(request.GET, queryset=car_list)
+    return render(request, 'search.html', {'filter': car_filter, 'car_list': car_list})
 
 
 def search_results(request):
     car_list = Car.objects.all()
-    car_filter = CarFilter(request.GET, queryset = car_list)
-    return render (request, 'search_results.html', {'filter': car_filter, 'car_list':car_list})
+    car_filter = CarFilter(request.GET, queryset=car_list)
+    return render(request, 'search_results.html', {'filter': car_filter, 'car_list': car_list})
+
+
+# def search_reservation(request):
+#     reservation_list = Reservation.objects.all()
+#     reservation_filter = ReservationFilter(request.GET, queryset=reservation_list)
+#     return render(request, 'search.html', {'filter': reservation_filter, 'reservation_list': reservation_list})
+#
+#
+# def search_reservation_results(request):
+#     reservation_list = Reservation.objects.all()
+#     reservation_filter = ReservationFilter(request.GET, queryset=reservation_list)
+#     return render(request, 'search_results.html', {'filter': reservation_filter, 'reservation_list': reservation_list})
+
+
 
 # def search_results_try2(request):
 #     cars = Car.objects.all()
@@ -163,7 +177,7 @@ def car_update(request, id=None):
         "form": form,
         "title": "Update Car"
     }
-    return render(request, 'car_create.html', context)
+    return render(request, 'create_car.html', context)
 
 
 @login_required()

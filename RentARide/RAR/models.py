@@ -7,8 +7,8 @@ from django.contrib import auth
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-# Create your models here.
 
+# Create your models here.
 
 
 class Branch(models.Model):
@@ -17,7 +17,6 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.branch_name
-
 
 
 # -----------------CustomUser Section-----------------#
@@ -46,8 +45,6 @@ class Branch(models.Model):
 #         return cls.objects.values('id', 'username', 'lastname')
 
 
-
-
 # -----------------Admin Section-----------------#
 
 class Admin(models.Model):
@@ -58,25 +55,23 @@ class Admin(models.Model):
         return self.user.username
 
 
-
-
 # -----------------CarDealer Section-----------------#
 
 class CarDealer(models.Model):
-    user = models.OneToOneField(User,on_delete= models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     branchId = models.ForeignKey(Branch, null=True, on_delete=models.CASCADE)
     rate = models.IntegerField(null=True)
 
     def __str__(self):
         return self.user.username
 
-#-----------------Customer Section------------------#
+
+# -----------------Customer Section------------------#
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.IntegerField(null=True)
     licenseId = models.CharField(max_length=20, null=True)
-
 
 
 def uploaded_location(instance, filename):
@@ -156,7 +151,6 @@ class Car(models.Model):
         return cls.objects.filter(branchId=branch_id).exclude(busy_cars)
 
 
-
 class PrivateMsg(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
@@ -173,7 +167,7 @@ class Reservation(models.Model):
     returnLocation = models.TextField()
     pickUpDate = models.DateTimeField()
     returnDate = models.DateTimeField()
-    paymentStatus = models.BooleanField(default=False)  #default false konulmalı
+    paymentStatus = models.BooleanField(default=False)  # default false konulmalı
 
     def get_absolute_url(self):
         return "/car/detail/%s/" % (self.pk)
@@ -190,11 +184,8 @@ class Reservation(models.Model):
         return cls.objects.filter(pickUpDate__gte=pickup_date, returnDate__lte=return_date).values('carID__id')
 
 
-
 class CarDealerCustomerSystem():
     pass
-
-
 
 # class Profile(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE)
