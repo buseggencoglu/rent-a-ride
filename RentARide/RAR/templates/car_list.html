@@ -21,7 +21,7 @@ padding: 10px;
 
 {% block content %}
 <table id="t01">
-    <caption>Car List </caption>
+    <caption>Car List</caption>
     <tr>
         <th>Image</th>
         <th>Car Name</th>
@@ -34,6 +34,9 @@ padding: 10px;
         <th>Number of Doors</th>
         <th>Transmission</th>
         <th>Status</th>
+        <th>
+            <a href="{% url 'create_car' %}">Create</a>
+        </th>
     </tr>
     {% for data in dataset %}
     <tr>
@@ -48,6 +51,13 @@ padding: 10px;
         <td>{{data.numOfDoors}}</td>
         <td>{{data.transmission}}</td>
         <td>{{data.carStatus}}</td>
+        <td>
+            <a href="{% url 'car_update' pk=data.id %}">Update</a>
+        </td>
+        <td>
+            <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
+        </td>
+
     </tr>
     {% endfor %}
 </table>

@@ -9,8 +9,8 @@ Admin
 -ApproveRequest
 -ViewCarDetail
 -AddCar (Ayşe: bitti, permissionlar kaldı.)
--DeleteCar
--UpdateCar
+-DeleteCar (Ayşe : bitti, permissionlar kaldı.)
+-UpdateCar (Ayşe : bitti, permissionlar kaldı.)
 -MakeReservation
 -ViewMyReservations
 -ViewAllReservations  (Ayşe:bitti sadece permission kaldı.)
@@ -51,5 +51,5 @@ CarDealer
 -UpdateReservations
 -DeleteReservations
 -AddCar (Ayşe: bitti, permissionlar kaldı.)
--DeleteCar
--UpdateCar
+-DeleteCar (Ayşe : bitti, permissionlar kaldı.)
+-UpdateCar (Ayşe : bitti, permissionlar kaldı.)

@@ -118,7 +118,6 @@ def search_results(request):
 #     return render(request, 'search_results.html', {'filter': reservation_filter, 'reservation_list': reservation_list})
 
 
-
 # def search_results_try2(request):
 #     cars = Car.objects.all()
 #     form = CarSearchForm(request.GET)
@@ -166,30 +165,30 @@ def search_results(request):
 
 
 @login_required()
-def car_update(request, id=None):
-    detail = get_object_or_404(Car, id=id)
+def car_update(request, pk):
+    detail = get_object_or_404(Car, pk=pk)
     form = CarForm(request.POST or None, instance=detail)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return HttpResponseRedirect(instance.get_absolute_url())
+        return redirect ('/car_list')
     context = {
         "form": form,
         "title": "Update Car"
     }
-    return render(request, 'create_car.html', context)
+    return render(request, 'car_update.html', context)
 
 
 @login_required()
-def car_delete(request, id=None):
-    query = get_object_or_404(Car, id=id)
+def car_delete(request, pk):
+    query = get_object_or_404(Car, pk=pk)
     query.delete()
 
     car = Car.objects.all()
     context = {
         'car': car,
     }
-    return render(request, 'admin_index.html', context)
+    return render(request, 'car_deleted.html', context)
 
 
 # reservation

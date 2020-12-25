@@ -1,2 +1,3 @@
 pip install django-filter
 pip install django-crispy-forms
+python -m pip install Pillow

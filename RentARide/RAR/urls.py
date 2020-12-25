@@ -17,5 +17,7 @@ urlpatterns = [
     path('search_results/', views.search_results, name='search_results'),
     path('search/', views.search, name='search'),
     path('create_car/', views.create_car, name='create_car'),
+    path('car_delete/<int:pk>', views.car_delete, name='car_delete'),
+    path('car_update/<int:pk>', views.car_update, name='car_update'),
 
 ]
