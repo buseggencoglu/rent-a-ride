@@ -1,46 +1,4 @@
-<!DOCTYPE html>
 {% load static %}
-
-<html>
-<head>
-    <!-- Basic -->
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <!-- Site Metas -->
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-
-    {% block title %}
-    <title>{{title}}</title>
-    {% endblock %}
-
-    <!-- slider stylesheet -->
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
-
-    <!-- fonts style -->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet"/>
-
-    <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
-    <!-- responsive style -->
-    <link href="{% static 'css/responsive.css' %}" rel="stylesheet"/>
-    <style>
-    {%block style%}
-    {%endblock%}
-
-
-
-    </style>
-</head>
-
-<body>
 
 <div class="hero_area">
     <!-- header section strats -->
@@ -112,32 +70,3 @@
 
     <!-- end slider section -->
 </div>
-{%block content%}
-
-{% endblock %}
-
-<!-- footer section -->
-<section class=" footer_section">
-    <div class="container">
-        <p>
-            &copy; <span id="displayYear"></span> All Rights Reserved By
-            <a href="https://html.design/">Free Html Templates</a>
-        </p>
-    </div>
-</section>
-<!-- footer section -->
-
-</section>
-
-<!-- end info section -->
-
-
-<script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
-</script>
-<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
-
-</body>
-
-</html>
