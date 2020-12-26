@@ -296,7 +296,6 @@ def view_my_reservation_customer(request):
 @login_required()
 def newCar(request):
     new = Car.objects.order_by('-id')
-    # search
     query = request.GET.get('q')
     if query:
         new = new.filter(
@@ -310,16 +309,13 @@ def newCar(request):
             Q(carStatus__icontains=query)
         )
 
-    # pagination
-    paginator = Paginator(new, 12)  # Show 15 contacts per page
+    paginator = Paginator(new, 12)  
     page = request.GET.get('page')
     try:
         new = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
         new = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
         new = paginator.page(paginator.num_pages)
     context = {
         'car': new,
@@ -340,7 +336,7 @@ def like_update(request, id=None):
 
 def popular_car(request):
     new = Car.objects.order_by('-like')
-    # search
+    
     query = request.GET.get('q')
     if query:
         new = new.filter(
@@ -354,16 +350,13 @@ def popular_car(request):
             Q(carStatus__icontains=query)
         )
 
-    # pagination
     paginator = Paginator(new, 12)  # Show 15 contacts per page
     page = request.GET.get('page')
     try:
         new = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
         new = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
         new = paginator.page(paginator.num_pages)
     context = {
         'car': new,
