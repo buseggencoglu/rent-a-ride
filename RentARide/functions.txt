@@ -1,16 +1,16 @@
 Admin
 -Login (Ayşe:Done)
 -Logout (Ayşe:Done -check)
--SearchForCar
+-SearchForCar (Ayşe:Done)
 -RentCar
--ViewCarList
+-ViewCarList (Ayşe:Done)
 -ViewSellingList
 -ViewUsersHistory
 -ApproveRequest
 -ViewCarDetail
--AddCar
--DeleteCar
--UpdateCar
+-AddCar (Ayşe: bitti, permissionlar kaldı.)
+-DeleteCar (Ayşe : bitti, permissionlar kaldı.)
+-UpdateCar (Ayşe : bitti, permissionlar kaldı.)
 -MakeReservation
 -ViewMyReservations
 -ViewAllReservations  (Ayşe:bitti sadece permission kaldı.)
@@ -19,26 +19,26 @@ Admin
 
 
 Customer
--Login
--Logout
--SearchForCar
+-Login(Ayşe: Done)
+-Logout(Ayşe: Done)
+-SearchForCar(Ayşe: Done)
 -RentCar
 -ViewCarDetail
--ViewMyReservations
+-ViewMyReservations (Ayşe: Done, tekrar bakılması gerek)
 -MakeReservations
 -UpdateReservations
 -DeleteReservations
 -ViewMyProfile
 -EditMyProfile
 -DeleteMyProfile
--ChangePassword
--ResetPassword
+-ChangePassword (Ayşe: Kodu var fakat profile ön yüzüne eklenmesi gerek)
+-ResetPassword (Ayşe: Kodu var fakat profile ön yüzüne eklenmesi gerek)
 -PayForCar
 
 CarDealer
--Login
--Logout
--SearchForCar
+-Login (Ayşe: Done)
+-Logout (Ayşe: Done)
+-SearchForCar (Ayşe: Done)
 -RentCar
 -ViewBranchCarList
 -ViewReceiversFromBranch
@@ -50,6 +50,6 @@ CarDealer
 -ViewMyReservations
 -UpdateReservations
 -DeleteReservations
--AddCar
--DeleteCar
--UpdateCar
+-AddCar (Ayşe: bitti, permissionlar kaldı.)
+-DeleteCar (Ayşe : bitti, permissionlar kaldı.)
+-UpdateCar (Ayşe : bitti, permissionlar kaldı.)

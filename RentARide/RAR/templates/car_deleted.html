@@ -1,0 +1,12 @@
+{% extends 'car_list.html' %}
+{% load static %}
+
+{% block title %}
+<title>Car Deleted</title>
+{% endblock %}
+
+{%block content %}
+<div style="padding-top: 150px;padding-left: 50px;">
+    <h3>You have deleted car. If you want to see the <a href="{% url 'car_list' %}">car list</a></h3>
+</div>
+{% endblock %}

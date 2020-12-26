@@ -15,6 +15,7 @@ class CarForm(forms.ModelForm):
             "airconditioner",
             "price",
             "carStatus",
+            "branch",
         ]
 
 

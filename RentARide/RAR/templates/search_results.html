@@ -41,7 +41,7 @@ padding: 10px;
         <th>Transmission</th>
         <th>Airconditioner</th>
         <th>Price</th>
-        <th>Branch</th>
+        <th>PickUpLocation</th>
     </tr>
     {% for car in filter.qs %}
     <tr>
@@ -51,9 +51,21 @@ padding: 10px;
         <td>{{ car.transmission }}</td>
         <td>{{ car.airconditioner }}</td>
         <td>{{ car.price }}</td>
-        <td>{{ car.branch.branch_name }}</td>
+        <td>{{ car.branch.branch_location }}</td>
     </tr>
     {% endfor %}
+    <!--
+    {% for res in filter.qs %}
+    <tr>
+        <td>{{ res.pickUpLocation }}</td>
+        <td>{{ res.returnLocation }}</td>
+        <td>{{ res.pickUpDate }}</td>
+        <td>{{ res.returnDate }}</td>
+        <td>{{ res.car.carName }}</td>
+
+
+    </tr>
+    {% endfor %}-->
 
 </table>
 
