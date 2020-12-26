@@ -157,7 +157,7 @@ class PrivateMsg(models.Model):
     message = models.TextField()
 
 
-# natika was here .d
+
 
 class Reservation(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
@@ -172,7 +172,6 @@ class Reservation(models.Model):
     def get_absolute_url(self):
         return "/car/detail/%s/" % (self.pk)
 
-    # carID__model yerine carID olması gerekmiyor mu
     @classmethod
     def view_users_history(cls, customerID):
         return cls.objects.filter(customerID=customerID).values('carID__model', 'pickUpDate', 'returnDate',

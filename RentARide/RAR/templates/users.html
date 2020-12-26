@@ -5,10 +5,10 @@
 <title>Users</title>
 {% endblock %}
 {% block content %}
-<div class="main">
+<div class="main" style="text-align: center">
     {% for data in dataset %}
+    {{ data.id }}-
     {{ data.username }}<br/>
-    {{ data.id }}<br/>
     <hr/>
     {% endfor %}
 </div>
