@@ -1,0 +1,35 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %}
+<title>Reservations</title>
+{% endblock %}
+
+{% block content %}
+<table id="t01">
+    <caption>Reservations</caption>
+    <tr>
+        <th>Car</th>
+        <th>Customer</th>
+        <th>carDealer</th>
+        <th>pickUpLocation</th>
+        <th>returnLocation</th>
+        <th>pickUpDate</th>
+        <th>returnDate</th>
+        <th>paymentStatus</th>
+    </tr>
+    {% for data in dataset %}
+    <tr>
+        <td>{{data.car.carName}}</td>
+        <td>{{data.customer.user.username}}</td>
+        <td>{{data.carDealer.user.username}}</td>
+        <td>{{data.pickUpLocation}}</td>
+        <td>{{data.returnLocation}}</td>
+        <td>{{data.pickUpDate}}</td>
+        <td>{{data.returnDate}}</td>
+        <td>{{data.paymentStatus}}s</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

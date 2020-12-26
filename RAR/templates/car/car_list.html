@@ -1,0 +1,51 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %}
+<title>Car List</title>
+{% endblock %}
+
+{% block content %}
+<table id="t01">
+    <caption>Car List</caption>
+    <tr>
+        <th>Image</th>
+        <th>Car Name</th>
+        <th>Model</th>
+        <th>AirConditioner</th>
+        <th>Price</th>
+        <th>Branch Name</th>
+        <th>Stock</th>
+        <th>Number of Seats</th>
+        <th>Number of Doors</th>
+        <th>Transmission</th>
+        <th>Status</th>
+        <th>
+            <a href="{% url 'create_car' %}">Create</a>
+        </th>
+    </tr>
+    {% for data in dataset %}
+    <tr>
+        <td>{{data.image}}</td>
+        <td>{{data.carName}}</td>
+        <td>{{data.model}}</td>
+        <td>{{data.airconditioner}}</td>
+        <td>{{data.price}}</td>
+        <td>{{data.branch.branch_name}}</td>
+        <td>{{data.stock}}</td>
+        <td>{{data.numOfSeats}}</td>
+        <td>{{data.numOfDoors}}</td>
+        <td>{{data.transmission}}</td>
+        <td>{{data.carStatus}}</td>
+        <td>
+            <a href="{% url 'car_update' pk=data.id %}">Update</a>
+        </td>
+        <td>
+            <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

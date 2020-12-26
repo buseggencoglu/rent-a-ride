@@ -1,0 +1,10 @@
+{% include 'layout/main.html' %}
+{% load static %}
+
+{% block content %}
+    {% for car in cars %}
+        {{ car }}
+    {% endfor %}
+    <hr>
+    {{ car_details }}
+{% endblock %}

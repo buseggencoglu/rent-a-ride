@@ -11,20 +11,6 @@ from .models import Car, Reservation, PrivateMsg, CarDealer
 from .forms import CarForm, ReservationForm, MessageForm
 
 
-def index(request):
-    context = {
-        "title": "RentACar"
-    }
-    return render(request, 'indexx.html', context)
-
-
-def base(request):
-    context = {
-        "title": "RentACar"
-    }
-    return render(request, 'home.html', context)
-
-
 def home(request):
     context = {
         "title": "RentACar"
@@ -62,13 +48,13 @@ def car_list_old(request):
     context = {
         'car': car,
     }
-    return render(request, 'car_list.html', context)
+    return render(request, 'car/car_list.html', context)
 
 
 def car_list(request):
     context = {}
     context["dataset"] = Car.objects.all()
-    return render(request, 'car_list.html', context)
+    return render(request, 'car/car_list.html', context)
 
 
 def car_detail(request, id=None):
@@ -76,7 +62,7 @@ def car_detail(request, id=None):
     context = {
         "detail": detail
     }
-    return render(request, 'car_detail.html', context)
+    return render(request, 'car/car_detail.html', context)
 
 
 @login_required
@@ -91,19 +77,19 @@ def create_car(request):
         "form": form,
         "title": "Create Car"
     }
-    return render(request, 'create_car.html', context)
+    return render(request, 'car/create_car.html', context)
 
 
 def search(request):
     car_list = Car.objects.all()
     car_filter = CarFilter(request.GET, queryset=car_list)
-    return render(request, 'search.html', {'filter': car_filter, 'car_list': car_list})
+    return render(request, 'car/search.html', {'filter': car_filter, 'car_list': car_list})
 
 
 def search_results(request):
     car_list = Car.objects.all()
     car_filter = CarFilter(request.GET, queryset=car_list)
-    return render(request, 'search_results.html', {'filter': car_filter, 'car_list': car_list})
+    return render(request, 'car/search_results.html', {'filter': car_filter, 'car_list': car_list})
 
 
 # def search_reservation(request):
@@ -176,7 +162,7 @@ def car_update(request, pk):
         "form": form,
         "title": "Update Car"
     }
-    return render(request, 'car_update.html', context)
+    return render(request, 'car/car_update.html', context)
 
 
 @login_required()
@@ -188,7 +174,7 @@ def car_delete(request, pk):
     context = {
         'car': car,
     }
-    return render(request, 'car_deleted.html', context)
+    return render(request, 'car/car_deleted.html', context)
 
 
 # reservation
@@ -219,13 +205,13 @@ def reservation_list_old(request):
     context = {
         'reservation': reservation,
     }
-    return render(request, 'reservation_list.html', context)
+    return render(request, 'reservation/reservation_list.html', context)
 
 
 def reservation_list(request):
     context = {}
     context["dataset"] = Reservation.objects.all()
-    return render(request, 'reservation_list.html', context)
+    return render(request, 'reservation/reservation_list.html', context)
 
 
 def reservation_detail(request, id=None):
@@ -233,7 +219,7 @@ def reservation_detail(request, id=None):
     context = {
         "detail": detail,
     }
-    return render(request, 'reservation_detail.html', context)
+    return render(request, 'reservation/reservation_detail.html', context)
 
 
 def reservation_created(request):
@@ -247,7 +233,7 @@ def reservation_created(request):
         "form": form,
         "title": "Create Reservation"
     }
-    return render(request, 'reservation_create.html', context)
+    return render(request, 'reservation/reservation_create.html', context)
 
 
 def reservation_update(request, id=None):
@@ -261,7 +247,7 @@ def reservation_update(request, id=None):
         "form": form,
         "title": "Update Reservation"
     }
-    return render(request, 'reservation_create.html', context)
+    return render(request, 'reservation/reservation_create.html', context)
 
 
 def reservation_delete(request, id=None):
@@ -279,7 +265,7 @@ def view_my_reservation_cardealer(request):
     for r in reservations:
         if r.paymentStatus == False:
             reservation_list.append(r)
-    return render(request, 'my_reservations.html', {'reservation_list': reservation_list})
+    return render(request, 'reservation/my_reservations.html', {'reservation_list': reservation_list})
 
 
 def view_my_reservation_customer(request):
@@ -290,7 +276,7 @@ def view_my_reservation_customer(request):
     for r in reservations:
         if r.is_complete == False:
             reservation_list.append(r)
-    return render(request, 'my_reservations.html', {'reservation_list': reservation_list})
+    return render(request, 'reservation/my_reservations.html', {'reservation_list': reservation_list})
 
 
 @login_required()
@@ -374,7 +360,7 @@ def contact(request):
         "form": form,
         "title": "Contact With Us",
     }
-    return render(request, 'contact.html', context)
+    return render(request, 'admin/contact.html', context)
 
 
 # -----------------Admin Section-----------------
@@ -409,7 +395,7 @@ def admin_car_list(request):
     context = {
         'car': car,
     }
-    return render(request, 'admin_index.html', context)
+    return render(request, 'admin/admin_dashboard.html', context)
 
 
 def admin_msg(request):
@@ -417,7 +403,7 @@ def admin_msg(request):
     context = {
         "car": msg,
     }
-    return render(request, 'admin_msg.html', context)
+    return render(request, 'admin/admin_msg.html', context)
 
 
 def msg_delete(request, id=None):
@@ -436,14 +422,14 @@ def dashboard_car_list(request):
         "cars": cars
     }
 
-    return render(request, 'car_detail.html', context)
+    return render(request, 'car/car_detail.html', context)
 
 
 def users(request):
     context = {}
     context["dataset"] = User.objects.all()
 
-    return render(request, 'users.html', context)
+    return render(request, 'admin/users.html', context)
 
 
 def profile(request, pk):
