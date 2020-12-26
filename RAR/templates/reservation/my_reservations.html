@@ -1,0 +1,38 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %}
+<title>MyReservations</title>
+{% endblock %}
+
+
+{% block content %}
+<table>
+    <caption>Reservations</caption>
+
+    <tr>
+        <th>Car</th>
+        <th>Customer</th>
+        <th>carDealer</th>
+        <th>pickUpLocation</th>
+        <th>returnLocation</th>
+        <th>pickUpDate</th>
+        <th>returnDate</th>
+        <th>paymentStatus</th>
+    </tr>
+    {% for r in reservation_list %}
+    <tr>
+        <td>{{ r.car.carName }}</td>
+        <td>{{r.customer.user.username }}</td>
+        <td>{{r.carDealer.user.username }}</td>
+        <td>{{r.pickUpLocation }}</td>
+        <td>{{ r.returnLocation }}</td>
+        <td>{{ r.pickUpDate }}</td>
+        <td>{{ r.returnDate }}</td>
+        <td>{{ r.paymentStatus }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
