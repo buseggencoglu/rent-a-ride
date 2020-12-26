@@ -8,7 +8,7 @@ from django.views.generic import ListView
 
 from .filters import CarFilter
 from .models import Car, Reservation, PrivateMsg, CarDealer
-from .forms import CarForm, ReservationForm, MessageForm, CarSearchForm
+from .forms import CarForm, ReservationForm, MessageForm
 
 
 def index(request):
