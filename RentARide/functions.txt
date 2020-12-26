@@ -3,7 +3,7 @@ Admin
 -Logout (Ayşe:Done -check)
 -SearchForCar (Ayşe:Done)
 -RentCar
--ViewCarList (Ayşe:Done)..
+-ViewCarList (Ayşe:Done).
 -ViewSellingList
 -ViewUsersHistory
 -ApproveRequest
