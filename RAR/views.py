@@ -1,21 +1,85 @@
+from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
-from .models import Car, Reservation, PrivateMsg, CarDealer
-from .forms import CarForm, ReservationForm, MessageForm
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer
+from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm
 
 
 def home(request):
     context = {
-        "title": "RentACar"
+        "title": "RentACar",
+        "locations": Branch.objects.all().values('branch_name')
     }
     return render(request, 'home.html', context)
+
+
+def available_cars(request):
+    data = ReservationSearchForm(request.POST).data
+    busy_cars = Reservation.busy_cars(data['pickUpDate'], data['returnDate'])
+    branch_name = Branch.get_by_branch_name(data['pickUpLocation'])
+    cars = Car.search_for_car(busy_cars, branch_name[0])
+
+    if len(cars) == 0:
+        return HttpResponseRedirect('No available cars')
+
+    context = {
+        "title": "RentACar",
+        'cars': cars,
+        'pickUpDate': data['pickUpDate'],
+        'returnDate': data['returnDate'],
+        'pickUpLocation': data['pickUpLocation'],
+        'returnLocation': data['returnLocation']
+    }
+    return render(request, 'car/available_cars.html', context)
+
+
+@login_required()
+def create_reservation(request, car_id, pickUpLocation, returnLocation, pickUpDate, returnDate):
+    car = Car.objects.get(id=car_id)
+    form = ReservationForm(initial={
+        'car': car,
+        'customer': request.user,
+        'pickUpLocation': pickUpLocation,
+        'returnLocation': returnLocation,
+        'pickUpDate': pickUpDate,
+        'returnDate': returnDate
+    })
+
+    context = {
+        "title": "RentACar",
+        "reservation_form": form,
+        "car_detail": car
+    }
+
+    return render(request, 'reservation/reservation_order.html', context)
+
+
+@login_required()
+def complete_reservation(request):
+    posted_data = request.GET
+    form = ReservationForm(posted_data)
+    status = False
+    if form.is_valid():
+        reservation = form.save(commit=False)
+        reservation.paymentStatus = True
+        reservation.customer = request.user
+        reservation.save()
+        status = True
+
+    context = {
+        "title": "RentACar",
+        "status": status
+    }
+
+    return render(request, 'reservation/reservation_approve.html', context)
 
 
 def car_list_old(request):
@@ -72,7 +136,7 @@ def create_car(request):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return redirect('/car_list')
+        return redirect('/cars')
     context = {
         "form": form,
         "title": "Create Car"
@@ -157,7 +221,7 @@ def car_update(request, pk):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return redirect ('/car_list')
+        return redirect('/car/list')
     context = {
         "form": form,
         "title": "Update Car"
@@ -223,7 +287,7 @@ def reservation_detail(request, id=None):
 
 
 def reservation_created(request):
-    form = ReservationForm(request.POST or None)
+    form = ReservationSearchForm(request.POST or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -238,7 +302,7 @@ def reservation_created(request):
 
 def reservation_update(request, id=None):
     detail = get_object_or_404(Reservation, id=id)
-    form = ReservationForm(request.POST or None, instance=detail)
+    form = ReservationSearchForm(request.POST or None, instance=detail)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -295,7 +359,7 @@ def newCar(request):
             Q(carStatus__icontains=query)
         )
 
-    paginator = Paginator(new, 12)  
+    paginator = Paginator(new, 12)
     page = request.GET.get('page')
     try:
         new = paginator.page(page)
@@ -322,7 +386,7 @@ def like_update(request, id=None):
 
 def popular_car(request):
     new = Car.objects.order_by('-like')
-    
+
     query = request.GET.get('q')
     if query:
         new = new.filter(

@@ -1,3 +1,5 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, Div, Field
 from django import forms
 from .models import Car, Reservation, PrivateMsg
 
@@ -19,7 +21,7 @@ class CarForm(forms.ModelForm):
         ]
 
 
-class ReservationForm(forms.ModelForm):
+class ReservationSearchForm(forms.ModelForm):
     class Meta:
         model = Reservation
         fields = [
@@ -28,6 +30,20 @@ class ReservationForm(forms.ModelForm):
             "pickUpDate",
             "returnDate",
         ]
+
+
+class ReservationForm(forms.ModelForm):
+
+    class Meta:
+        model = Reservation
+        fields = [
+            'car',
+            'pickUpLocation',
+            'returnLocation',
+            'pickUpDate',
+            'returnDate',
+        ]
+
 
 
 class MessageForm(forms.ModelForm):

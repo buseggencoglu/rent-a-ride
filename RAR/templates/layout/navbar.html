@@ -3,8 +3,8 @@
 <header class="header_section">
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
-            <a class="navbar-brand" href="index.html">
-                <img src="{% static 'images/logo.png' %}" alt=""/>
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'images/rentaridelogo.png' %}" alt="">
             </a>
             {% if user.is_authenticated %}
                 <p>Welcome! <a href="{% url 'profile' pk=user.id %}">{{ user.username }}</a></p>
@@ -31,7 +31,7 @@
                         </li>
                         {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'my_reservations' %}">
+                                <a class="nav-link" href="/my_reservations">
                                     Reservations
                                 </a>
                             </li>
