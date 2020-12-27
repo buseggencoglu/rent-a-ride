@@ -6,9 +6,8 @@
 {% endblock %}
 
 {% block content %}
-<table id="t01">
-    <caption>Car List</caption>
-    <tr>
+<table class="table mb-3 table-hover table-striped">
+    <thead>
         <th>Image</th>
         <th>Car Name</th>
         <th>Model</th>
@@ -20,10 +19,10 @@
         <th>Number of Doors</th>
         <th>Transmission</th>
         <th>Status</th>
-        <th>
+        <th class="text-center" colspan="2">
             <a href="{% url 'create_car' %}">Create</a>
         </th>
-    </tr>
+    </thead>
     {% for data in dataset %}
     <tr>
         <td>{{data.image}}</td>

@@ -1,0 +1,55 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Car List</title>
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-column">
+        <div class="d-flex flex-row">
+            <span>{{ pickUpLocation }} - {{ returnLocation }}</span> ---
+            <span>{{ pickUpDate }} - {{ returnDate }}</span>
+        </div>
+        <table class="table mb-3 table-hover table-striped">
+            <thead>
+            <th>Image</th>
+            <th>Car Name</th>
+            <th>Model</th>
+            <th>AirConditioner</th>
+            <th>Price</th>
+            <th>Branch Name</th>
+            <th>Stock</th>
+            <th>Number of Seats</th>
+            <th>Number of Doors</th>
+            <th>Transmission</th>
+            <th>Status</th>
+            <th></th>
+            </thead>
+            {% for data in cars %}
+                <form action="/reservations/{{ data.id }}/{{ pickUpLocation }}/{{ returnLocation }}/{{ pickUpDate }}/{{ returnDate }}"
+                      type="post">
+                    <tr>
+                        <td>{{ data.image }}</td>
+                        <td>{{ data.carName }}</td>
+                        <td>{{ data.model }}</td>
+                        <td>{{ data.airconditioner }}</td>
+                        <td>{{ data.price }}</td>
+                        <td>{{ data.branch.branch_name }}</td>
+                        <td>{{ data.stock }}</td>
+                        <td>{{ data.numOfSeats }}</td>
+                        <td>{{ data.numOfDoors }}</td>
+                        <td>{{ data.transmission }}</td>
+                        <td>{{ data.carStatus }}</td>
+                        <td>
+                            <button type="submit" class="btn btn-secondary">
+                                Reserve
+                            </button>
+                        </td>
+                    </tr>
+                </form>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

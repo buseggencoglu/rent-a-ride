@@ -1,19 +1,14 @@
 from django.db import models
-from django.conf import settings
-from django.utils import timezone
-from django import forms
 from django.contrib.auth.models import User
-from django.contrib import auth
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
-
-# Create your models here.
 
 
 class Branch(models.Model):
     branch_name = models.CharField(max_length=100, default="")
     branch_location = models.TextField()
+
+    @classmethod
+    def get_by_branch_name(cls, branch_name):
+        return cls.objects.filter(branch_name__contains=branch_name)
 
     def __str__(self):
         return self.branch_name
@@ -49,7 +44,6 @@ class Branch(models.Model):
 
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    pass
 
     def __str__(self):
         return self.user.username
@@ -147,8 +141,10 @@ class Car(models.Model):
         return cls.objects.get(id=car_id)
 
     @classmethod
-    def search_for_car(cls, busy_cars, branch_id):
-        return cls.objects.filter(branchId=branch_id).exclude(busy_cars)
+    def search_for_car(cls, busy_cars, branch_name):
+        return cls.objects\
+            .filter(branch__branch_name=branch_name)
+            #.exclude(busy_cars)
 
 
 class PrivateMsg(models.Model):
@@ -157,14 +153,12 @@ class PrivateMsg(models.Model):
     message = models.TextField()
 
 
-
-
 class Reservation(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    carDealer = models.ForeignKey(CarDealer, on_delete=models.CASCADE)
-    pickUpLocation = models.TextField()
-    returnLocation = models.TextField()
+    customer = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    carDealer = models.ForeignKey(CarDealer, null=True, on_delete=models.CASCADE)
+    pickUpLocation = models.CharField(max_length=100)
+    returnLocation = models.CharField(max_length=100)
     pickUpDate = models.DateTimeField()
     returnDate = models.DateTimeField()
     paymentStatus = models.BooleanField(default=False)  # default false konulmalı
@@ -179,12 +173,13 @@ class Reservation(models.Model):
                                                                 'customerID__name', 'customerID__lastname')
 
     @classmethod
-    def used_cars(cls, pickup_date, return_date):
-        return cls.objects.filter(pickUpDate__gte=pickup_date, returnDate__lte=return_date).values('carID__id')
+    def busy_cars(cls, pickup_date, return_date):
+        return cls.objects.filter(pickUpDate__gte=pickup_date, returnDate__lte=return_date).values('car__id')
 
 
 class CarDealerCustomerSystem():
     pass
+
 
 # class Profile(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE)
