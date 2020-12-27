@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -13,34 +15,6 @@ class Branch(models.Model):
     def __str__(self):
         return self.branch_name
 
-
-# -----------------CustomUser Section-----------------#
-
-# class User(models.Model):
-#     user = models.OneToOneField('auth.User',on_delete= models.CASCADE)
-#     #user_id = models.IntegerField()
-#     username = models.CharField(max_length=100, default='', unique=True)
-#     firstname = models.CharField(max_length=100, default='')
-#     lastname = models.CharField(max_length=100, default='')
-#     password = models.CharField(max_length=32)  # login formda pswrd input gir.
-#     email = models.EmailField()
-#
-#     REQUIRED_FIELDS = []
-#     USERNAME_FIELD = 'username'
-#     EMAIL_FIELD = 'email'
-#     is_anonymous = False
-#     is_authenticated = True
-#
-#
-#     def __str__(self):
-#         return self.user.username
-#
-#     @classmethod
-#     def view_users(cls):
-#         return cls.objects.values('id', 'username', 'lastname')
-
-
-# -----------------Admin Section-----------------#
 
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -66,6 +40,10 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.IntegerField(null=True)
     licenseId = models.CharField(max_length=20, null=True)
+
+    @classmethod
+    def get_customer_by_user(cls, user):
+        return cls.objects.filter(user=user)[0]
 
 
 def uploaded_location(instance, filename):
@@ -143,8 +121,8 @@ class Car(models.Model):
     @classmethod
     def search_for_car(cls, busy_cars, branch_name):
         return cls.objects\
-            .filter(branch__branch_name=branch_name)
-            #.exclude(busy_cars)
+            .filter(branch__branch_name=branch_name)\
+            .exclude(id__in=busy_cars)
 
 
 class PrivateMsg(models.Model):
@@ -155,7 +133,7 @@ class PrivateMsg(models.Model):
 
 class Reservation(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    customer = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
     carDealer = models.ForeignKey(CarDealer, null=True, on_delete=models.CASCADE)
     pickUpLocation = models.CharField(max_length=100)
     returnLocation = models.CharField(max_length=100)
@@ -174,7 +152,9 @@ class Reservation(models.Model):
 
     @classmethod
     def busy_cars(cls, pickup_date, return_date):
-        return cls.objects.filter(pickUpDate__gte=pickup_date, returnDate__lte=return_date).values('car__id')
+        return cls.objects.filter(pickUpDate__gte=datetime.fromisoformat(pickup_date))\
+                          .filter(returnDate__lte=datetime.fromisoformat(return_date))\
+                          .values('car__id')
 
 
 class CarDealerCustomerSystem():

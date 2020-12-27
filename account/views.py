@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
+
+from RAR.models import Customer, CarDealer
 from .tokens import account_activation_token
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import (
@@ -25,6 +27,7 @@ from .forms import RegisterForm
 def login_request(request):
     template = 'login.html'
     if request.method == 'POST':
+        print(request.POST)
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -64,29 +67,28 @@ def register(request):
                 })
 
             user = form.save()
-            user.profile.refresh_from_db()
-            user.profile.first_name = form.cleaned_data.get('first_name')
-            user.profile.last_name = form.cleaned_data.get('last_name')
-            user.profile.email = form.cleaned_data.get('email')
-            # user cant login until link confirmed
-            user.is_active = False
+            if form.cleaned_data['type'] == 'customer':
+                Customer.objects.create(user=user)
+                user.is_active = True
+            else:
+                CarDealer.objects.create(user=user)
+                user.is_active = False
             user.save()
+
             current_site = get_current_site(request)
-            subject = 'Please Activate Your Account'
-            # load a template like get_template()
-            # and calls its render() method immediately.
-            message = render_to_string('activation_request.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                # method will generate a hash value with user related data
-                'token': account_activation_token.make_token(user),
-            })
-            user.email_user(subject, message)
+            # subject = 'Please Activate Your Account'
+            # message = render_to_string('activation_request.html', {
+            #     'user': user,
+            #     'user_type': form.cleaned_data['type'],
+            #     'domain': current_site.domain,
+            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            #     'token': account_activation_token.make_token(user),
+            # })
+            # user.email_user(subject, message)
 
             # Login the user
-            login(request, user)
-
+            if form.cleaned_data['type'] == 'customer':
+                login(request, user)
             return redirect('sent')
     else:
         form = RegisterForm()
@@ -96,7 +98,7 @@ def register(request):
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
-    return redirect("home")
+    return redirect("/")
 
 
 def activation_sent_view(request):
