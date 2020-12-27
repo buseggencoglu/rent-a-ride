@@ -2,13 +2,12 @@
 {% load static %}
 
 {% block title %}
-<title>Reservations</title>
+    <title>Reservations</title>
 {% endblock %}
 
 {% block content %}
-<table id="t01">
-    <caption>Reservations</caption>
-    <tr>
+<table class="table mb-3 table-hover table-striped">
+    <thead>
         <th>Car</th>
         <th>Customer</th>
         <th>carDealer</th>
@@ -17,7 +16,7 @@
         <th>pickUpDate</th>
         <th>returnDate</th>
         <th>paymentStatus</th>
-    </tr>
+    </thead>
     {% for data in dataset %}
     <tr>
         <td>{{data.car.carName}}</td>

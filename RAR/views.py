@@ -23,12 +23,14 @@ def home(request):
 
 def available_cars(request):
     data = ReservationSearchForm(request.POST).data
+    print(data['pickUpDate'], data['returnDate'], 'asdasd')
     busy_cars = Reservation.busy_cars(data['pickUpDate'], data['returnDate'])
+    print(busy_cars, 'busy')
     branch_name = Branch.get_by_branch_name(data['pickUpLocation'])
     cars = Car.search_for_car(busy_cars, branch_name[0])
 
     if len(cars) == 0:
-        return HttpResponseRedirect('No available cars')
+        return HttpResponse('No available cars')
 
     context = {
         "title": "RentACar",
@@ -70,7 +72,7 @@ def complete_reservation(request):
     if form.is_valid():
         reservation = form.save(commit=False)
         reservation.paymentStatus = True
-        reservation.customer = request.user
+        reservation.customer = Customer.objects.filter(user=request.user)[0]
         reservation.save()
         status = True
 
@@ -335,12 +337,8 @@ def view_my_reservation_cardealer(request):
 def view_my_reservation_customer(request):
     username = request.user
     user = User.objects.get(username=username)
-    reservations = Reservation.objects.filter(customer=user)
-    reservation_list = []
-    for r in reservations:
-        if r.is_complete == False:
-            reservation_list.append(r)
-    return render(request, 'reservation/my_reservations.html', {'reservation_list': reservation_list})
+    reservations = Reservation.objects.filter(customer=Customer.get_customer_by_user(user))
+    return render(request, 'reservation/my_reservations.html', {'reservation_list': reservations})
 
 
 @login_required()
