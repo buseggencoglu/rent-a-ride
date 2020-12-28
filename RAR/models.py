@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 
 class Branch(models.Model):
@@ -151,10 +152,12 @@ class Reservation(models.Model):
                                                                 'customerID__name', 'customerID__lastname')
 
     @classmethod
-    def busy_cars(cls, pickup_date, return_date):
-        return cls.objects.filter(pickUpDate__gte=datetime.fromisoformat(pickup_date))\
-                          .filter(returnDate__lte=datetime.fromisoformat(return_date))\
+    def busy_cars(cls, start_date_date, end_date_date):
+        return cls.objects.filter(Q(pickUpDate__date__range=[start_date_date, end_date_date]) |
+                                  Q(pickUpDate__date__lte=start_date_date,
+                                    returnDate__date__gte=end_date_date))\
                           .values('car__id')
+
 
 
 class CarDealerCustomerSystem():
