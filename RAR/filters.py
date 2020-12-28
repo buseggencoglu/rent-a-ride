@@ -35,8 +35,8 @@ class ReservationFilter(django_filters.FilterSet):
         fields = {
             'pickUpLocation': ['exact'],
             'returnLocation': ['exact'],
-            'pickUpDate': ['exact', 'year__gt'],
-            'returnDate': ['exact', 'year__gt'],
+            'pickUpDate': ['exact', 'date__gte'],
+            'returnDate': ['exact', 'date__gte'],
         }
         filter_overrides = {
             models.BooleanField: {

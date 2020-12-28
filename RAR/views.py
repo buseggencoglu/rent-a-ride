@@ -1,3 +1,8 @@
+import copy
+import urllib
+from datetime import datetime
+from urllib import parse
+
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -22,9 +27,14 @@ def home(request):
 
 
 def available_cars(request):
-    data = ReservationSearchForm(request.POST).data
-    print(data['pickUpDate'], data['returnDate'], 'asdasd')
-    busy_cars = Reservation.busy_cars(data['pickUpDate'], data['returnDate'])
+    request_data = copy.deepcopy(request.POST)
+    dates = request_data['dates'].split(' - ')
+    request_data['pickUpDate'] = dates[0]
+    request_data['returnDate'] = dates[1]
+    data = ReservationSearchForm(request_data).data
+    start_date_date = datetime.strptime(data['pickUpDate'], '%m/%d/%Y').strftime("%Y-%m-%d")
+    end_date_date = datetime.strptime(data['returnDate'], '%m/%d/%Y').strftime("%Y-%m-%d")
+    busy_cars = Reservation.busy_cars(start_date_date, end_date_date)
     print(busy_cars, 'busy')
     branch_name = Branch.get_by_branch_name(data['pickUpLocation'])
     cars = Car.search_for_car(busy_cars, branch_name[0])
@@ -35,8 +45,8 @@ def available_cars(request):
     context = {
         "title": "RentACar",
         'cars': cars,
-        'pickUpDate': data['pickUpDate'],
-        'returnDate': data['returnDate'],
+        'pickUpDate': start_date_date,
+        'returnDate': end_date_date,
         'pickUpLocation': data['pickUpLocation'],
         'returnLocation': data['returnLocation']
     }
