@@ -29,6 +29,9 @@
         <td>{{ r.pickUpDate }}</td>
         <td>{{ r.returnDate }}</td>
         <td>{{ r.paymentStatus }}</td>
+        <td>
+            <a href="/reservations/delete/customer/{{ r.id }}">Delete</a>
+        </td>
     </tr>
     {% endfor %}
 

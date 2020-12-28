@@ -32,10 +32,13 @@ def available_cars(request):
     request_data['pickUpDate'] = dates[0]
     request_data['returnDate'] = dates[1]
     data = ReservationSearchForm(request_data).data
+
     start_date_date = datetime.strptime(data['pickUpDate'], '%m/%d/%Y').strftime("%Y-%m-%d")
     end_date_date = datetime.strptime(data['returnDate'], '%m/%d/%Y').strftime("%Y-%m-%d")
+
     busy_cars = Reservation.busy_cars(start_date_date, end_date_date)
     print(busy_cars, 'busy')
+
     branch_name = Branch.get_by_branch_name(data['pickUpLocation'])
     cars = Car.search_for_car(busy_cars, branch_name[0])
 
@@ -79,7 +82,7 @@ def complete_reservation(request):
     posted_data = request.GET
     form = ReservationForm(posted_data)
     status = False
-    if form.is_valid():
+    if form.is_valid() and not request.is_ajax():
         reservation = form.save(commit=False)
         reservation.paymentStatus = True
         reservation.customer = Customer.objects.filter(user=request.user)[0]
@@ -326,10 +329,10 @@ def reservation_update(request, id=None):
     return render(request, 'reservation/reservation_create.html', context)
 
 
-def reservation_delete(request, id=None):
-    query = get_object_or_404(Reservation, id=id)
+def reservation_delete(request, pk=None):
+    query = get_object_or_404(Reservation, id=pk)
     query.delete()
-    return HttpResponseRedirect("/listReservation/")
+    return HttpResponseRedirect("/reservations/customer")
 
 
 def view_my_reservation_cardealer(request):
@@ -507,3 +510,5 @@ def users(request):
 def profile(request, pk):
     profile = Profile.objects.get(user_id=pk)
     return render(request, 'profile.html', {'profile': profile})
+
+

@@ -35,8 +35,7 @@ class ReservationSearchForm(forms.ModelForm):
 class ReservationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReservationForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        self.fields['car'].widget.attrs['readonly'] = True
+        self.fields['car'].widget.attrs['style'] = 'pointer-events: None'
         self.fields['pickUpLocation'].widget.attrs['readonly'] = True
         self.fields['returnLocation'].widget.attrs['readonly'] = True
         self.fields['pickUpDate'].widget.attrs['readonly'] = True
