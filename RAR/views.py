@@ -507,8 +507,9 @@ def users(request):
     return render(request, 'admin/users.html', context)
 
 
+@login_required()
 def profile(request, pk):
     profile = Profile.objects.get(user_id=pk)
-    return render(request, 'profile.html', {'profile': profile})
+    return render(request, 'profile/.html', {'profile': profile})
 
 
