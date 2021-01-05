@@ -151,7 +151,7 @@ def create_car(request):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return redirect('/cars')
+        return redirect('/car/list')
     context = {
         "form": form,
         "title": "Create Car"

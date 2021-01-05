@@ -46,16 +46,8 @@ class Customer(models.Model):
     def get_customer_by_user(cls, user):
         return cls.objects.filter(user=user)[0]
 
-
-def uploaded_location(instance, filename):
-    return ("%s/%s") % (instance.carName, filename)
-
-
 class Car(models.Model):
-    image = models.ImageField(upload_to=uploaded_location, null=True, blank=True, width_field="width_field",
-                              height_field="height_field")
-    height_field = models.IntegerField(default=0)
-    width_field = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='car_image', null=True, blank=True)
     carName = models.CharField(max_length=100, default="")
     model = models.CharField(max_length=100)
     airconditioner = models.BooleanField()
