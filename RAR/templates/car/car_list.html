@@ -8,24 +8,24 @@
 {% block content %}
 <table class="table mb-3 table-hover table-striped">
     <thead>
-        <th>Image</th>
-        <th>Car Name</th>
-        <th>Model</th>
-        <th>AirConditioner</th>
-        <th>Price</th>
-        <th>Branch Name</th>
-        <th>Stock</th>
-        <th>Number of Seats</th>
-        <th>Number of Doors</th>
-        <th>Transmission</th>
-        <th>Status</th>
-        <th class="text-center" colspan="2">
-            <a href="{% url 'create_car' %}">Create</a>
-        </th>
+    <th>Image</th>
+    <th>Car Name</th>
+    <th>Model</th>
+    <th>AirConditioner</th>
+    <th>Price</th>
+    <th>Branch Name</th>
+    <th>Stock</th>
+    <th>Number of Seats</th>
+    <th>Number of Doors</th>
+    <th>Transmission</th>
+    <th>Status</th>
+    <th class="text-center" colspan="2">
+        <a href="{% url 'create_car' %}">Create</a>
+    </th>
     </thead>
     {% for data in dataset %}
     <tr>
-        <td>{{data.image}}</td>
+        <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
         <td>{{data.carName}}</td>
         <td>{{data.model}}</td>
         <td>{{data.airconditioner}}</td>
