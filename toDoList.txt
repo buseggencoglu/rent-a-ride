@@ -1,2 +1,7 @@
 - Permissions bakılacak
 - CarDealerın Adminden register olmak için request istemesi.
+- reservation update
+- car detail page
+- AddBranch
+- DeleteBranch
+- ViewBranchList

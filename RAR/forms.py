@@ -1,11 +1,15 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Div, Field
 from django import forms
-from .models import Car, Reservation, PrivateMsg
+import datetime
+from django.forms import DateInput
+
+from .models import Car, Reservation, PrivateMsg, Branch
 
 
 class CarForm(forms.ModelForm):
     image = forms.ImageField()
+
     class Meta:
         model = Car
         fields = [
@@ -53,6 +57,30 @@ class ReservationForm(forms.ModelForm):
             'returnDate',
         ]
 
+
+class ReservationUpdateForm(forms.ModelForm):
+    car = Car()
+    pickUpLocation = Branch()
+    returnLocation = Branch()
+    pickUpDate = forms.DateTimeField(
+        input_formats=['%d/%m/%Y'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker1'
+        })
+    )
+    # pickUpDate = forms.DateField(initial=datetime.date.today)
+    returnDate = forms.DateField(initial=datetime.date.today)
+
+    class Meta:
+        model = Reservation
+        fields = [
+            'car',
+            'pickUpLocation',
+            'returnLocation',
+            'pickUpDate',
+            'returnDate',
+        ]
 
 
 class MessageForm(forms.ModelForm):

@@ -19,9 +19,11 @@
     <th>Number of Doors</th>
     <th>Transmission</th>
     <th>Status</th>
+    {% if user_type == 'car_dealer' or user_type == 'admin' %}
     <th class="text-center" colspan="2">
         <a href="{% url 'create_car' %}">Create</a>
     </th>
+    {% endif %}
     </thead>
     {% for data in dataset %}
     <tr>
@@ -36,13 +38,14 @@
         <td>{{data.numOfDoors}}</td>
         <td>{{data.transmission}}</td>
         <td>{{data.carStatus}}</td>
+        {% if user_type == 'car_dealer' or user_type == 'admin' %}
         <td>
             <a href="{% url 'car_update' pk=data.id %}">Update</a>
         </td>
         <td>
             <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
         </td>
-
+        {% endif %}
     </tr>
     {% endfor %}
 </table>

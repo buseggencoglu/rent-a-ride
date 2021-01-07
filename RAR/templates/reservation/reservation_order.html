@@ -2,11 +2,17 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block title %}
-    <title>Order</title>
+<title>Order</title>
 {% endblock %}
 
 {% block content %}
-    <form class="w-75" action="/reservation/approve" type="get">
+{% if user_type == 'customer' %}
+<form class="w-75" action="/reservation/customer/approve" type="get" enctype="multipart/form-data">
+    {% endif %}
+    {% if user_type == 'admin' %}
+    <form class="w-75" action="/reservation/admin/approve" type="get" enctype="multipart/form-data">
+        {% endif %}
+
         {% csrf_token %}
         {{ reservation_form | crispy }}
         <h1 class="mt-3" style="font-family: 'Times New Roman'">Final Step!</h1>
@@ -22,27 +28,32 @@
             </div>
             <div class="d-flex flex-row w-100 align-items-center mb-1">
                 <label class="w-25">Name on The Card</label>
-                <input type="text" class="form-control w-75" name="name_card" aria-label="Username" aria-describedby="basic-addon1">
+                <input type="text" class="form-control w-75" name="name_card" aria-label="Username"
+                       aria-describedby="basic-addon1">
             </div>
 
             <div class="d-flex flex-row w-100 align-items-center mb-1">
                 <label class="w-25">Credit Card Number</label>
-                <input type="text" class="form-control w-75" name="credit_card" aria-label="Username" aria-describedby="basic-addon1">
+                <input type="text" class="form-control w-75" name="credit_card" aria-label="Username"
+                       aria-describedby="basic-addon1">
             </div>
 
             <div class="d-flex flex-row w-100 align-items-center mb-1">
                 <label class="w-25">Expiration</label>
-                <input type="text" class="form-control w-25" name="expiration" aria-label="Username" aria-describedby="basic-addon1">
+                <input type="text" class="form-control w-25" name="expiration" aria-label="Username"
+                       aria-describedby="basic-addon1">
             </div>
 
             <div class="d-flex flex-row w-100 align-items-center mb-1">
                 <label class="w-25">CVV</label>
-                <input type="text" class="form-control w-25" name="cvv" aria-label="Username" aria-describedby="basic-addon1">
+                <input type="text" class="form-control w-25" name="cvv" aria-label="Username"
+                       aria-describedby="basic-addon1">
             </div>
-            <button type="submit" onclick="this.disabled=true;this.form.submit();" class="btn btn-primary mt-5 mb-5" style="background-color: #8dca67">
+            <button type="submit" onclick="this.disabled=true;this.form.submit();" class="btn btn-primary mt-5 mb-5"
+                    style="background-color: #8dca67">
                 Finish Reservation
             </button>
 
         </div>
     </form>
-{% endblock %}
+    {% endblock %}

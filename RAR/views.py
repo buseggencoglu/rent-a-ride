@@ -14,9 +14,8 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
-from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer
-from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm
-
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin
+from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, ReservationUpdateForm
 
 def home(request):
     context = {
@@ -78,7 +77,23 @@ def create_reservation(request, car_id, pickUpLocation, returnLocation, pickUpDa
 
 
 @login_required()
-def complete_reservation(request):
+def update_reservation_customer(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk)
+    form = ReservationUpdateForm(request.POST or None, request.FILES or None, instance=reservation)
+
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return redirect('/reservations/customer')
+    context = {
+        "form": form,
+        "title": "Update Reservation"
+    }
+    return render(request, 'reservation/reservation_update.html', context)
+
+
+@login_required()
+def complete_reservation_customer(request):
     posted_data = request.GET
     form = ReservationForm(posted_data)
     status = False
@@ -96,6 +111,24 @@ def complete_reservation(request):
 
     return render(request, 'reservation/reservation_approve.html', context)
 
+@login_required()
+def complete_reservation_admin(request):
+    posted_data = request.GET
+    form = ReservationForm(posted_data)
+    status = False
+    if form.is_valid() and not request.is_ajax():
+        reservation = form.save(commit=False)
+        reservation.paymentStatus = True
+        reservation.admin = Admin.objects.filter(user=request.user)[0]
+        reservation.save()
+        status = True
+
+    context = {
+        "title": "RentACar",
+        "status": status
+    }
+
+    return render(request, 'reservation/reservation_approve.html', context)
 
 def car_list_old(request):
     car = Car.objects.all()
@@ -315,18 +348,18 @@ def reservation_created(request):
     return render(request, 'reservation/reservation_create.html', context)
 
 
-def reservation_update(request, id=None):
-    detail = get_object_or_404(Reservation, id=id)
-    form = ReservationSearchForm(request.POST or None, instance=detail)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        return HttpResponseRedirect(instance.get_absolute_url())
-    context = {
-        "form": form,
-        "title": "Update Reservation"
-    }
-    return render(request, 'reservation/reservation_create.html', context)
+# def reservation_update(request, id=None):
+#     detail = get_object_or_404(Reservation, id=id)
+#     form = ReservationSearchForm(request.POST or None, instance=detail)
+#     if form.is_valid():
+#         instance = form.save(commit=False)
+#         instance.save()
+#         return HttpResponseRedirect(instance.get_absolute_url())
+#     context = {
+#         "form": form,
+#         "title": "Update Reservation"
+#     }
+#     return render(request, 'reservation/reservation_create.html', context)
 
 
 def reservation_delete(request, pk=None):
@@ -352,6 +385,17 @@ def view_my_reservation_customer(request):
     user = User.objects.get(username=username)
     reservations = Reservation.objects.filter(customer=Customer.get_customer_by_user(user))
     return render(request, 'reservation/my_reservations.html', {'reservation_list': reservations})
+
+def view_my_reservation_admin(request):
+    username = request.user
+    user = User.objects.get(username=username)
+    admin = Admin.objects.get(user=user)
+    reservations = Reservation.objects.filter(admin=admin)
+    reservation_list = []
+    for r in reservations:
+        #if r.paymentStatus == False:
+            reservation_list.append(r)
+    return render(request, 'reservation/my_reservations.html', {'reservation_list': reservation_list})
 
 
 @login_required()
@@ -506,10 +550,8 @@ def users(request):
 
     return render(request, 'admin/users.html', context)
 
-
 # @login_required()
 # def profile(request, pk):
 #     profile = Profile.objects.get(user_id=pk)
 #     return render(request, 'profile/.html', {'profile': profile})
 #
-

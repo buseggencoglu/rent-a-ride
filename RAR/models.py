@@ -129,6 +129,7 @@ class Reservation(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
     carDealer = models.ForeignKey(CarDealer, null=True, on_delete=models.CASCADE)
+    admin = models.ForeignKey(Admin, null=True, on_delete=models.CASCADE)
     pickUpLocation = models.CharField(max_length=100)
     returnLocation = models.CharField(max_length=100)
     pickUpDate = models.DateTimeField()

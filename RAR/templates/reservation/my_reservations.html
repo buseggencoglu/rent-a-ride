@@ -7,36 +7,39 @@
 
 
 {% block content %}
-  <div class="d-flex flex-column">
-     <h5 style="color: #8dca67; font-family: 'Times New Roman'">{{ user.username }} reservations</h5>
+<div class="d-flex flex-column">
+    <h5 style="color: #8dca67; font-family: 'Times New Roman'">{{ user.username }}'s reservations</h5>
 
-     <table class="table mb-3 table-hover table-striped">
+    <table class="table mb-3 table-hover table-striped">
 
 
-    <tr>
-        <th>Car</th>
-        <th>Pick-Up Location</th>
-        <th>Return Location</th>
-        <th>Pick-Up Date</th>
-        <th>Return Date</th>
-        <th>Payment Status</th>
-    </tr>
-    {% for r in reservation_list %}
-    <tr>
-        <td>{{ r.car.carName }}</td>
-        <td>{{r.pickUpLocation }}</td>
-        <td>{{ r.returnLocation }}</td>
-        <td>{{ r.pickUpDate }}</td>
-        <td>{{ r.returnDate }}</td>
-        <td>{{ r.paymentStatus }}</td>
-        <td>
-            <a href="/reservations/delete/customer/{{ r.id }}">Delete</a>
-        </td>
-    </tr>
-    {% endfor %}
+        <tr>
+            <th>Car</th>
+            <th>Pick-Up Location</th>
+            <th>Return Location</th>
+            <th>Pick-Up Date</th>
+            <th>Return Date</th>
+            <th>Payment Status</th>
+        </tr>
+        {% for r in reservation_list %}
+        <tr>
+            <td>{{ r.car.carName }}</td>
+            <td>{{r.pickUpLocation }}</td>
+            <td>{{ r.returnLocation }}</td>
+            <td>{{ r.pickUpDate }}</td>
+            <td>{{ r.returnDate }}</td>
+            <td>{{ r.paymentStatus }}</td>
+            <td>
+                <a href="/reservations/delete/customer/{{ r.id }}">Delete</a>
+            </td>
+            <td>
+                <a href="/reservation/update/customer/{{ r.id }}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
 
-</table>
+    </table>
 
-  </div>
+</div>
 
 {% endblock %}
