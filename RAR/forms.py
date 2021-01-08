@@ -5,6 +5,7 @@ from .models import Car, Reservation, PrivateMsg
 
 
 class CarForm(forms.ModelForm):
+    image = forms.ImageField()
     class Meta:
         model = Car
         fields = [
@@ -16,6 +17,7 @@ class CarForm(forms.ModelForm):
             "transmission",
             "airconditioner",
             "price",
+            "stock",
             "carStatus",
             "branch",
         ]

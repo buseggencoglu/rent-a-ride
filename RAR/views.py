@@ -151,7 +151,7 @@ def create_car(request):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return redirect('/cars')
+        return redirect('/car/list')
     context = {
         "form": form,
         "title": "Create Car"
@@ -232,7 +232,7 @@ def search_results(request):
 @login_required()
 def car_update(request, pk):
     detail = get_object_or_404(Car, pk=pk)
-    form = CarForm(request.POST or None, instance=detail)
+    form = CarForm(request.POST or None, request.FILES or None, instance=detail)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -507,9 +507,9 @@ def users(request):
     return render(request, 'admin/users.html', context)
 
 
-@login_required()
-def profile(request, pk):
-    profile = Profile.objects.get(user_id=pk)
-    return render(request, 'profile/.html', {'profile': profile})
-
+# @login_required()
+# def profile(request, pk):
+#     profile = Profile.objects.get(user_id=pk)
+#     return render(request, 'profile/.html', {'profile': profile})
+#
 
