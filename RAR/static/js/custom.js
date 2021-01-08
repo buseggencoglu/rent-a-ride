@@ -1,4 +1,15 @@
 $('input[name="dates"]').daterangepicker();
+$('#id_card_number').inputmask({
+    'mask': '9999 9999 9999 9999'
+});
+$('#id_expire_date').inputmask({
+    'mask': '99/99',
+    'placeholder': 'MM/YY'
+});
+$('#id_ccr').inputmask({
+    'mask': '999'
+});
+
 
 // to get current year
 function getYear() {
@@ -9,7 +20,7 @@ function getYear() {
 
 getYear();
 
-// owl carousel 
+// owl carousel
 
 $('.owl-carousel').owlCarousel({
     loop: true,
