@@ -5,3 +5,7 @@
     border-radius: 10px;
     box-shadow: 5px 5px 15px grey;
 }
+
+.car-table{
+    border: 2px darkslategrey solid;
+}

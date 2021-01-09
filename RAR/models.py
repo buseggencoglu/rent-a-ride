@@ -54,7 +54,6 @@ class Car(models.Model):
     airconditioner = models.BooleanField()
     price = models.IntegerField()
     branch = models.ForeignKey(Branch, null=True, on_delete=models.SET_NULL)
-    stock = models.IntegerField(default=0)
 
     NUM_OF_SEATS_CHOICE = [
         (1, '1'),
@@ -134,6 +133,7 @@ class Reservation(models.Model):
     pickUpDate = models.DateTimeField()
     returnDate = models.DateTimeField()
     paymentStatus = models.BooleanField(default=False)  # default false konulmalı
+    total_price = models.FloatField(default=0.0)
 
     def get_absolute_url(self):
         return "/car/detail/%s/" % (self.pk)

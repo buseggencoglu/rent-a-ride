@@ -15,15 +15,18 @@
 
     <tr>
         <th>Car</th>
+        {% if user_type == 'car_dealer' %}<th>Customer</th>{% endif %}
         <th>Pick-Up Location</th>
         <th>Return Location</th>
         <th>Pick-Up Date</th>
         <th>Return Date</th>
         <th>Payment Status</th>
+        <th>Delete Option</th>
     </tr>
     {% for r in reservation_list %}
     <tr>
         <td>{{ r.car.carName }}</td>
+        {% if user_type == 'car_dealer'%}<td>{{r.customer.user.username}}</td>{% endif %}
         <td>{{r.pickUpLocation }}</td>
         <td>{{ r.returnLocation }}</td>
         <td>{{ r.pickUpDate }}</td>

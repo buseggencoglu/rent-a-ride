@@ -19,7 +19,6 @@
             <th>AirConditioner</th>
             <th>Price</th>
             <th>Branch Name</th>
-            <th>Stock</th>
             <th>Number of Seats</th>
             <th>Number of Doors</th>
             <th>Transmission</th>
@@ -36,16 +35,17 @@
                         <td>{{ data.airconditioner }}</td>
                         <td>{{ data.price }}</td>
                         <td>{{ data.branch.branch_name }}</td>
-                        <td>{{ data.stock }}</td>
                         <td>{{ data.numOfSeats }}</td>
                         <td>{{ data.numOfDoors }}</td>
                         <td>{{ data.transmission }}</td>
                         <td>{{ data.carStatus }}</td>
+                       {% if user_type == 'Car Dealer' and user_type == 'Customer' %}
                         <td>
                             <button type="submit" class="btn btn-secondary">
                                 Reserve
                             </button>
                         </td>
+                       {% endif %}
                     </tr>
                 </form>
             {% endfor %}
