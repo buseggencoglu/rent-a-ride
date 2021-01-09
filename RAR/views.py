@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
-from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin
 from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm
 
 
@@ -125,16 +125,13 @@ def car_list_old(request):
             Q(carStatus__icontains=query)
         )
 
-    # pagination
-    paginator = Paginator(car, 12)  # Show 15 contacts per page
+    paginator = Paginator(car, 12)
     page = request.GET.get('page')
     try:
         car = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
         car = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
         car = paginator.page(paginator.num_pages)
     context = {
         'car': car,
@@ -148,9 +145,18 @@ def car_list(request):
     car_dealers = CarDealer.objects.filter(user=user)
     if len(car_dealers) > 0:
         context["dataset"] = Car.objects.filter(branch=car_dealers[0].branchId)
-    else:
-        context["dataset"] = Car.objects.all()
+
     return render(request, 'car/car_list.html', context)
+
+def total_car_list(request):
+    context = {}
+    user = request.user
+    admin = Admin.objects.filter(user=user)
+    print(admin, "abc")
+    if len(admin) > 0:
+        context["dataset"] = Car.objects.all()
+
+    return  render(request, 'admin/admin_dashboard.html', context)
 
 
 def car_detail(request, id=None):
