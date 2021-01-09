@@ -208,7 +208,10 @@ def create_car(request):
         for i in range(int(posted_data['stock'])):
             instance.pk = None
             instance.save()
-        return redirect('/car/list')
+        if len(car_dealers)>0:
+            return redirect('/car/list')
+        else:
+            return redirect('/admin/dashboard')
     context = {
         "form": form,
         "title": "Create Car"
@@ -297,7 +300,10 @@ def car_update(request, pk):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        return redirect('/car/list')
+        if len(car_dealers)>0:
+            return redirect('/car/list')
+        else:
+            return redirect('/admin/dashboard')
     context = {
         "form": form,
         "title": "Update Car"
