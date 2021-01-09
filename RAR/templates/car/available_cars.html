@@ -39,7 +39,7 @@
                         <td>{{ data.numOfDoors }}</td>
                         <td>{{ data.transmission }}</td>
                         <td>{{ data.carStatus }}</td>
-                       {% if user_type == 'Car Dealer' and user_type == 'Customer' %}
+                       {% if user_type == 'car_dealer' or user_type == 'customer' %}
                         <td>
                             <button type="submit" class="btn btn-secondary">
                                 Reserve
