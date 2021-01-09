@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
-from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Profile
 from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm
 
 
@@ -536,9 +536,9 @@ def users(request):
     return render(request, 'admin/users.html', context)
 
 
-# @login_required()
-# def profile(request, pk):
-#     profile = Profile.objects.get(user_id=pk)
-#     return render(request, 'profile/.html', {'profile': profile})
-#
+@login_required()
+def profile(request, pk):
+    profile = Profile.objects.get(user_id=pk)
+    return render(request, 'layout/profile.html', {'profile': profile})
+
 

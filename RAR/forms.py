@@ -2,7 +2,7 @@ from creditcards.forms import CardNumberField, CardExpiryField, SecurityCodeFiel
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Div, Field
 from django import forms
-from .models import Car, Reservation, PrivateMsg
+from .models import Car, Reservation, PrivateMsg,Profile
 
 
 class CarForm(forms.ModelForm):
@@ -78,3 +78,13 @@ class MessageForm(forms.ModelForm):
             "email",
             "message",
         ]
+
+
+# class ProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = Profile
+#         fields = [
+#             "name",
+#             "lastname",
+#             "mail",
+#         ]
