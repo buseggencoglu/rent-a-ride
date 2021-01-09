@@ -85,13 +85,13 @@ def complete_reservation(request):
     form = ReservationForm(posted_data)
     credit_form = CreditCardForm(posted_data)
     user = request.user
-    customers = Customer.objects.filter(user=request.user)
-    is_car_dealer = len(CarDealer.objects.filter(user=user)) > 0
-    print('customers', customers, is_car_dealer)
+    customers = Customer.objects.filter(user=user)
+    car_dealers = CarDealer.objects.filter(user=user)
     status = False
     if form.is_valid() and len(customers) == 0 and not request.is_ajax():
         reservation = form.save(commit=False)
         reservation.paymentStatus = False
+        reservation.carDealer = car_dealers[0]
         reservation.save()
         status = True
     elif form.is_valid() and credit_form.is_valid() and not request.is_ajax():

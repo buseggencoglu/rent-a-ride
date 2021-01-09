@@ -65,7 +65,7 @@ class ReservationForm(forms.ModelForm):
 
 class CreditCardForm(forms.Form):
     name = forms.CharField(max_length=50)
-    card_number = CardNumberField()
+    card_number = forms.CharField()
     expire_date = CardExpiryField()
     ccr = SecurityCodeField()
 

@@ -6,7 +6,14 @@
 {% endblock %}
 
 {% block content %}
-<table class="table mb-3 table-hover table-striped">
+
+
+
+  <div class="car-table-admin">
+    <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on The System</h4>
+
+  <div class="car-table rounded">
+    <table class="table mb-3 table-hover table-striped rounded">
     <thead>
     <th>Image</th>
     <th>Car Name</th>
@@ -45,6 +52,8 @@
 
     </tr>
     {% endfor %}
-</table>
+   </table>
+    </div>
+  </div>
 
 {% endblock %}
