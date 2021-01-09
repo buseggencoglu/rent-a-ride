@@ -1,11 +1,41 @@
 {% extends 'layout/main.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 <title>Dashboard</title>
 {% endblock %}
 
 {% block content %}
+
+<div class="col">
+
+<h4 style="font-family:'Times New Roman'; color: #8dca67">Waited Car Dealer List</h4>
+ <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 30%">
+  <table class="col align-self-center">
+      <thead>
+         <th>Car Dealer</th>
+         <th>Branch</th>
+         <th class="text-center" colspan="2">Approval</th>
+      </thead>
+
+      {% for i in car_dealers %}
+      <tr>
+        <td>{{ i.user.username }}</td>
+
+        <form class="w-75" action="/admin/user/approve/{{ i.id }}" type="post">
+        {% csrf_token %}
+        <td>
+            {{ branch_form | crispy }}
+        </td>
+        <td><button type="submit" class="btn btn-success">Approve</button></td>
+        </form>
+        <td><a href="/admin/user/delete/{{ i.id }}"><button type="button" class="btn btn-danger">reject</button></a> </td>
+       </tr>
+      {% endfor %}
+  </table>
+
+</div>
 
 
 
@@ -30,7 +60,7 @@
         <a href="{% url 'create_car' %}">Create</a>
     </th>
     </thead>
-    {% for data in dataset %}
+    {% for data in cars %}
     <tr>
         <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
         <td>{{data.carName}}</td>
@@ -55,5 +85,5 @@
    </table>
     </div>
   </div>
-
+</div>
 {% endblock %}

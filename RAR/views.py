@@ -15,7 +15,7 @@ from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
 from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin
-from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm
+from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, ApproveCarDealer
 
 
 def home(request):
@@ -59,13 +59,16 @@ def available_cars(request):
 @login_required()
 def create_reservation(request, car_id, pickUpLocation, returnLocation, pickUpDate, returnDate):
     car = Car.objects.get(id=car_id)
+    start_date_date = datetime.strptime(pickUpDate, '%Y-%m-%d')
+    end_date_date = datetime.strptime(returnDate, '%Y-%m-%d')
     form = ReservationForm(initial={
         'car': car,
         'customer': request.user,
         'pickUpLocation': pickUpLocation,
         'returnLocation': returnLocation,
         'pickUpDate': pickUpDate,
-        'returnDate': returnDate
+        'returnDate': returnDate,
+        'total_price': car.price * (end_date_date - start_date_date).days
     })
     card_form = CreditCardForm()
 
@@ -152,11 +155,29 @@ def total_car_list(request):
     context = {}
     user = request.user
     admin = Admin.objects.filter(user=user)
-    print(admin, "abc")
     if len(admin) > 0:
-        context["dataset"] = Car.objects.all()
+        context["cars"] = Car.objects.all()
+        context["car_dealers"] = CarDealer.objects.filter(user__is_active=False)
+        context["branch_form"] = ApproveCarDealer()
 
-    return  render(request, 'admin/admin_dashboard.html', context)
+    return render(request, 'admin/admin_dashboard.html', context)
+
+def car_dealer_approve(request,pk):
+    posted_data = ApproveCarDealer(request.GET)
+    dealer = CarDealer.objects.get(id=pk)
+    dealer.user.is_active = True
+    dealer.branchId = Branch.objects.get(id=posted_data.data['dealer_branch'])
+    dealer.save()
+    dealer.user.save()
+
+    return HttpResponseRedirect('/admin/dashboard')
+
+def car_dealer_reject(request,pk):
+    dealer = CarDealer.objects.get(id=pk)
+    dealer.delete()
+
+    return HttpResponseRedirect('/admin/dashboard')
+
 
 
 def car_detail(request, id=None):
@@ -174,14 +195,17 @@ def create_car(request):
     branch_id = None
     if len(car_dealers) > 0:
         branch_id = car_dealers[0].branchId
-    form = CarForm(request.POST or None, request.FILES or None, branch_status=len(car_dealers) > 0, initial={
+    posted_data = request.POST or None
+    form = CarForm(posted_data, request.FILES or None, branch_status=len(car_dealers) > 0, initial={
         'branch': branch_id
     })
 
 
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.save()
+        for i in range(int(posted_data['stock'])):
+            instance.pk = None
+            instance.save()
         return redirect('/car/list')
     context = {
         "form": form,
@@ -367,7 +391,11 @@ def reservation_update(request, id=None):
 def reservation_delete(request, pk=None):
     query = get_object_or_404(Reservation, id=pk)
     query.delete()
-    return HttpResponseRedirect("/reservations/customer")
+    carDealers = CarDealer.objects.filter(user=request.user)
+    url = '/reservations/customer'
+    if len(carDealers) > 0:
+        url = '/reservations/cardealer'
+    return HttpResponseRedirect(url)
 
 
 def view_my_reservation_cardealer(request):
@@ -376,10 +404,8 @@ def view_my_reservation_cardealer(request):
     carDealer = CarDealer.objects.get(user=user)
     pickup = carDealer.branchId.branch_name
     reservations = Reservation.objects.filter(pickUpLocation=pickup)
-    reservation_list = []
-    for r in reservations:
-        reservation_list.append(r)
-    return render(request, 'reservation/my_reservations.html', {'reservation_list': reservation_list})
+    return render(request, 'reservation/my_reservations.html', {'reservation_list': reservations,
+                                                                'delete_url': ''})
 
 
 def view_my_reservation_customer(request):
