@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'layout/main.html' %}
+{% load static %}
+{% block content %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Profile</title>
 </head>
+<html>
 <body>
 <style>
     body{
@@ -15,6 +17,7 @@
     color: #1a202c;
     text-align: left;
     background-color: #F5F5F5;
+    font-family: "poppins", sans-serif;
 }
 .main-body {
     padding: 15px;
@@ -81,8 +84,8 @@
                   <div class="d-flex flex-column align-items-center text-center">
                     <img src="https://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
-                      <h4>Name</h4>
-                      <p class="text-secondary mb-1">Customer</p>
+                      <h4><b>{{profile.user.username}}</b> </h4>
+                      <p class="text-secondary mb-1"> {{profile.user.type}}</p>
                     </div>
                   </div>
                 </div>
@@ -90,73 +93,53 @@
               <div class="card mt-3">
               </div>
             </div>
+
             <div class="col-md-8">
               <div class="card mb-3">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Full Name</h6>
+                      <h6 class="mb-0"><b>USERNAME</b></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      Customer name
+                     {{profile.user.username}}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Email</h6>
+                      <h6 class="mb-0"><b>FIRST NAME</b></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      hil@hil.com
+                     {{profile.user.first_name}}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Phone</h6>
+                      <h6 class="mb-0"><b>LAST NAME</b></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      +90 (539)555 55 55
+                      {{profile.user.last_name}}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Date of Birth</h6>
+                      <h6 class="mb-0"><b>E-MAIL</b></h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      04.01.1989
+                        {{profile.user.email}}
                     </div>
-                  </div>
                     <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">City</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      İstanbul
-                    </div>
                   </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Address</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      Ata Bulvarı, Ataşehir
-                    </div>
-                  </div>
-                    <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Gender</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      Female
-                    </div>
-                  </div>
+
                 </div>
               </div>
-</div>
-</body>
+            </div>
+         </div>
+      </div>
+  </div>
+ </body>
 </html>
+{% endblock %}
