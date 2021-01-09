@@ -1,0 +1,25 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %}
+<title>Branch List</title>
+{% endblock %}
+
+{% block content %}
+<table class="table mb-3 table-hover table-striped">
+    <thead>
+    <th>Branch Name</th>
+    <th>Location</th>
+    <th class="text-center" colspan="2">
+        <a href="{% url 'add_branch' %}">Add</a>
+    </th>
+    </thead>
+    {% for data in dataset %}
+    <tr>
+        <td>{{data.branch_name}}</td>
+        <td>{{data.branch_location}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

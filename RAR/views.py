@@ -15,7 +15,7 @@ from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
 from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer
-from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm
+from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, BranchForm
 
 
 def home(request):
@@ -153,6 +153,12 @@ def car_list(request):
     return render(request, 'car/car_list.html', context)
 
 
+def branch_list(request):
+    context = {}
+    context["dataset"] = Branch.objects.all()
+    return render(request, 'carDealer/branch_list.html', context)
+
+
 def car_detail(request, id=None):
     detail = get_object_or_404(Car, id=id)
     context = {
@@ -172,7 +178,6 @@ def create_car(request):
         'branch': branch_id
     })
 
-
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -182,6 +187,19 @@ def create_car(request):
         "title": "Create Car"
     }
     return render(request, 'car/create_car.html', context)
+
+
+@login_required
+def add_branch(request):
+    form = BranchForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return redirect('/branch/list')
+    context = {
+        "form": form
+    }
+    return render(request, 'carDealer/add_branch.html', context)
 
 
 def search(request):
@@ -535,10 +553,8 @@ def users(request):
 
     return render(request, 'admin/users.html', context)
 
-
 # @login_required()
 # def profile(request, pk):
 #     profile = Profile.objects.get(user_id=pk)
 #     return render(request, 'profile/.html', {'profile': profile})
 #
-
