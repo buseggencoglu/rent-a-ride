@@ -1,6 +1,10 @@
 $('input[name="dates"]').daterangepicker();
+$('#id_name').inputmask({
+    'regex': '([A-Za-z]* ?[A-Za-z]* [A-Za-z]*)'
+});
 $('#id_card_number').inputmask({
-    'mask': '9999 9999 9999 9999'
+    'mask': '9999-9999-9999-9999',
+    'placeholder': 'xxxx-xxxx-xxxx-xxxx'
 });
 $('#id_expire_date').inputmask({
     'mask': '99/99',

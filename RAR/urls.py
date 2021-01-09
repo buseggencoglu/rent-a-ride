@@ -20,5 +20,10 @@ urlpatterns = [
     path('car/create/', views.create_car, name='create_car'),
     path('car/delete/<int:pk>', views.car_delete, name='car_delete'),
     path('car/update/<int:pk>', views.car_update, name='car_update'),
-    path('reservations/delete/customer/<int:pk>', views.reservation_delete, name='reservation_delete')
+    path('reservations/delete/customer/<int:pk>', views.reservation_delete, name='reservation_delete'),
+    path('admin/dashboard', views.total_car_list, name='total_car_list'),
+    path('reservations/admin', views.reservation_list, name='reservation_list'),
+    path('admin/user/approve/<int:pk>', views.car_dealer_approve, name='reservation_list'),
+    path('admin/user/delete/<int:pk>', views.car_dealer_reject, name='car_dealer_reject')
+
 ]
