@@ -6,10 +6,10 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('car/list', views.car_list, name='car_list'),
+    path('car/list/', views.car_list, name='car_list'),
     path('cars/available', views.available_cars, name='available_cars'),
     path('users/', views.users, name='users'),
-    path('profile/', views.profile, name='profile'),
+    # path('profile/', views.profile, name='profile'),
     path('reservations/list', views.reservation_list, name='reservation_list'),
     path('reservations/<int:car_id>/<str:pickUpLocation>/<str:returnLocation>/<str:pickUpDate>/<str:returnDate>',
          views.create_reservation, name='reservation_create'),

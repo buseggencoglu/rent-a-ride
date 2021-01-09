@@ -30,7 +30,7 @@
                 <form action="/reservations/{{ data.id }}/{{ pickUpLocation }}/{{ returnLocation }}/{{ pickUpDate }}/{{ returnDate }}"
                       type="post">
                     <tr>
-                        <td>{{ data.image }}</td>
+                        <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
                         <td>{{ data.carName }}</td>
                         <td>{{ data.model }}</td>
                         <td>{{ data.airconditioner }}</td>

@@ -15,7 +15,7 @@ from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
 from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer
-from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm
+from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm
 
 
 def home(request):
@@ -67,11 +67,13 @@ def create_reservation(request, car_id, pickUpLocation, returnLocation, pickUpDa
         'pickUpDate': pickUpDate,
         'returnDate': returnDate
     })
+    card_form = CreditCardForm()
 
     context = {
         "title": "RentACar",
         "reservation_form": form,
-        "car_detail": car
+        "car_detail": car,
+        "card_form": card_form
     }
 
     return render(request, 'reservation/reservation_order.html', context)
@@ -81,11 +83,21 @@ def create_reservation(request, car_id, pickUpLocation, returnLocation, pickUpDa
 def complete_reservation(request):
     posted_data = request.GET
     form = ReservationForm(posted_data)
+    credit_form = CreditCardForm(posted_data)
+    user = request.user
+    customers = Customer.objects.filter(user=request.user)
+    is_car_dealer = len(CarDealer.objects.filter(user=user)) > 0
+    print('customers', customers, is_car_dealer)
     status = False
-    if form.is_valid() and not request.is_ajax():
+    if form.is_valid() and len(customers) == 0 and not request.is_ajax():
+        reservation = form.save(commit=False)
+        reservation.paymentStatus = False
+        reservation.save()
+        status = True
+    elif form.is_valid() and credit_form.is_valid() and not request.is_ajax():
         reservation = form.save(commit=False)
         reservation.paymentStatus = True
-        reservation.customer = Customer.objects.filter(user=request.user)[0]
+        reservation.customer = customers[0]
         reservation.save()
         status = True
 
@@ -132,7 +144,12 @@ def car_list_old(request):
 
 def car_list(request):
     context = {}
-    context["dataset"] = Car.objects.all()
+    user = request.user
+    car_dealers = CarDealer.objects.filter(user=user)
+    if len(car_dealers) > 0:
+        context["dataset"] = Car.objects.filter(branch=car_dealers[0].branchId)
+    else:
+        context["dataset"] = Car.objects.all()
     return render(request, 'car/car_list.html', context)
 
 
@@ -146,7 +163,15 @@ def car_detail(request, id=None):
 
 @login_required
 def create_car(request):
-    form = CarForm(request.POST or None, request.FILES or None)
+    user = request.user
+    car_dealers = CarDealer.objects.filter(user=user)
+    branch_id = None
+    if len(car_dealers) > 0:
+        branch_id = car_dealers[0].branchId
+    form = CarForm(request.POST or None, request.FILES or None, branch_status=len(car_dealers) > 0, initial={
+        'branch': branch_id
+    })
+
 
     if form.is_valid():
         instance = form.save(commit=False)
@@ -232,7 +257,11 @@ def search_results(request):
 @login_required()
 def car_update(request, pk):
     detail = get_object_or_404(Car, pk=pk)
-    form = CarForm(request.POST or None, instance=detail)
+
+    user = request.user
+    car_dealers = CarDealer.objects.filter(user=user)
+    form = CarForm(request.POST or None, request.FILES or None, branch_status=len(car_dealers) > 0,
+                   instance=detail)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -339,11 +368,11 @@ def view_my_reservation_cardealer(request):
     username = request.user
     user = User.objects.get(username=username)
     carDealer = CarDealer.objects.get(user=user)
-    reservations = Reservation.objects.filter(carDealer=carDealer)
+    pickup = carDealer.branchId.branch_name
+    reservations = Reservation.objects.filter(pickUpLocation=pickup)
     reservation_list = []
     for r in reservations:
-        if r.paymentStatus == False:
-            reservation_list.append(r)
+        reservation_list.append(r)
     return render(request, 'reservation/my_reservations.html', {'reservation_list': reservation_list})
 
 
@@ -507,9 +536,9 @@ def users(request):
     return render(request, 'admin/users.html', context)
 
 
-@login_required()
-def profile(request, pk):
-    profile = Profile.objects.get(user_id=pk)
-    return render(request, 'profile/.html', {'profile': profile})
-
+# @login_required()
+# def profile(request, pk):
+#     profile = Profile.objects.get(user_id=pk)
+#     return render(request, 'profile/.html', {'profile': profile})
+#
 

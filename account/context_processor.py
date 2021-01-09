@@ -1,13 +1,13 @@
 from django.contrib.auth.models import AnonymousUser
 
-from RAR.models import Customer
+from RAR.models import Customer, CarDealer
 
 
 def user_type(request):
     user = request.user
     if not user.is_anonymous:
         customers = Customer.objects.filter(user=user)
-        car_dealers = Customer.objects.filter(user=user)
+        car_dealers = CarDealer.objects.filter(user=user)
         user_type = 'admin'
         if len(customers) > 0:
             user_type = 'customer'

@@ -1,3 +1,4 @@
+from creditcards.forms import CardNumberField, CardExpiryField, SecurityCodeField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Div, Field
 from django import forms
@@ -5,6 +6,15 @@ from .models import Car, Reservation, PrivateMsg
 
 
 class CarForm(forms.ModelForm):
+    image = forms.ImageField()
+
+    def __init__(self, *args, branch_status=False, **kwargs):
+        super(CarForm, self).__init__(*args, **kwargs)
+        print('branch_status', branch_status)
+        if branch_status:
+            self.fields['branch'].widget.attrs['style'] = 'pointer-events: None'
+            self.fields['branch'].widget.attrs['readonly'] = branch_status
+
     class Meta:
         model = Car
         fields = [
@@ -16,6 +26,7 @@ class CarForm(forms.ModelForm):
             "transmission",
             "airconditioner",
             "price",
+            "stock",
             "carStatus",
             "branch",
         ]
@@ -48,9 +59,15 @@ class ReservationForm(forms.ModelForm):
             'pickUpLocation',
             'returnLocation',
             'pickUpDate',
-            'returnDate',
+            'returnDate'
         ]
 
+
+class CreditCardForm(forms.Form):
+    name = forms.CharField(max_length=50)
+    card_number = CardNumberField()
+    expire_date = CardExpiryField()
+    ccr = SecurityCodeField()
 
 
 class MessageForm(forms.ModelForm):
