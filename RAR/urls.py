@@ -24,6 +24,9 @@ urlpatterns = [
     path('admin/dashboard', views.total_car_list, name='total_car_list'),
     path('reservations/admin', views.reservation_list, name='reservation_list'),
     path('admin/user/approve/<int:pk>', views.car_dealer_approve, name='reservation_list'),
-    path('admin/user/delete/<int:pk>', views.car_dealer_reject, name='car_dealer_reject')
-
+    path('branch/add', views.add_branch, name='add_branch'),
+    path('branch/list', views.branch_list, name='branch_list'),
+    path('branch/delete/<int:pk>', views.branch_delete, name='branch_delete'),
+    path('branch/update/<int:pk>', views.branch_update, name='branch_update'),
+    path('admin/user/delete/<int:pk>', views.car_dealer_reject, name='car_dealer_reject'),
 ]

@@ -7,15 +7,14 @@ Admin
 -ViewSellingList
 -ViewUsersHistory
 -ApproveRequest
--ViewCarDetail
+-ViewCarDetail ?
 -AddCar (Ayşe: bitti, permissionlar kaldı. Image field eklenebilir.)
 -DeleteCar (Ayşe : bitti, permissionlar kaldı.)
 -UpdateCar (Ayşe : bitti, permissionlar kaldı. Image field güncellenebilir.)
 -MakeReservation
 -ViewMyReservations
 -ViewAllReservations  (Ayşe:bitti sadece permission kaldı.)
--UpdateReservations
--DeleteReservations
+-UpdateReservations ?
 -AddBranch
 -DeleteBranch
 -ViewBranchList
@@ -27,14 +26,14 @@ Customer
 -SearchForCar(Ayşe: Done)
 -RentCar
 -ViewCarList (Ayşe:Done, image field eklendi.).
--ViewCarDetail
+-ViewCarDetail ?
 -ViewMyReservations (Ayşe: Done, tekrar bakılması gerek)
 -MakeReservations
 -UpdateReservations
 -DeleteReservations
 -ViewMyProfile
--EditMyProfile
--DeleteMyProfile
+-EditMyProfile ?
+-DeleteMyProfile ?
 -ChangePassword (Ayşe: Kodu var fakat profile ön yüzüne eklenmesi gerek)
 -ResetPassword (Ayşe: Kodu var fakat profile ön yüzüne eklenmesi gerek)
 -PayForCar
@@ -47,13 +46,12 @@ CarDealer
 -ViewCarList (Ayşe:Done, image field eklendi.).
 -ViewBranchCarList
 -ViewReceiversFromBranch
--ViewCarDetail
--ViewReceiversFromBranch
+-ViewCarDetail ?
 -ChangeCarStatus
 -MakeReservation
 -ViewAllReservations  (Ayşe:bitti sadece permission kaldı.)
 -ViewMyReservations
--UpdateReservations
+-UpdateReservations ?
 -DeleteReservations
 -AddCar (Ayşe: bitti, permissionlar kaldı. Image field eklenebilir.)
 -DeleteCar (Ayşe : bitti, permissionlar kaldı.)
