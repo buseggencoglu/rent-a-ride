@@ -39,7 +39,6 @@ def available_cars(request):
     end_date_date = datetime.strptime(data['returnDate'], '%m/%d/%Y').strftime("%Y-%m-%d")
 
     busy_cars = Reservation.busy_cars(start_date_date, end_date_date)
-    print(busy_cars, 'busy')
 
     branch_name = Branch.get_by_branch_name(data['pickUpLocation'])
     cars = Car.search_for_car(busy_cars, branch_name[0])

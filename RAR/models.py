@@ -116,7 +116,7 @@ class Car(models.Model):
     @classmethod
     def search_for_car(cls, busy_cars, branch_name):
         return cls.objects\
-            .filter(branch__branch_name=branch_name)\
+            .filter(branch__branch_name=branch_name, carStatus=1)\
             .exclude(id__in=busy_cars)
 
 
