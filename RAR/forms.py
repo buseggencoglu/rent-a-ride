@@ -2,7 +2,8 @@ from creditcards.forms import CardNumberField, CardExpiryField, SecurityCodeFiel
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Div, Field
 from django import forms
-from .models import Car, Reservation, PrivateMsg, Branch
+
+from .models import Car, Reservation, PrivateMsg, Branch, Profile
 
 
 class CarForm(forms.ModelForm):
@@ -26,18 +27,10 @@ class CarForm(forms.ModelForm):
             "transmission",
             "airconditioner",
             "price",
-            "stock",
             "carStatus",
             "branch",
         ]
 
-class BranchForm(forms.ModelForm):
-    class Meta:
-        model = Branch
-        fields = [
-            "branch_name",
-            "branch_location",
-        ]
 
 class ReservationSearchForm(forms.ModelForm):
     class Meta:
@@ -58,6 +51,7 @@ class ReservationForm(forms.ModelForm):
         self.fields['returnLocation'].widget.attrs['readonly'] = True
         self.fields['pickUpDate'].widget.attrs['readonly'] = True
         self.fields['returnDate'].widget.attrs['readonly'] = True
+        self.fields['total_price'].widget.attrs['readonly'] = True
 
     class Meta:
         model = Reservation
@@ -66,13 +60,23 @@ class ReservationForm(forms.ModelForm):
             'pickUpLocation',
             'returnLocation',
             'pickUpDate',
-            'returnDate'
+            'returnDate',
+            'total_price'
+        ]
+
+
+class BranchForm(forms.ModelForm):
+    class Meta:
+        model = Branch
+        fields = [
+            'branch_name',
+            'branch_location'
         ]
 
 
 class CreditCardForm(forms.Form):
     name = forms.CharField(max_length=50)
-    card_number = CardNumberField()
+    card_number = forms.CharField()
     expire_date = CardExpiryField()
     ccr = SecurityCodeField()
 
@@ -85,3 +89,7 @@ class MessageForm(forms.ModelForm):
             "email",
             "message",
         ]
+
+
+class ApproveCarDealer(forms.Form):
+    dealer_branch = forms.ModelChoiceField(queryset=Branch.objects.all(), label='')
