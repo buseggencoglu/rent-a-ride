@@ -58,18 +58,22 @@ class Car(models.Model):
     branch = models.ForeignKey(Branch, null=True, on_delete=models.SET_NULL)
 
     NUM_OF_SEATS_CHOICE = [
-        (1, '1'),
         (2, '2'),
-        (3, '3'),
-        (4, '4'),
+        (5, '5'),
+        (7, '7')
     ]
 
     numOfSeats = models.IntegerField(
         choices=NUM_OF_SEATS_CHOICE,
     )
 
+    NUM_OF_DOORS_CHOICE = [
+        (3, '3'),
+        (5, '5'),
+    ]
+
     numOfDoors = models.IntegerField(
-        choices=NUM_OF_SEATS_CHOICE,
+        choices=NUM_OF_DOORS_CHOICE,
     )
 
     Manual = 'M'
