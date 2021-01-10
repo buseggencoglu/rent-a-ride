@@ -354,13 +354,13 @@ def reservation_list_old(request):
     }
     return render(request, 'reservation/reservation_list.html', context)
 
-
+@login_required()
 def reservation_list(request):
     context = {}
     context["dataset"] = Reservation.objects.all()
     return render(request, 'reservation/reservation_list.html', context)
 
-
+@login_required()
 def reservation_detail(request, id=None):
     detail = get_object_or_404(Reservation, id=id)
     context = {
@@ -368,7 +368,7 @@ def reservation_detail(request, id=None):
     }
     return render(request, 'reservation/reservation_detail.html', context)
 
-
+@login_required()
 def reservation_created(request):
     form = ReservationSearchForm(request.POST or None)
     if form.is_valid():
@@ -382,7 +382,7 @@ def reservation_created(request):
     }
     return render(request, 'reservation/reservation_create.html', context)
 
-
+@login_required()
 def reservation_update(request, id=None):
     detail = get_object_or_404(Reservation, id=id)
     form = ReservationSearchForm(request.POST or None, instance=detail)
@@ -396,7 +396,7 @@ def reservation_update(request, id=None):
     }
     return render(request, 'reservation/reservation_create.html', context)
 
-
+@login_required()
 def reservation_delete(request, pk=None):
     query = get_object_or_404(Reservation, id=pk)
     query.delete()
@@ -406,7 +406,7 @@ def reservation_delete(request, pk=None):
         url = '/reservations/cardealer'
     return HttpResponseRedirect(url)
 
-
+@login_required()
 def view_my_reservation_cardealer(request):
     username = request.user
     user = User.objects.get(username=username)
@@ -416,7 +416,7 @@ def view_my_reservation_cardealer(request):
     return render(request, 'reservation/my_reservations.html', {'reservation_list': reservations,
                                                                 'delete_url': ''})
 
-
+@login_required()
 def view_my_reservation_customer(request):
     username = request.user
     user = User.objects.get(username=username)
