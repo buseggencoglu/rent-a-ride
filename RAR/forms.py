@@ -3,10 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Div, Field
 from django import forms
 
-
-
-from .models import Car, Reservation, PrivateMsg, Branch , Profile
-
+from .models import Car, Reservation, PrivateMsg, Branch, Profile
 
 
 class CarForm(forms.ModelForm):
@@ -65,6 +62,15 @@ class ReservationForm(forms.ModelForm):
             'pickUpDate',
             'returnDate',
             'total_price'
+        ]
+
+
+class BranchForm(forms.ModelForm):
+    class Meta:
+        model = Branch
+        fields = [
+            'branch_name',
+            'branch_location'
         ]
 
 

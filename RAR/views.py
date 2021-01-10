@@ -15,9 +15,9 @@ from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
 
-from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin ,Profile
-from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, ApproveCarDealer
-
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin, Profile
+from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, ApproveCarDealer, \
+    BranchForm
 
 
 def home(request):
@@ -152,6 +152,7 @@ def car_list(request):
 
     return render(request, 'car/car_list.html', context)
 
+
 def total_car_list(request):
     context = {}
     user = request.user
@@ -163,7 +164,8 @@ def total_car_list(request):
 
     return render(request, 'admin/admin_dashboard.html', context)
 
-def car_dealer_approve(request,pk):
+
+def car_dealer_approve(request, pk):
     posted_data = ApproveCarDealer(request.GET)
     dealer = CarDealer.objects.get(id=pk)
     dealer.user.is_active = True
@@ -173,12 +175,12 @@ def car_dealer_approve(request,pk):
 
     return HttpResponseRedirect('/admin/dashboard')
 
-def car_dealer_reject(request,pk):
+
+def car_dealer_reject(request, pk):
     dealer = CarDealer.objects.get(id=pk)
     dealer.delete()
 
     return HttpResponseRedirect('/admin/dashboard')
-
 
 
 def car_detail(request, id=None):
@@ -207,7 +209,7 @@ def create_car(request):
         for i in range(int(posted_data['stock'])):
             instance.pk = None
             instance.save()
-        if len(car_dealers)>0:
+        if len(car_dealers) > 0:
             return redirect('/car/list')
         else:
             return redirect('/admin/dashboard')
@@ -299,7 +301,7 @@ def car_update(request, pk):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        if len(car_dealers)>0:
+        if len(car_dealers) > 0:
             return redirect('/car/list')
         else:
             return redirect('/admin/dashboard')
@@ -581,3 +583,48 @@ def profile(request, pk):
     return render(request, 'layout/profile.html', {'profile': profile})
 
 
+@login_required
+def add_branch(request):
+    form = BranchForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return redirect('/branch/list')
+    context = {
+        "form": form
+    }
+    return render(request, 'admin/add_branch.html', context)
+
+
+def branch_list(request):
+    context = {}
+    context["dataset"] = Branch.objects.all()
+    return render(request, 'admin/branch_list.html', context)
+
+
+@login_required()
+def branch_update(request, pk):
+    detail = get_object_or_404(Branch, pk=pk)
+
+    form = BranchForm(request.POST or None, request.FILES or None,  instance=detail)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        return redirect('/branch/list')
+    context = {
+        "form": form,
+        "title": "Update Branch"
+    }
+    return render(request, 'admin/branch_update.html', context)
+
+
+@login_required()
+def branch_delete(request, pk):
+    query = get_object_or_404(Branch, pk=pk)
+    query.delete()
+
+    branch = Branch.objects.all()
+    context = {
+        'branch': branch,
+    }
+    return render(request, 'admin/branch_deleted.html', context)
