@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.exceptions import ObjectDoesNotExist
 
+
 class Branch(models.Model):
     branch_name = models.CharField(max_length=100, default="")
     branch_location = models.TextField()
@@ -57,11 +58,15 @@ class Car(models.Model):
     price = models.IntegerField()
     branch = models.ForeignKey(Branch, null=True, on_delete=models.SET_NULL)
 
-    NUM_OF_SEATS_CHOICE = [
-        (1, '1'),
-        (2, '2'),
+    NUM_OF_DOORS_CHOICE = [
         (3, '3'),
-        (4, '4'),
+        (5, '5'),
+    ]
+
+    NUM_OF_SEATS_CHOICE = [
+        (2, '2'),
+        (5, '5'),
+        (7, '7'),
     ]
 
     numOfSeats = models.IntegerField(
@@ -69,7 +74,7 @@ class Car(models.Model):
     )
 
     numOfDoors = models.IntegerField(
-        choices=NUM_OF_SEATS_CHOICE,
+        choices=NUM_OF_DOORS_CHOICE,
     )
 
     Manual = 'M'
@@ -115,8 +120,8 @@ class Car(models.Model):
 
     @classmethod
     def search_for_car(cls, busy_cars, branch_name):
-        return cls.objects\
-            .filter(branch__branch_name=branch_name)\
+        return cls.objects \
+            .filter(branch__branch_name=branch_name) \
             .exclude(id__in=busy_cars)
 
 
@@ -150,10 +155,8 @@ class Reservation(models.Model):
     def busy_cars(cls, start_date_date, end_date_date):
         return cls.objects.filter(Q(pickUpDate__date__range=[start_date_date, end_date_date]) |
                                   Q(pickUpDate__date__lte=start_date_date,
-                                    returnDate__date__gte=end_date_date))\
-                          .values('car__id')
-
-
+                                    returnDate__date__gte=end_date_date)) \
+            .values('car__id')
 
 
 class CarDealerCustomerSystem():
@@ -161,7 +164,8 @@ class CarDealerCustomerSystem():
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+
     # user_name = models.CharField(max_length=100, blank=True)
     # user_lastname = models.CharField(max_length=100, blank=True)
     # mail = models.EmailField(max_length=150)
