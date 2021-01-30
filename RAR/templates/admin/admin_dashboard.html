@@ -8,8 +8,7 @@
 
 {% block content %}
 
-<div class="col">
-
+    <div class="col">
 <h4 style="font-family:'Times New Roman'; color: #8dca67">Waited Car Dealer List</h4>
  <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 30%">
   <table class="col align-self-center">
@@ -40,6 +39,8 @@
 
 
   <div class="car-table-admin">
+
+  <a href="{% url 'create_car' %}"><button class="btn btn-secondary btn-danger">Create</button></a>
     <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on The System</h4>
 
   <div class="car-table rounded">

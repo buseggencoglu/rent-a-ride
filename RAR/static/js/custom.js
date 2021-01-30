@@ -14,6 +14,10 @@ $('#id_ccr').inputmask({
     'mask': '999'
 });
 
+$('#id_plate').inputmask({
+    'mask': '99 AAA 999',
+    'placeholder': 'xx xxx xxx'
+});
 
 // to get current year
 function getYear() {

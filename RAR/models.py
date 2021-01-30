@@ -56,6 +56,9 @@ class Car(models.Model):
     airconditioner = models.BooleanField()
     price = models.IntegerField()
     branch = models.ForeignKey(Branch, null=True, on_delete=models.SET_NULL)
+    plate = models.CharField(max_length=10, unique=True)
+    year = models.IntegerField()
+    km = models.IntegerField()
 
     NUM_OF_SEATS_CHOICE = [
         (2, '2'),
@@ -132,8 +135,8 @@ class PrivateMsg(models.Model):
 
 class Reservation(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
-    carDealer = models.ForeignKey(CarDealer, null=True, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, blank=True, null=True, on_delete=models.CASCADE)
+    carDealer = models.ForeignKey(CarDealer, blank=True, null=True, on_delete=models.CASCADE)
     pickUpLocation = models.CharField(max_length=100)
     returnLocation = models.CharField(max_length=100)
     pickUpDate = models.DateTimeField()
