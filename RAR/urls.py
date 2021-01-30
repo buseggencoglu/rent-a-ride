@@ -29,4 +29,5 @@ urlpatterns = [
     path('branch/delete/<int:pk>', views.branch_delete, name='branch_delete'),
     path('branch/update/<int:pk>', views.branch_update, name='branch_update'),
     path('admin/user/delete/<int:pk>', views.car_dealer_reject, name='car_dealer_reject'),
+
 ]

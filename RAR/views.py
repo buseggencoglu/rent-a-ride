@@ -158,7 +158,7 @@ def total_car_list(request):
     user = request.user
     admin = Admin.objects.filter(user=user)
     if len(admin) > 0:
-        context["cars"] = Car.objects.all()
+        context["cars"] = Car.objects.filter(price__gte=25)[0]
         context["car_dealers"] = CarDealer.objects.filter(user__is_active=False)
         context["branch_form"] = ApproveCarDealer()
 
@@ -206,9 +206,8 @@ def create_car(request):
 
     if form.is_valid():
         instance = form.save(commit=False)
-        for i in range(int(posted_data['stock'])):
-            instance.pk = None
-            instance.save()
+        instance.pk = None
+        instance.save()
         if len(car_dealers) > 0:
             return redirect('/car/list')
         else:
@@ -399,6 +398,8 @@ def reservation_update(request, id=None):
 @login_required()
 def reservation_delete(request, pk=None):
     query = get_object_or_404(Reservation, id=pk)
+    if query.pickUpDate < datetime.now():
+        return HttpResponse("Pick up has passed!Cannot delete.")
     query.delete()
     carDealers = CarDealer.objects.filter(user=request.user)
     url = '/reservations/customer'
@@ -628,3 +629,4 @@ def branch_delete(request, pk):
         'branch': branch,
     }
     return render(request, 'admin/branch_deleted.html', context)
+

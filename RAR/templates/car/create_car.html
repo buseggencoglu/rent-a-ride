@@ -18,9 +18,7 @@
             </div>
         </div>
         {% csrf_token %}
-        <div class="form-group">
-            <label for="stock">Stock:</label><input type="number" class="form-control" name="stock">
-          </div>
+
         {{ form|crispy }}
         <button type="submit">AddCar</button>
     </form>

@@ -29,6 +29,9 @@ class CarForm(forms.ModelForm):
             "price",
             "carStatus",
             "branch",
+            "plate",
+            "year",
+            "km"
         ]
 
 
