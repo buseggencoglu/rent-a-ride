@@ -14,6 +14,7 @@
         <table class="table mb-3 table-hover table-striped">
             <thead>
             <th>Image</th>
+            <th>Plate</th>
             <th>Car Name</th>
             <th>Model</th>
             <th>AirConditioner</th>
@@ -22,6 +23,8 @@
             <th>Number of Seats</th>
             <th>Number of Doors</th>
             <th>Transmission</th>
+            <th>Year</th>
+            <th>Km</th>
             <th>Status</th>
             <th></th>
             </thead>
@@ -30,6 +33,7 @@
                       type="post">
                     <tr>
                         <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
+                        <td>{{ data.plate }}</td>
                         <td>{{ data.carName }}</td>
                         <td>{{ data.model }}</td>
                         <td>{{ data.airconditioner }}</td>
@@ -38,6 +42,8 @@
                         <td>{{ data.numOfSeats }}</td>
                         <td>{{ data.numOfDoors }}</td>
                         <td>{{ data.transmission }}</td>
+                        <td>{{ data.year }}</td>
+                        <td>{{ data.km }}</td>
                         <td>{{ data.carStatus }}</td>
                        {% if user_type == 'car_dealer' or user_type == 'customer' %}
                         <td>
