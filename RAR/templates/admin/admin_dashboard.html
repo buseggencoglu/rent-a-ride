@@ -3,86 +3,136 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-<title>Dashboard</title>
+    <title>Dashboard</title>
 {% endblock %}
 
 {% block content %}
 
     <div class="col">
-<h4 style="font-family:'Times New Roman'; color: #8dca67">Waited Car Dealer List</h4>
- <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 30%">
-  <table class="col align-self-center">
-      <thead>
-         <th>Car Dealer</th>
-         <th>Branch</th>
-         <th class="text-center" colspan="2">Approval</th>
-      </thead>
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-column mr-5">
+                <h4 style="font-family:'Times New Roman'; color: #8dca67">Waited Car Dealer List</h4>
+                <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 100%">
+                    <table class="col align-self-center">
+                        <thead>
+                        <th>Car Dealer</th>
+                        <th>Branch</th>
+                        <th class="text-center" colspan="2">Approval</th>
+                        </thead>
 
-      {% for i in car_dealers %}
-      <tr>
-        <td>{{ i.user.username }}</td>
+                        {% for i in car_dealers %}
+                            <tr>
+                                <td>{{ i.user.username }}</td>
 
-        <form class="w-75" action="/admin/user/approve/{{ i.id }}" type="post">
-        {% csrf_token %}
-        <td>
-            {{ branch_form | crispy }}
-        </td>
-        <td><button type="submit" class="btn btn-success">Approve</button></td>
-        </form>
-        <td><a href="/admin/user/delete/{{ i.id }}"><button type="button" class="btn btn-danger">reject</button></a> </td>
-       </tr>
-      {% endfor %}
-  </table>
+                                <form class="w-75" action="/admin/user/approve/{{ i.id }}" type="post">
+                                    {% csrf_token %}
+                                    <td>
+                                        {{ branch_form | crispy }}
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-success">Approve</button>
+                                    </td>
+                                </form>
+                                <td><a href="/admin/user/delete/{{ i.id }}">
+                                    <button type="button" class="btn btn-danger">reject</button>
+                                </a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
 
-</div>
+                </div>
+            </div>
 
+            <div>
+                <h4 style="font-family:'Times New Roman'; color: #8dca67">Sale Graph</h4>
+                <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 100%">
+                    <div id="container">
+                        <canvas id="pie-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="car-table-admin">
+            <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on The System</h4>
 
-  <div class="car-table-admin">
+            <div class="car-table rounded">
+                <table class="table mb-3 table-hover table-striped rounded">
+                    <thead>
+                    <th>Image</th>
+                    <th>Plate</th>
+                    <th>Car Name</th>
+                    <th>Model</th>
+                    <th>AirConditioner</th>
+                    <th>Price</th>
+                    <th>Branch Name</th>
+                    <th>Number of Seats</th>
+                    <th>Number of Doors</th>
+                    <th>Transmission</th>
+                    <th>Year</th>
+                    <th>Km</th>
+                    <th>Status</th>
+                    <th class="text-center" colspan="2">
+                        <a href="{% url 'create_car' %}">Create</a>
+                    </th>
+                    </thead>
+                    {% for data in cars %}
+                        <tr>
+                            <td>{% if data.image %}<img src="{{ data.image.url }}" height="150" width="150">{% endif %}
+                            </td>
+                            <td>{{ data.plate }}</td>
+                            <td>{{ data.carName }}</td>
+                            <td>{{ data.model }}</td>
+                            <td>{{ data.airconditioner }}</td>
+                            <td>{{ data.price }}</td>
+                            <td>{{ data.branch.branch_name }}</td>
+                            <td>{{ data.numOfSeats }}</td>
+                            <td>{{ data.numOfDoors }}</td>
+                            <td>{{ data.transmission }}</td>
+                            <td>{{ data.year }}</td>
+                            <td>{{ data.km }}</td>
+                            <td>{{ data.carStatus }}</td>
+                            <td>
+                                <a href="{% url 'car_update' pk=data.id %}">Update</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
+                            </td>
 
-  <a href="{% url 'create_car' %}"><button class="btn btn-secondary btn-danger">Create</button></a>
-    <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on The System</h4>
-
-  <div class="car-table rounded">
-    <table class="table mb-3 table-hover table-striped rounded">
-    <thead>
-    <th>Image</th>
-    <th>Car Name</th>
-    <th>Model</th>
-    <th>AirConditioner</th>
-    <th>Price</th>
-    <th>Branch Name</th>
-    <th>Number of Seats</th>
-    <th>Number of Doors</th>
-    <th>Transmission</th>
-    <th>Status</th>
-    <th class="text-center" colspan="2">
-        <a href="{% url 'create_car' %}">Create</a>
-    </th>
-    </thead>
-    {% for data in cars %}
-    <tr>
-        <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
-        <td>{{data.carName}}</td>
-        <td>{{data.model}}</td>
-        <td>{{data.airconditioner}}</td>
-        <td>{{data.price}}</td>
-        <td>{{data.branch.branch_name}}</td>
-        <td>{{data.numOfSeats}}</td>
-        <td>{{data.numOfDoors}}</td>
-        <td>{{data.transmission}}</td>
-        <td>{{data.carStatus}}</td>
-        <td>
-            <a href="{% url 'car_update' pk=data.id %}">Update</a>
-        </td>
-        <td>
-            <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
-        </td>
-
-    </tr>
-    {% endfor %}
-   </table>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+
+    <script>
+
+        var config = {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: {{ data|safe }},
+                    label: 'Sales'
+                }],
+                labels: {{ labels|safe }}
+            },
+
+            options: {
+                plugins: {
+                    colorschemes: {
+                        scheme: 'brewer.Paired12'
+                    }
+                },
+                responsive: true
+            }
+        };
+
+        window.onload = function () {
+            var ctx = document.getElementById('pie-chart').getContext('2d');
+            window.myPie = new Chart(ctx, config);
+        };
+
+    </script>
+
 {% endblock %}

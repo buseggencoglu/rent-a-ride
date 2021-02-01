@@ -10,6 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 class Branch(models.Model):
     branch_name = models.CharField(max_length=100, default="")
     branch_location = models.TextField()
+    rank = models.IntegerField(default=0)
 
     @classmethod
     def get_by_branch_name(cls, branch_name):

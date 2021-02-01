@@ -86,22 +86,28 @@ def create_reservation(request, car_id, pickUpLocation, returnLocation, pickUpDa
 @login_required()
 def complete_reservation(request):
     posted_data = request.GET
+    branch_name = request.GET.get('pickUpLocation')
     form = ReservationForm(posted_data)
     credit_form = CreditCardForm(posted_data)
     user = request.user
     customers = Customer.objects.filter(user=user)
     car_dealers = CarDealer.objects.filter(user=user)
+    branch = Branch.objects.filter(branch_name=branch_name)[0]
     status = False
     if form.is_valid() and len(customers) == 0 and not request.is_ajax():
         reservation = form.save(commit=False)
         reservation.paymentStatus = False
         reservation.carDealer = car_dealers[0]
+        branch.rank += 10
+        branch.save()
         reservation.save()
         status = True
     elif form.is_valid() and credit_form.is_valid() and not request.is_ajax():
         reservation = form.save(commit=False)
         reservation.paymentStatus = True
         reservation.customer = customers[0]
+        branch.rank += 10
+        branch.save()
         reservation.save()
         status = True
 
@@ -156,11 +162,22 @@ def car_list(request):
 def total_car_list(request):
     context = {}
     user = request.user
+    labels = []
+    data = []
     admin = Admin.objects.filter(user=user)
     if len(admin) > 0:
-        context["cars"] = Car.objects.filter(price__gte=25)[0]
+        context["cars"] = Car.objects.all()
         context["car_dealers"] = CarDealer.objects.filter(user__is_active=False)
         context["branch_form"] = ApproveCarDealer()
+
+
+    queryset = Branch.objects.order_by('-rank')
+    for branch in queryset:
+        labels.append(branch.branch_name)
+        data.append(branch.rank)
+
+    context['labels']=labels
+    context['data']= data
 
     return render(request, 'admin/admin_dashboard.html', context)
 
