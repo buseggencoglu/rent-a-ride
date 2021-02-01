@@ -3,10 +3,13 @@ import urllib
 from datetime import datetime
 from urllib import parse
 
+from background_task import background
 from django.core import serializers
+from django.db.backends.signals import connection_created
+from django.dispatch import receiver
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -15,7 +18,7 @@ from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
 
-from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin, Profile
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin, Profile, Notifications
 from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, ApproveCarDealer, \
     BranchForm
 
@@ -87,6 +90,7 @@ def create_reservation(request, car_id, pickUpLocation, returnLocation, pickUpDa
 def complete_reservation(request):
     posted_data = request.GET
     branch_name = request.GET.get('pickUpLocation')
+    customer_name = request.GET.get('customer_name')
     form = ReservationForm(posted_data)
     credit_form = CreditCardForm(posted_data)
     user = request.user
@@ -98,6 +102,7 @@ def complete_reservation(request):
         reservation = form.save(commit=False)
         reservation.paymentStatus = False
         reservation.carDealer = car_dealers[0]
+        reservation.customer_name = customer_name
         branch.rank += 10
         branch.save()
         reservation.save()
@@ -417,11 +422,19 @@ def reservation_delete(request, pk=None):
     query = get_object_or_404(Reservation, id=pk)
     if query.pickUpDate < datetime.now():
         return HttpResponse("Pick up has passed!Cannot delete.")
-    query.delete()
     carDealers = CarDealer.objects.filter(user=request.user)
     url = '/reservations/customer'
+    message = f'{query} is canceled by {request.user.username}. Your payment will returned!'
     if len(carDealers) > 0:
         url = '/reservations/cardealer'
+        f'{query} is canceled by you. Your payment will returned!'
+    if query.customer:
+        notification = Notifications(
+            message=message,
+            user=query.customer.user
+        )
+        notification.save()
+    query.delete()
     return HttpResponseRedirect(url)
 
 @login_required()
@@ -646,4 +659,17 @@ def branch_delete(request, pk):
         'branch': branch,
     }
     return render(request, 'admin/branch_deleted.html', context)
+
+
+@background(schedule=3600)
+def clean_completed_reservations():
+    reservations = Reservation.objects.filter(pickUpDate__lt=datetime.now(), paymentStatus=False)
+    for reservation in reservations:
+        reservation.delete()
+
+
+def delete_notification(request, pk):
+    instance = get_object_or_404(Notifications, pk=pk)
+    instance.delete()
+    return HttpResponse(status=204)
 

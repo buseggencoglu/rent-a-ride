@@ -1,8 +1,7 @@
 
 from django.urls import path
 from . import views
-
-
+from .views import clean_completed_reservations
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -29,5 +28,7 @@ urlpatterns = [
     path('branch/delete/<int:pk>', views.branch_delete, name='branch_delete'),
     path('branch/update/<int:pk>', views.branch_update, name='branch_update'),
     path('admin/user/delete/<int:pk>', views.car_dealer_reject, name='car_dealer_reject'),
-
+    path('delete/notification/<int:pk>', views.delete_notification, name='delete_notification'),
 ]
+
+clean_completed_reservations()

@@ -6,6 +6,8 @@ from django.db.models import Q
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+
 
 class Branch(models.Model):
     branch_name = models.CharField(max_length=100, default="")
@@ -137,6 +139,7 @@ class PrivateMsg(models.Model):
 class Reservation(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, blank=True, null=True, on_delete=models.CASCADE)
+    customer_name = models.CharField(blank=True, null=True, max_length=36)
     carDealer = models.ForeignKey(CarDealer, blank=True, null=True, on_delete=models.CASCADE)
     pickUpLocation = models.CharField(max_length=100)
     returnLocation = models.CharField(max_length=100)
@@ -160,6 +163,9 @@ class Reservation(models.Model):
                                   Q(pickUpDate__date__lte=start_date_date,
                                     returnDate__date__gte=end_date_date))\
                           .values('car__id')
+
+    def __str__(self):
+        return f'Reservation of {self.car} on {self.pickUpDate.date()}-{self.returnDate.date()}'
 
 
 
@@ -194,3 +200,9 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
+
+
+class Notifications(models.Model):
+    message = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(default=timezone.now())

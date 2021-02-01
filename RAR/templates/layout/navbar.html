@@ -26,27 +26,27 @@
                         </li>
 
                         {% if user.is_authenticated %}
-                        {% if user_type == 'car_dealer' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'car_list' %}">
-                                Control Panel
-                            </a>
-                        </li>
+                            {% if user_type == 'car_dealer' %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'car_list' %}">
+                                        Control Panel
+                                    </a>
+                                </li>
 
-                        {% endif %}
+                            {% endif %}
 
-                          {% if user_type == 'admin' %}
-                              <li class="nav-item">
-                                <a class="nav-link" href="{% url 'total_car_list' %}">
-                                          Dashboard
-                              </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'branch_list' %}">
-                                Branches
-                            </a>
-                        </li>
-                        {% endif %}
+                            {% if user_type == 'admin' %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'total_car_list' %}">
+                                        Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'branch_list' %}">
+                                        Branches
+                                    </a>
+                                </li>
+                            {% endif %}
 
                             {% if user_type == 'customer' %}
                                 <li class="nav-item">
@@ -80,11 +80,11 @@
                                 </a>
                             </li>
                         {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">
-                                Login
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">
+                                    Login
+                                </a>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>

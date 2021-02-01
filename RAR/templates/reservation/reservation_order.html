@@ -14,6 +14,10 @@
             <i style="font-family: 'Times New Roman'">Please, enter your informations correctly</i>
             {{ card_form | crispy }}
         {% endif %}
+        {% if user_type == 'car_dealer' %}
+            <label for="customer_name" >Customer Name</label>
+            <input required class="form-control" name="customer_name"/>
+        {% endif %}
         <button type="submit" onclick="this.disabled=true;this.form.submit();" class="btn btn-primary mt-5 mb-5" style="background-color: #8dca67">
             Finish Reservation
         </button>

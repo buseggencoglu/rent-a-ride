@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AnonymousUser
 
-from RAR.models import Customer, CarDealer
+from RAR.models import Customer, CarDealer, Notifications
 
 
 def user_type(request):
@@ -8,6 +8,7 @@ def user_type(request):
     if not user.is_anonymous:
         customers = Customer.objects.filter(user=user)
         car_dealers = CarDealer.objects.filter(user=user)
+        notifications = Notifications.objects.filter(user=user)
         user_type = 'admin'
         if len(customers) > 0:
             user_type = 'customer'
@@ -15,6 +16,7 @@ def user_type(request):
             user_type= 'car_dealer'
         return {
             'user': user,
-            'user_type': user_type
+            'user_type': user_type,
+            'notifications': notifications
         }
     return {}

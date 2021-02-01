@@ -19,6 +19,20 @@ $('#id_plate').inputmask({
     'placeholder': 'xx xxx xxx'
 });
 
+$('.toast').toast({
+    autohide: false
+});
+$('.toast').toast('show');
+
+function notificationDeleted(id) {
+    $.ajax({
+        url: '/delete/notification/' + id,
+        success: function () {
+            $('#toast-' + id).toast('hide');
+        }
+    });
+}
+
 // to get current year
 function getYear() {
     var currentDate = new Date();
