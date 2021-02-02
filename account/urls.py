@@ -4,7 +4,10 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('login/', views.login_request, name='login'),
-    path('register/', views.register, name='register'),
+    path('register/', views.role_choose, name='register'),
+    path('register_customer/', views.register_customer, name='register_customer'),
+    path('register_cardealer/', views.register_cardealer, name='register_cardealer'),
+    # path('register/', views.register, name='register'),
     path('sent/', views.activation_sent_view, name="sent"),
     path('activate/<slug:uidb64>/<slug:token>/', views.activate, name="activate"),
     path('logout/', views.logout_request, name='logout'),
