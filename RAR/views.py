@@ -15,9 +15,8 @@ from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
 
-from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin ,Profile
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin, Profile
 from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, ApproveCarDealer
-
 
 
 def home(request):
@@ -153,6 +152,7 @@ def car_list(request):
 
     return render(request, 'car/car_list.html', context)
 
+
 def total_car_list(request):
     context = {}
     user = request.user
@@ -161,10 +161,12 @@ def total_car_list(request):
         context["cars"] = Car.objects.all()
         context["car_dealers"] = CarDealer.objects.filter(user__is_active=False)
         context["branch_form"] = ApproveCarDealer()
+        context["car_dealers_dataset"] = CarDealer.objects.all()
 
     return render(request, 'admin/admin_dashboard.html', context)
 
-def car_dealer_approve(request,pk):
+
+def car_dealer_approve(request, pk):
     posted_data = ApproveCarDealer(request.GET)
     dealer = CarDealer.objects.get(id=pk)
     dealer.user.is_active = True
@@ -174,12 +176,12 @@ def car_dealer_approve(request,pk):
 
     return HttpResponseRedirect('/admin/dashboard')
 
-def car_dealer_reject(request,pk):
+
+def car_dealer_reject(request, pk):
     dealer = CarDealer.objects.get(id=pk)
     dealer.delete()
 
     return HttpResponseRedirect('/admin/dashboard')
-
 
 
 def car_detail(request, id=None):
@@ -202,13 +204,12 @@ def create_car(request):
         'branch': branch_id
     })
 
-
     if form.is_valid():
         instance = form.save(commit=False)
         for i in range(int(posted_data['stock'])):
             instance.pk = None
             instance.save()
-        if len(car_dealers)>0:
+        if len(car_dealers) > 0:
             return redirect('/car/list')
         else:
             return redirect('/admin/dashboard')
@@ -300,7 +301,7 @@ def car_update(request, pk):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        if len(car_dealers)>0:
+        if len(car_dealers) > 0:
             return redirect('/car/list')
         else:
             return redirect('/admin/dashboard')
@@ -580,5 +581,3 @@ def users(request):
 def profile(request, pk):
     profile = Profile.objects.get(user_id=pk)
     return render(request, 'layout/profile.html', {'profile': profile})
-
-

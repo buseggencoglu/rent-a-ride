@@ -10,80 +10,105 @@
 
 <div class="col">
 
-<h4 style="font-family:'Times New Roman'; color: #8dca67">Waited Car Dealer List</h4>
- <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 30%">
-  <table class="col align-self-center">
-      <thead>
-         <th>Car Dealer</th>
-         <th>Branch</th>
-         <th class="text-center" colspan="2">Approval</th>
-      </thead>
+    <h4 style="font-family:'Times New Roman'; color: #8dca67">Waited Car Dealer List</h4>
+    <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 30%">
+        <table class="col align-self-center">
+            <thead>
+            <th>Car Dealer</th>
+            <th>Branch</th>
+            <th class="text-center" colspan="2">Approval</th>
+            </thead>
 
-      {% for i in car_dealers %}
-      <tr>
-        <td>{{ i.user.username }}</td>
+            {% for i in car_dealers %}
+            <tr>
+                <td>{{ i.user.username }}</td>
 
-        <form class="w-75" action="/admin/user/approve/{{ i.id }}" type="post">
-        {% csrf_token %}
-        <td>
-            {{ branch_form | crispy }}
-        </td>
-        <td><button type="submit" class="btn btn-success">Approve</button></td>
-        </form>
-        <td><a href="/admin/user/delete/{{ i.id }}"><button type="button" class="btn btn-danger">reject</button></a> </td>
-       </tr>
-      {% endfor %}
-  </table>
+                <form class="w-75" action="/admin/user/approve/{{ i.id }}" type="post">
+                    {% csrf_token %}
+                    <td>
+                        {{ branch_form | crispy }}
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </td>
+                </form>
+                <td><a href="/admin/user/delete/{{ i.id }}">
+                    <button type="button" class="btn btn-danger">reject</button>
+                </a></td>
+            </tr>
+            {% endfor %}
+        </table>
 
-</div>
-
-
-
-  <div class="car-table-admin">
-    <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on The System</h4>
-
-  <div class="car-table rounded">
-    <table class="table mb-3 table-hover table-striped rounded">
-    <thead>
-    <th>Image</th>
-    <th>Car Name</th>
-    <th>Model</th>
-    <th>AirConditioner</th>
-    <th>Price</th>
-    <th>Branch Name</th>
-    <th>Stock</th>
-    <th>Number of Seats</th>
-    <th>Number of Doors</th>
-    <th>Transmission</th>
-    <th>Status</th>
-    <th class="text-center" colspan="2">
-        <a href="{% url 'create_car' %}">Create</a>
-    </th>
-    </thead>
-    {% for data in cars %}
-    <tr>
-        <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
-        <td>{{data.carName}}</td>
-        <td>{{data.model}}</td>
-        <td>{{data.airconditioner}}</td>
-        <td>{{data.price}}</td>
-        <td>{{data.branch.branch_name}}</td>
-        <td>{{data.stock}}</td>
-        <td>{{data.numOfSeats}}</td>
-        <td>{{data.numOfDoors}}</td>
-        <td>{{data.transmission}}</td>
-        <td>{{data.carStatus}}</td>
-        <td>
-            <a href="{% url 'car_update' pk=data.id %}">Update</a>
-        </td>
-        <td>
-            <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
-        </td>
-
-    </tr>
-    {% endfor %}
-   </table>
     </div>
-  </div>
+
+
+    <div class="car-table-admin">
+        <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on The System</h4>
+
+        <div class="car-table rounded">
+            <table class="table mb-3 table-hover table-striped rounded">
+                <thead>
+                <th>Image</th>
+                <th>Car Name</th>
+                <th>Model</th>
+                <th>AirConditioner</th>
+                <th>Price</th>
+                <th>Branch Name</th>
+                <th>Stock</th>
+                <th>Number of Seats</th>
+                <th>Number of Doors</th>
+                <th>Transmission</th>
+                <th>Status</th>
+                <th class="text-center" colspan="2">
+                    <a href="{% url 'create_car' %}">Create</a>
+                </th>
+                </thead>
+                {% for data in cars %}
+                <tr>
+                    <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
+                    <td>{{data.carName}}</td>
+                    <td>{{data.model}}</td>
+                    <td>{{data.airconditioner}}</td>
+                    <td>{{data.price}}</td>
+                    <td>{{data.branch.branch_name}}</td>
+                    <td>{{data.stock}}</td>
+                    <td>{{data.numOfSeats}}</td>
+                    <td>{{data.numOfDoors}}</td>
+                    <td>{{data.transmission}}</td>
+                    <td>{{data.carStatus}}</td>
+                    <td>
+                        <a href="{% url 'car_update' pk=data.id %}">Update</a>
+                    </td>
+                    <td>
+                        <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+
+    <h4 style="font-family: 'Times New Roman';padding-top: 50px; color: #8dca67">CarDealers on The System</h4>
+    <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 30%;">
+        <table class="col align-self-center">
+            <thead>
+            <th>Name</th>
+            <th>Rate</th>
+            <th>Branch Name</th>
+            </thead>
+
+            {% for data in car_dealers_dataset %}
+            <tr>
+                <td>{{data.user.username}}</td>
+                <td>{{data.rate}}</td>
+                <td>{{data.branch}}</td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
+
 {% endblock %}
