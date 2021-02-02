@@ -43,6 +43,24 @@
                 </div>
             </div>
 
+            <div class="mr-5">
+                <h4 style="font-family: 'Times New Roman';color: #8dca67">CarDealers on The System</h4>
+                <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 100%;">
+                    <table class="col align-self-center">
+                        <thead>
+                        <th>Name</th>
+                        <th>Branch Name</th>
+                        </thead>
+
+                        {% for data in car_dealers_dataset %}
+                        <tr>
+                            <td>{{data.user.username}}</td>
+                            <td>{{data.branchId.branch_name}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
             <div>
                 <h4 style="font-family:'Times New Roman'; color: #8dca67">Sale Graph</h4>
                 <div class="cd-appr-table table rounded" style="border: 2px darkslategrey solid; width: 100%">
@@ -51,12 +69,15 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="car-table-admin">
             <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on The System</h4>
 
-            <a href="{% url 'create_car' %}"><button type="submit" class="btn btn-secondary mb-3 crt-btn button4">Create Car</button></a>
+            <div style="width: 200px;">
+                <a href="{% url 'create_car' %}"><button type="submit" class="btn btn-secondary mb-3 crt-btn button4">Create Car</button></a>
+            </div>
 
             <div class="car-table rounded">
                 <table class="table table-hover table-striped rounded" >

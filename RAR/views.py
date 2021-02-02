@@ -174,6 +174,7 @@ def total_car_list(request):
         context["cars"] = Car.objects.all()
         context["car_dealers"] = CarDealer.objects.filter(user__is_active=False)
         context["branch_form"] = ApproveCarDealer()
+        context["car_dealers_dataset"] = CarDealer.objects.filter(user__is_active=True)
 
 
     queryset = Branch.objects.order_by('-rank')
