@@ -710,9 +710,7 @@ def view_my_reservation_admin_history(request):
 def branch_car_list(request, pk):
     cars = Car.objects.all()
     branch = get_object_or_404(Branch, id=pk)
-    context = {
-        "branch": branch,
-    }
+    context = {"branch": branch }
     context["cars"] = cars
 
     return render(request, 'admin/branch_car_list.html', context)
