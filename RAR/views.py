@@ -705,3 +705,14 @@ def view_my_reservation_admin_history(request):
     context = {}
     context["dataset"] = Reservation.objects.filter(pickUpDate__lt=datetime.now())
     return render(request, 'admin/admin_history.html', context)
+
+
+def branch_car_list(request, pk):
+    cars = Car.objects.all()
+    branch = get_object_or_404(Branch, id=pk)
+    context = {
+        "branch": branch,
+    }
+    context["cars"] = cars
+
+    return render(request, 'admin/branch_car_list.html', context)
