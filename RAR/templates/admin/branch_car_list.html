@@ -1,0 +1,51 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %}
+<title>Branch Car List</title>
+{% endblock %}
+
+{% block content %}
+<table class="table mb-3 table-hover table-striped">
+    <thead>
+    <th>Image</th>
+    <th>Car Name</th>
+    <th>Model</th>
+    <th>AirConditioner</th>
+    <th>Price</th>
+    <th>Branch Name</th>
+    <th>Number of Seats</th>
+    <th>Number of Doors</th>
+    <th>Transmission</th>
+    <th>Status</th>
+    <th class="text-center" colspan="2">
+        <a href="{% url 'create_car' %}">Create</a>
+    </th>
+    </thead>
+    {% for data in cars %}
+        {% if data.branch == branch %}
+        <tr>
+            <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
+            <td>{{data.carName}}</td>
+            <td>{{data.model}}</td>
+            <td>{{data.airconditioner}}</td>
+            <td>{{data.price}}</td>
+            <td>{{data.branch.branch_name}}</td>
+            <td>{{data.numOfSeats}}</td>
+            <td>{{data.numOfDoors}}</td>
+            <td>{{data.transmission}}</td>
+            <td>{{data.carStatus}}</td>
+            <td>
+                <a href="{% url 'car_update' pk=data.id %}">Update</a>
+            </td>
+            <td>
+                <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
+            </td>
+
+        </tr>
+        {% endif %}
+
+    {% endfor %}
+</table>
+
+{% endblock %}
