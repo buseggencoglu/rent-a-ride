@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
+from django.utils.timezone import datetime, timedelta
+from datetime import date
 
 from RAR.models import Customer, CarDealer
 from .tokens import account_activation_token
@@ -113,6 +115,11 @@ def register_customer(request):
                     'form': form,
                     'error_message': 'Email already exists.'
                 })
+            if (date.today() - form.cleaned_data['birthDate']) < timedelta(days=18 * 365):
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Age should be greater than 18.'
+                })
 
             user = form.save()
             Customer.objects.create(user=user, licenseId=form.cleaned_data['licenseId'],
@@ -149,7 +156,7 @@ def register_cardealer(request):
                 })
 
             user = form.save()
-            CarDealer.objects.create(user=user, branch=form.cleaned_data['branch'], rate=form.cleaned_data['rate'])
+            CarDealer.objects.create(user=user, rate=0)
             user.is_active = False
             user.save()
 

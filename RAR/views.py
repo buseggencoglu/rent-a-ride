@@ -175,14 +175,13 @@ def total_car_list(request):
         context["branch_form"] = ApproveCarDealer()
         context["car_dealers_dataset"] = CarDealer.objects.filter(user__is_active=True)
 
-
     queryset = Branch.objects.order_by('-rank')
     for branch in queryset:
         labels.append(branch.branch_name)
         data.append(branch.rank)
 
-    context['labels']=labels
-    context['data']= data
+    context['labels'] = labels
+    context['data'] = data
 
     return render(request, 'admin/admin_dashboard.html', context)
 
@@ -224,7 +223,6 @@ def create_car(request):
     form = CarForm(posted_data, request.FILES or None, branch_status=len(car_dealers) > 0, initial={
         'branch': branch_id
     })
-
 
     if form.is_valid():
         instance = form.save(commit=False)
@@ -375,11 +373,13 @@ def reservation_list_old(request):
     }
     return render(request, 'reservation/reservation_list.html', context)
 
+
 @login_required()
 def reservation_list(request):
     context = {}
     context["dataset"] = Reservation.objects.filter(pickUpDate__gte=datetime.now())
     return render(request, 'reservation/reservation_list.html', context)
+
 
 @login_required()
 def reservation_detail(request, id=None):
@@ -388,6 +388,7 @@ def reservation_detail(request, id=None):
         "detail": detail,
     }
     return render(request, 'reservation/reservation_detail.html', context)
+
 
 @login_required()
 def reservation_created(request):
@@ -403,6 +404,7 @@ def reservation_created(request):
     }
     return render(request, 'reservation/reservation_create.html', context)
 
+
 @login_required()
 def reservation_update(request, id=None):
     detail = get_object_or_404(Reservation, id=id)
@@ -416,6 +418,7 @@ def reservation_update(request, id=None):
         "title": "Update Reservation"
     }
     return render(request, 'reservation/reservation_create.html', context)
+
 
 @login_required()
 def reservation_delete(request, pk=None):
@@ -437,6 +440,7 @@ def reservation_delete(request, pk=None):
     query.delete()
     return HttpResponseRedirect(url)
 
+
 @login_required()
 def view_my_reservation_cardealer(request):
     username = request.user
@@ -447,11 +451,13 @@ def view_my_reservation_cardealer(request):
     return render(request, 'reservation/my_reservations.html', {'reservation_list': reservations,
                                                                 'delete_url': ''})
 
+
 @login_required()
 def view_my_reservation_customer(request):
     username = request.user
     user = User.objects.get(username=username)
-    reservations = Reservation.objects.filter(customer=Customer.get_customer_by_user(user), pickUpDate__gte=datetime.now())
+    reservations = Reservation.objects.filter(customer=Customer.get_customer_by_user(user),
+                                              pickUpDate__gte=datetime.now())
     return render(request, 'reservation/my_reservations.html', {'reservation_list': reservations})
 
 
@@ -637,7 +643,7 @@ def branch_list(request):
 def branch_update(request, pk):
     detail = get_object_or_404(Branch, pk=pk)
 
-    form = BranchForm(request.POST or None, request.FILES or None,  instance=detail)
+    form = BranchForm(request.POST or None, request.FILES or None, instance=detail)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -667,28 +673,33 @@ def clean_completed_reservations():
     for reservation in reservations:
         reservation.delete()
 
+
 @login_required()
 def delete_notification(request, pk):
     instance = get_object_or_404(Notifications, pk=pk)
     instance.delete()
     return HttpResponse(status=204)
 
+
 @login_required()
 def view_my_reservation_customer_history(request):
-        username = request.user
-        user = User.objects.get(username=username)
-        reservations = Reservation.objects.filter(customer=Customer.get_customer_by_user(user), pickUpDate__lt=datetime.now())
-        return render(request, 'reservation/reservation_history.html', {'reservation_history': reservations})
+    username = request.user
+    user = User.objects.get(username=username)
+    reservations = Reservation.objects.filter(customer=Customer.get_customer_by_user(user),
+                                              pickUpDate__lt=datetime.now())
+    return render(request, 'reservation/reservation_history.html', {'reservation_history': reservations})
+
 
 @login_required()
 def view_my_reservation_cardealer_history(request):
-        username = request.user
-        user = User.objects.get(username=username)
-        carDealer = CarDealer.objects.get(user=user)
-        pickup = carDealer.branchId.branch_name
-        reservations = Reservation.objects.filter(pickUpLocation=pickup, pickUpDate__lt=datetime.now())
-        return render(request, 'reservation/reservation_history.html', {'reservation_history': reservations,
+    username = request.user
+    user = User.objects.get(username=username)
+    carDealer = CarDealer.objects.get(user=user)
+    pickup = carDealer.branchId.branch_name
+    reservations = Reservation.objects.filter(pickUpLocation=pickup, pickUpDate__lt=datetime.now())
+    return render(request, 'reservation/reservation_history.html', {'reservation_history': reservations,
                                                                     'delete_url': ''})
+
 
 def view_my_reservation_admin_history(request):
     context = {}

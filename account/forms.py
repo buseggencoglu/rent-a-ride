@@ -6,6 +6,7 @@ from django.contrib.auth import (
     login,
     logout,
 )
+from django.forms import DateInput
 
 from RAR.models import CarDealer, Branch
 
@@ -28,10 +29,10 @@ USER_TYPES = (
 
 
 class CustomerRegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=100, help_text='First Name')
-    last_name = forms.CharField(max_length=100, help_text='Last Name')
-    email = forms.EmailField(max_length=150, help_text='Email')
-    birthDate = forms.DateField()
+    first_name = forms.CharField(max_length=100, help_text='First Name',widget=forms.TextInput)
+    last_name = forms.CharField(max_length=100, help_text='Last Name',widget=forms.TextInput)
+    email = forms.EmailField(max_length=150, help_text='Email',widget=forms.EmailInput)
+    birthDate = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
     licenseId = forms.IntegerField()
 
     class Meta:
@@ -40,11 +41,9 @@ class CustomerRegisterForm(UserCreationForm):
 
 
 class CarDealerRegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=100, help_text='First Name')
-    last_name = forms.CharField(max_length=100, help_text='Last Name')
-    email = forms.EmailField(max_length=150, help_text='Email')
-    branch = forms.ModelChoiceField(queryset=Branch.objects.all())
-    rate = forms.IntegerField()
+    first_name = forms.CharField(max_length=100, help_text='First Name',widget=forms.TextInput)
+    last_name = forms.CharField(max_length=100, help_text='Last Name',widget=forms.TextInput)
+    email = forms.EmailField(max_length=150, help_text='Email',widget=forms.EmailInput)
 
     class Meta:
         model = User

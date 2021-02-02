@@ -34,7 +34,7 @@ class Admin(models.Model):
 class CarDealer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     branchId = models.ForeignKey(Branch, null=True, on_delete=models.CASCADE)
-    rate = models.IntegerField(null=True)
+    rate = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return self.user.username
