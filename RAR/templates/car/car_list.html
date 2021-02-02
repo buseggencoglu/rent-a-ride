@@ -10,6 +10,9 @@
     <thead>
     <th>Image</th>
     <th>Car Name</th>
+    <th>Plate</th>
+    <th>Year</th>
+    <th>Km</th>
     <th>Model</th>
     <th>AirConditioner</th>
     <th>Price</th>
@@ -26,6 +29,9 @@
     <tr>
         <td>{% if data.image %}<img src="{{data.image.url}}" height="150" width="150">{% endif %}</td>
         <td>{{data.carName}}</td>
+        <td>{{data.plate}}</td>
+        <td>{{data.year}}</td>
+        <td>{{data.km}}</td>
         <td>{{data.model}}</td>
         <td>{{data.airconditioner}}</td>
         <td>{{data.price}}</td>

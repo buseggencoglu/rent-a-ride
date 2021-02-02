@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'account.apps.AccountConfig',
     'django_filters',
+    'background_task',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
