@@ -5,7 +5,6 @@ from urllib import parse
 
 from background_task import background
 from django.core import serializers
-from django.db.backends.signals import connection_created
 from django.dispatch import receiver
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
