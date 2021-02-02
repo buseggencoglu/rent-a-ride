@@ -1,4 +1,4 @@
-
+from background_task.models import Task
 from django.urls import path
 from . import views
 from .views import clean_completed_reservations
@@ -36,4 +36,4 @@ urlpatterns = [
 
 ]
 
-clean_completed_reservations()
+clean_completed_reservations(repeat=10)
