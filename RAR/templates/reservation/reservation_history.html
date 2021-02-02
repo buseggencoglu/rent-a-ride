@@ -8,15 +8,15 @@
 
 {% block content %}
   <div class="col">
-     <h5 style="color: #8f908f; font-family: 'Times New Roman'">{{ user.username }} reservations</h5>
+     <h5 style="color: #8f908f; font-family: 'Times New Roman'">{{ user.username }} reservations' history</h5>
 
-     {% if user_type == 'customer' %}
-     <a href="/reservations/customer/history"> <button class="btn-hist btn-2 mb-3">
-        <p>Switch for History</p>
+      {% if user_type == 'customer' %}
+     <a href="/reservations/customer"> <button class="btn-hist btn-2 mb-3">
+        <p>Switch for Current</p>
      </button></a>
          {% elif user_type == 'car_dealer' %}
-          <a href="/reservations/cardealer/history"> <button class="btn-hist btn-2 mb-3">
-             <p>Switch for History</p>
+          <a href="/reservations/cardealer"> <button class="btn-hist btn-2 mb-3">
+             <p>Switch for Current</p>
           </button></a>
          {% else %}
      {% endif %}
@@ -27,15 +27,14 @@
     <tr>
         <th>Plate</th>
         <th>Car</th>
-        {% if user_type == 'car_dealer' %}<th>Customer</th>{% endif %}
+         {% if user_type == 'car_dealer' %}<th>Username</th>{% endif %}
         <th>Pick-Up Location</th>
         <th>Return Location</th>
         <th>Pick-Up Date</th>
         <th>Return Date</th>
         <th>Payment Status</th>
-        <th>Delete Option</th>
     </tr>
-    {% for r in reservation_list %}
+    {% for r in reservation_history %}
     <tr>
         <td>{{ r.car.plate }}</td>
         <td>{{ r.car.carName }}</td>
@@ -45,9 +44,6 @@
         <td>{{ r.pickUpDate }}</td>
         <td>{{ r.returnDate }}</td>
         <td>{{ r.paymentStatus }}</td>
-        <td>
-            <a href="/reservations/delete/customer/{{ r.id }}">Delete</a>
-        </td>
     </tr>
     {% endfor %}
 

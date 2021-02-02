@@ -29,6 +29,11 @@ urlpatterns = [
     path('branch/update/<int:pk>', views.branch_update, name='branch_update'),
     path('admin/user/delete/<int:pk>', views.car_dealer_reject, name='car_dealer_reject'),
     path('delete/notification/<int:pk>', views.delete_notification, name='delete_notification'),
+    path('reservations/customer/history', views.view_my_reservation_customer_history, name='my_reservation_customer_history'),
+    path('reservations/cardealer/history', views.view_my_reservation_cardealer_history, name='my_reservation_cardealer_history'),
+    path('reservations/admin/history', views.view_my_reservation_admin_history, name='my_reservation_admin_history'),
+
+
 ]
 
 clean_completed_reservations()

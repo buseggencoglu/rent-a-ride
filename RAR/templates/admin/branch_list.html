@@ -6,26 +6,32 @@
 {% endblock %}
 
 {% block content %}
+
+<div class="col">
+
+<h4 style="font-family: 'Times New Roman'; color: #8dca67">Branchs on The System</h4>
+
+<a href="{% url 'add_branch' %}"><button type="submit" class="btn btn-secondary mb-3 crt-btn button4" style="padding: 1em 1.5em">Add Branch</button></a>
+
 <table class="table mb-3 table-hover table-striped">
     <thead>
     <th>Branch Name</th>
     <th>Location</th>
-    <th class="text-center" colspan="2">
-        <a href="{% url 'add_branch' %}">Add</a>
-    </th>
+    <th></th>
+    <th></th>
     </thead>
     {% for data in dataset %}
     <tr>
         <td>{{data.branch_name}}</td>
         <td>{{data.branch_location}}</td>
         <td>
-            <a href="{% url 'branch_update' pk=data.id %}">Update</a>
+            <a href="{% url 'branch_update' pk=data.id %}"><button type="submit" class="btn btn-info">Update</button></a>
         </td>
         <td>
-            <a href="{% url 'branch_delete' pk=data.id %}">Delete</a>
+            <a href="{% url 'branch_delete' pk=data.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
         </td>
     </tr>
     {% endfor %}
 </table>
-
+</div>
 {% endblock %}

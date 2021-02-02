@@ -6,6 +6,11 @@
 {% endblock %}
 
 {% block content %}
+
+ <div class="col">
+     <h4 style="font-family: 'Times New Roman'; color: #8dca67">Cars on Your Branch</h4>
+     <a href="{% url 'create_car' %}"><button type="submit" class="btn btn-secondary mb-3 crt-btn button4" style="padding: 1em 1.5em">Create Car</button></a>
+
 <table class="table mb-3 table-hover table-striped">
     <thead>
     <th>Image</th>
@@ -18,9 +23,8 @@
     <th>Number of Doors</th>
     <th>Transmission</th>
     <th>Status</th>
-    <th class="text-center" colspan="2">
-        <a href="{% url 'create_car' %}">Create</a>
-    </th>
+    <th></th>
+    <th></th>
     </thead>
     {% for data in dataset %}
     <tr>
@@ -35,14 +39,14 @@
         <td>{{data.transmission}}</td>
         <td>{{data.carStatus}}</td>
         <td>
-            <a href="{% url 'car_update' pk=data.id %}">Update</a>
+             <a href="{% url 'car_update' pk=data.id %}"><button type="submit" class="btn btn-info">Update</button></a>
         </td>
         <td>
-            <a href="{% url 'car_delete' pk=data.id %}">Delete</a>
+            <a href="{% url 'branch_delete' pk=data.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
         </td>
 
     </tr>
     {% endfor %}
 </table>
-
+</div>
 {% endblock %}

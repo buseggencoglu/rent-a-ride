@@ -139,7 +139,7 @@ class PrivateMsg(models.Model):
 class Reservation(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, blank=True, null=True, on_delete=models.CASCADE)
-    customer_name = models.CharField(blank=True, null=True, max_length=36)
+    customer_name = models.CharField(default='', blank=True, null=True, max_length=36)
     carDealer = models.ForeignKey(CarDealer, blank=True, null=True, on_delete=models.CASCADE)
     pickUpLocation = models.CharField(max_length=100)
     returnLocation = models.CharField(max_length=100)
