@@ -28,6 +28,7 @@ urlpatterns = [
     path('branch/delete/<int:pk>', views.branch_delete, name='branch_delete'),
     path('branch/update/<int:pk>', views.branch_update, name='branch_update'),
     path('branch/branch_car_list/<int:pk>', views.branch_car_list, name='branch_car_list'),
+    path('admin/cardealerdelete/<int:pk>', views.CarDealer_delete, name='CarDealer_delete'),
     path('admin/user/delete/<int:pk>', views.car_dealer_reject, name='car_dealer_reject'),
     path('delete/notification/<int:pk>', views.delete_notification, name='delete_notification'),
     path('reservations/customer/history', views.view_my_reservation_customer_history, name='my_reservation_customer_history'),

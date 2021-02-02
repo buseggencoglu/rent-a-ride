@@ -158,7 +158,7 @@ def car_list(request):
     user = request.user
     car_dealers = CarDealer.objects.filter(user=user)
     if len(car_dealers) > 0:
-        context["dataset"] = Car.objects.filter(branch=car_dealers[0].branchId)
+        context["dataset"] = Car.objects.filter(branch=car_dealers[0].branch)
 
     return render(request, 'car/car_list.html', context)
 
@@ -190,7 +190,7 @@ def car_dealer_approve(request, pk):
     posted_data = ApproveCarDealer(request.GET)
     dealer = CarDealer.objects.get(id=pk)
     dealer.user.is_active = True
-    dealer.branchId = Branch.objects.get(id=posted_data.data['dealer_branch'])
+    dealer.branch = Branch.objects.get(id=posted_data.data['dealer_branch'])
     dealer.save()
     dealer.user.save()
 
@@ -218,7 +218,7 @@ def create_car(request):
     car_dealers = CarDealer.objects.filter(user=user)
     branch_id = None
     if len(car_dealers) > 0:
-        branch_id = car_dealers[0].branchId
+        branch_id = car_dealers[0].branch
     posted_data = request.POST or None
     form = CarForm(posted_data, request.FILES or None, branch_status=len(car_dealers) > 0, initial={
         'branch': branch_id
@@ -446,7 +446,7 @@ def view_my_reservation_cardealer(request):
     username = request.user
     user = User.objects.get(username=username)
     carDealer = CarDealer.objects.get(user=user)
-    pickup = carDealer.branchId.branch_name
+    pickup = carDealer.branch.branch_name
     reservations = Reservation.objects.filter(pickUpLocation=pickup, pickUpDate__gte=datetime.now())
     return render(request, 'reservation/my_reservations.html', {'reservation_list': reservations,
                                                                 'delete_url': ''})
@@ -695,7 +695,7 @@ def view_my_reservation_cardealer_history(request):
     username = request.user
     user = User.objects.get(username=username)
     carDealer = CarDealer.objects.get(user=user)
-    pickup = carDealer.branchId.branch_name
+    pickup = carDealer.branch.branch_name
     reservations = Reservation.objects.filter(pickUpLocation=pickup, pickUpDate__lt=datetime.now())
     return render(request, 'reservation/reservation_history.html', {'reservation_history': reservations,
                                                                     'delete_url': ''})
@@ -716,3 +716,10 @@ def branch_car_list(request, pk):
     context["cars"] = cars
 
     return render(request, 'admin/branch_car_list.html', context)
+
+@login_required()
+def CarDealer_delete(request, pk):
+    query = get_object_or_404(CarDealer, pk=pk)
+    query.delete()
+
+    return render(request, 'admin/CarDealer_delete.html')

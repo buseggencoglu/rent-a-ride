@@ -55,8 +55,12 @@
                         {% for data in car_dealers_dataset %}
                         <tr>
                             <td>{{data.user.username}}</td>
-                            <td>{{data.branchId.branch_name}}</td>
+                            <td>{{data.branch.branch_name}}</td>
+                            <td>
+                                <a href="{% url 'CarDealer_delete' pk=data.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
+                            </td>
                         </tr>
+
                         {% endfor %}
                     </table>
                 </div>
