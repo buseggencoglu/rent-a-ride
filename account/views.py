@@ -14,9 +14,9 @@ from django.template.loader import render_to_string
 from django.utils.timezone import datetime, timedelta
 from datetime import date
 
-from RAR.models import Customer, CarDealer
+from RAR.models import Customer, CarDealer, Profile
 from .tokens import account_activation_token
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth import (
     authenticate,
     login,
@@ -119,6 +119,11 @@ def register_customer(request):
                 return render(request, template, {
                     'form': form,
                     'error_message': 'Age should be greater than 18.'
+                })
+            if Customer.objects.filter(licenseId=form.cleaned_data['licenseId']).exists():
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'License id already exists.'
                 })
 
             user = form.save()

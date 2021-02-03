@@ -2,9 +2,8 @@ from creditcards.forms import CardNumberField, CardExpiryField, SecurityCodeFiel
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Div, Field
 from django import forms
-
-from .models import Car, Reservation, PrivateMsg, Branch, Profile
-
+from .models import Car, Reservation, PrivateMsg, Branch, CarDealer, Profile
+from django.contrib.auth.models import User
 
 class CarForm(forms.ModelForm):
     image = forms.ImageField()
@@ -97,4 +96,11 @@ class MessageForm(forms.ModelForm):
 
 class ApproveCarDealer(forms.Form):
     dealer_branch = forms.ModelChoiceField(queryset=Branch.objects.all(), label='')
+
+
+class UserDeleteForm(forms.ModelForm):
+    class Meta:
+        model = CarDealer
+        fields = []
+
 

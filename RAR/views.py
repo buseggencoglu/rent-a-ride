@@ -12,14 +12,15 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 from django.urls import reverse
 from django.views.generic import ListView
-
+from account.forms import EditProfileForm
 from .filters import CarFilter, ReservationFilter
 
 from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin, Profile, Notifications
 from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, ApproveCarDealer, \
-    BranchForm
+    BranchForm, UserDeleteForm
 
 
 def home(request):
@@ -614,12 +615,6 @@ def users(request):
     return render(request, 'admin/users.html', context)
 
 
-@login_required()
-def profile(request, pk):
-    profile = Profile.objects.get(user_id=pk)
-    return render(request, 'layout/profile.html', {'profile': profile})
-
-
 @login_required
 def add_branch(request):
     form = BranchForm(request.POST or None, request.FILES or None)
@@ -710,14 +705,39 @@ def view_my_reservation_admin_history(request):
 def branch_car_list(request, pk):
     cars = Car.objects.all()
     branch = get_object_or_404(Branch, id=pk)
-    context = {"branch": branch }
+    context = {"branch": branch}
     context["cars"] = cars
 
     return render(request, 'admin/branch_car_list.html', context)
 
+
 @login_required()
 def CarDealer_delete(request, pk):
-    query = get_object_or_404(CarDealer, pk=pk)
-    query.delete()
+    dealer = get_object_or_404(CarDealer, id=pk)
+    dealer.delete()
+    profile = get_object_or_404(Profile, id=pk)
+    profile.delete()
+    user = get_object_or_404(User, pk=pk)
+    user.delete()
+    return HttpResponseRedirect('/admin/dashboard')
 
-    return render(request, 'admin/CarDealer_delete.html')
+
+def view_profile(request, pk):
+    profile = Profile.objects.get(user_id=pk)
+    return render(request, 'layout/profile.html', {'profile': profile})
+
+
+def edit_profile(request, pk):
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            context = {'form': form}
+
+        return redirect('profile', pk=pk)
+
+
+    else:
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        return render(request, 'layout/edit_profile.html', args)
