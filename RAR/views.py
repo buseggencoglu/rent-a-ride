@@ -17,7 +17,7 @@ from django.views.generic import ListView
 
 from .filters import CarFilter, ReservationFilter
 
-from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin, Profile, Notifications
+from .models import Car, Reservation, PrivateMsg, CarDealer, Branch, Customer, Admin, Profile, Notifications, User
 from .forms import CarForm, ReservationSearchForm, MessageForm, ReservationForm, CreditCardForm, ApproveCarDealer, \
     BranchForm
 
@@ -667,13 +667,6 @@ def branch_delete(request, pk):
     return render(request, 'admin/branch_deleted.html', context)
 
 
-@background(schedule=3600)
-def clean_completed_reservations():
-    reservations = Reservation.objects.filter(pickUpDate__lt=datetime.now(), paymentStatus=False)
-    for reservation in reservations:
-        reservation.delete()
-
-
 @login_required()
 def delete_notification(request, pk):
     instance = get_object_or_404(Notifications, pk=pk)
@@ -710,14 +703,26 @@ def view_my_reservation_admin_history(request):
 def branch_car_list(request, pk):
     cars = Car.objects.all()
     branch = get_object_or_404(Branch, id=pk)
-    context = {"branch": branch }
+    context = {"branch": branch}
     context["cars"] = cars
 
     return render(request, 'admin/branch_car_list.html', context)
 
+
 @login_required()
 def CarDealer_delete(request, pk):
-    query = get_object_or_404(CarDealer, pk=pk)
-    query.delete()
+    dealer = get_object_or_404(CarDealer, id=pk)
+    dealer.delete()
+    profile = get_object_or_404(Profile, id=pk)
+    profile.delete()
+    user = get_object_or_404(User, pk=pk)
+    user.delete()
+    return HttpResponseRedirect('/admin/dashboard')
 
-    return render(request, 'admin/CarDealer_delete.html')
+
+
+@background(schedule=3600)
+def clean_completed_reservations():
+    reservations = Reservation.objects.filter(pickUpDate__lt=datetime.now(), paymentStatus=False)
+    for reservation in reservations:
+        reservation.delete()
