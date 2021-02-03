@@ -230,7 +230,6 @@ def create_car(request):
         'branch': branch_id
     })
 
-
     if form.is_valid():
         instance = form.save(commit=False)
         instance.pk = None
@@ -701,3 +700,4 @@ def view_my_reservation_admin_history(request):
     context = {}
     context["dataset"] = Reservation.objects.filter(pickUpDate__lt=datetime.now())
     return render(request, 'admin/admin_history.html', context)
+

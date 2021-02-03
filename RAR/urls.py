@@ -34,6 +34,7 @@ urlpatterns = [
     path('reservations/admin/history', views.view_my_reservation_admin_history, name='my_reservation_admin_history'),
 
 
+
 ]
 
 clean_completed_reservations(repeat=10)

@@ -17,7 +17,6 @@
         <th>Plate</th>
         <th>Car</th>
         <th>Customer</th>
-        <th>carDealer</th>
         <th>pickUpLocation</th>
         <th>returnLocation</th>
         <th>pickUpDate</th>
@@ -28,8 +27,11 @@
     <tr>
         <td>{{ data.car.plate }}</td>
         <td>{{data.car.carName}}</td>
-        <td>{{data.customer.user.username}}</td>
-        <td>{{data.carDealer.user.username}}</td>
+        {% if data.customer.user.username == None %}
+            <td>{{data.customer_name}}</td>
+        {% else %}
+           <td>{{data.customer.user.username}}</td>
+        {% endif %}
         <td>{{data.pickUpLocation}}</td>
         <td>{{data.returnLocation}}</td>
         <td>{{data.pickUpDate}}</td>
