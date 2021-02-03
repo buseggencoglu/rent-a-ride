@@ -15,8 +15,11 @@ $('#id_ccr').inputmask({
 });
 
 $('#id_plate').inputmask({
-    'mask': '99 AAA 999',
-    'placeholder': 'xx xxx xxx'
+    'regex': '([0-9]{2})\ ([A-Z]{1,3})\ ([0-9]{2,4})',
+});
+
+$('#id_year').inputmask({
+    'regex': '999'
 });
 
 $('.toast').toast({

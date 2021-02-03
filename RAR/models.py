@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Branch(models.Model):
@@ -59,9 +60,9 @@ class Car(models.Model):
     airconditioner = models.BooleanField()
     price = models.IntegerField()
     branch = models.ForeignKey(Branch, null=True, on_delete=models.SET_NULL)
-    plate = models.CharField(max_length=10, unique=True)
-    year = models.IntegerField()
-    km = models.IntegerField()
+    plate = models.CharField(max_length=11, unique=True)
+    year = models.IntegerField(validators=[MinValueValidator(2000), MaxValueValidator(2020)])
+    km = models.PositiveIntegerField()
 
     NUM_OF_SEATS_CHOICE = [
         (2, '2'),
@@ -205,4 +206,4 @@ class Profile(models.Model):
 class Notifications(models.Model):
     message = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(auto_now_add=True)

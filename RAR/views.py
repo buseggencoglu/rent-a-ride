@@ -36,10 +36,14 @@ def available_cars(request):
     dates = request_data['dates'].split(' - ')
     request_data['pickUpDate'] = dates[0]
     request_data['returnDate'] = dates[1]
+
     data = ReservationSearchForm(request_data).data
 
     start_date_date = datetime.strptime(data['pickUpDate'], '%m/%d/%Y').strftime("%Y-%m-%d")
     end_date_date = datetime.strptime(data['returnDate'], '%m/%d/%Y').strftime("%Y-%m-%d")
+
+    if datetime.strptime(data['pickUpDate'], '%m/%d/%Y') <= datetime.now():
+        return HttpResponse('Start date cannot selected from past!')
 
     busy_cars = Reservation.busy_cars(start_date_date, end_date_date)
 
@@ -662,9 +666,11 @@ def branch_delete(request, pk):
     return render(request, 'admin/branch_deleted.html', context)
 
 
-@background(schedule=3600)
+@background()
 def clean_completed_reservations():
+    print('Starts async task!')
     reservations = Reservation.objects.filter(pickUpDate__lt=datetime.now(), paymentStatus=False)
+    print(reservations)
     for reservation in reservations:
         reservation.delete()
 
