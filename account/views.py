@@ -11,17 +11,19 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
+from django.utils.timezone import datetime, timedelta
+from datetime import date
 
-from RAR.models import Customer, CarDealer
+from RAR.models import Customer, CarDealer, Profile
 from .tokens import account_activation_token
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth import (
     authenticate,
     login,
     logout,
     get_user_model,
 )
-from .forms import RegisterForm
+from .forms import RoleChooseForm, CustomerRegisterForm, CarDealerRegisterForm
 
 
 def login_request(request):
@@ -47,12 +49,104 @@ def login_request(request):
                   context={"form": form})
 
 
-def register(request):
+# def register(request):
+#     # if this is a POST request we need to process the form data
+#     template = 'register.html'
+#
+#     if request.method == "POST":
+#         form = RegisterForm(request.POST)
+#         if form.is_valid():
+#
+#             if User.objects.filter(username=form.cleaned_data['username']).exists():
+#                 return render(request, template, {
+#                     'form': form,
+#                     'error_message': 'Username already exists.'
+#                 })
+#             if User.objects.filter(email=form.cleaned_data['email']).exists():
+#                 return render(request, template, {
+#                     'form': form,
+#                     'error_message': 'Email already exists.'
+#                 })
+#
+#             user = form.save()
+#             if form.cleaned_data['type'] == 'customer':
+#                 Customer.objects.create(user=user)
+#                 user.is_active = True
+#             else:
+#                 CarDealer.objects.create(user=user)
+#                 user.is_active = False
+#             user.save()
+#
+#             current_site = get_current_site(request)
+#             # subject = 'Please Activate Your Account'
+#             # message = render_to_string('activation_request.html', {
+#             #     'user': user,
+#             #     'user_type': form.cleaned_data['type'],
+#             #     'domain': current_site.domain,
+#             #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+#             #     'token': account_activation_token.make_token(user),
+#             # })
+#             # user.email_user(subject, message)
+#
+#             # Login the user
+#             if form.cleaned_data['type'] == 'customer':
+#                 login(request, user)
+#             return redirect('sent')
+#     else:
+#         form = RegisterForm()
+#     return render(request, template, {"form": form})
+
+
+def register_customer(request):
     # if this is a POST request we need to process the form data
-    template = 'register.html'
+    template = 'register_customer.html'
 
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        form = CustomerRegisterForm(request.POST)
+        if form.is_valid():
+
+            if User.objects.filter(username=form.cleaned_data['username']).exists():
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Username already exists.'
+                })
+            if User.objects.filter(email=form.cleaned_data['email']).exists():
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Email already exists.'
+                })
+            if (date.today() - form.cleaned_data['birthDate']) < timedelta(days=18 * 365):
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Age should be greater than 18.'
+                })
+            if Customer.objects.filter(licenseId=form.cleaned_data['licenseId']).exists():
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'License id already exists.'
+                })
+
+            user = form.save()
+            Customer.objects.create(user=user, licenseId=form.cleaned_data['licenseId'],
+                                    birthDate=form.cleaned_data['birthDate'])
+            user.is_active = True
+            user.save()
+
+            # Login the user
+            login(request, user)
+            return redirect('sent')
+
+    else:
+        form = CustomerRegisterForm()
+    return render(request, template, {"form": form})
+
+
+def register_cardealer(request):
+    # if this is a POST request we need to process the form data
+    template = 'register_cardealer.html'
+
+    if request.method == "POST":
+        form = CarDealerRegisterForm(request.POST)
         if form.is_valid():
 
             if User.objects.filter(username=form.cleaned_data['username']).exists():
@@ -67,31 +161,31 @@ def register(request):
                 })
 
             user = form.save()
-            if form.cleaned_data['type'] == 'customer':
-                Customer.objects.create(user=user)
-                user.is_active = True
-            else:
-                CarDealer.objects.create(user=user)
-                user.is_active = False
+            CarDealer.objects.create(user=user, rate=0)
+            user.is_active = False
             user.save()
 
-            current_site = get_current_site(request)
-            # subject = 'Please Activate Your Account'
-            # message = render_to_string('activation_request.html', {
-            #     'user': user,
-            #     'user_type': form.cleaned_data['type'],
-            #     'domain': current_site.domain,
-            #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            #     'token': account_activation_token.make_token(user),
-            # })
-            # user.email_user(subject, message)
-
-            # Login the user
-            if form.cleaned_data['type'] == 'customer':
-                login(request, user)
             return redirect('sent')
+
     else:
-        form = RegisterForm()
+        form = CarDealerRegisterForm()
+    return render(request, template, {"form": form})
+
+
+def role_choose(request):
+    template = 'role_choose.html'
+
+    if request.method == "POST":
+        form = RoleChooseForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['type'] == 'customer':
+                return HttpResponseRedirect('/register_customer')
+            else:
+                return HttpResponseRedirect('/register_cardealer')
+
+        return redirect('sent')
+    else:
+        form = RoleChooseForm()
     return render(request, template, {"form": form})
 
 
@@ -122,9 +216,3 @@ def activate(request, uidb64, token):
         return redirect('home')
     else:
         return render(request, 'activation_invalid.html')
-
-
-
-
-
-

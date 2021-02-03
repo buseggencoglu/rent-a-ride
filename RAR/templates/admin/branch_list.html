@@ -22,7 +22,8 @@
     </thead>
     {% for data in dataset %}
     <tr>
-        <td>{{data.branch_name}}</td>
+       <td><a href="{% url 'branch_car_list' pk=data.id  %}">{{data.branch_name}}</a></td>
+
         <td>{{data.branch_location}}</td>
         <td>
             <a href="{% url 'branch_update' pk=data.id %}"><button type="submit" class="btn btn-info">Update</button></a>
