@@ -40,4 +40,4 @@ urlpatterns = [
 
 ]
 
-clean_completed_reservations(repeat=10)
+clean_completed_reservations(repeat=45)

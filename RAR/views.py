@@ -204,6 +204,7 @@ def car_dealer_approve(request, pk):
 
 def car_dealer_reject(request, pk):
     dealer = CarDealer.objects.get(id=pk)
+    dealer.user.delete()
     dealer.delete()
 
     return HttpResponseRedirect('/admin/dashboard')
@@ -720,11 +721,10 @@ def branch_car_list(request, pk):
 @login_required()
 def CarDealer_delete(request, pk):
     dealer = get_object_or_404(CarDealer, id=pk)
+    dealer.user.delete()
     dealer.delete()
     profile = get_object_or_404(Profile, id=pk)
     profile.delete()
-    user = get_object_or_404(User, pk=pk)
-    user.delete()
     return HttpResponseRedirect('/admin/dashboard')
 
 
