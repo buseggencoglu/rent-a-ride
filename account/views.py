@@ -120,6 +120,11 @@ def register_customer(request):
                     'form': form,
                     'error_message': 'Age should be greater than 18.'
                 })
+            if Customer.objects.filter(licenseId = form.cleaned_data['licenseId']).exists():
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'License id already exists.'
+                })
 
             user = form.save()
             Customer.objects.create(user=user, licenseId=form.cleaned_data['licenseId'],
