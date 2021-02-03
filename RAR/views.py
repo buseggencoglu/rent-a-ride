@@ -219,14 +219,16 @@ def car_detail(request, id=None):
 
 
 @login_required
-def create_car(request):
+def create_car(request, branch_page=None):
     user = request.user
     car_dealers = CarDealer.objects.filter(user=user)
     branch_id = None
     if len(car_dealers) > 0:
         branch_id = car_dealers[0].branch
+    if branch_page:
+        branch_id = Branch.objects.get(pk=branch_page)
     posted_data = request.POST or None
-    form = CarForm(posted_data, request.FILES or None, branch_status=len(car_dealers) > 0, initial={
+    form = CarForm(posted_data, request.FILES or None, branch_status=len(car_dealers) > 0 or branch_page != None, initial={
         'branch': branch_id
     })
 
@@ -237,6 +239,8 @@ def create_car(request):
         if len(car_dealers) > 0:
             return redirect('/car/list')
         else:
+            if branch_page:
+                return redirect(f'/branch/branch_car_list/{branch_page}')
             return redirect('/admin/dashboard')
     context = {
         "form": form,
@@ -316,12 +320,12 @@ def search_results(request):
 
 
 @login_required()
-def car_update(request, pk):
+def car_update(request, pk, branch_page=None):
     detail = get_object_or_404(Car, pk=pk)
 
     user = request.user
     car_dealers = CarDealer.objects.filter(user=user)
-    form = CarForm(request.POST or None, request.FILES or None, branch_status=len(car_dealers) > 0,
+    form = CarForm(request.POST or None, request.FILES or None, branch_status=len(car_dealers) > 0 or branch_page != None,
                    instance=detail)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -329,7 +333,10 @@ def car_update(request, pk):
         if len(car_dealers) > 0:
             return redirect('/car/list')
         else:
+            if branch_page:
+                return redirect(f'/branch/branch_car_list/{branch_page}')
             return redirect('/admin/dashboard')
+
     context = {
         "form": form,
         "title": "Update Car"
